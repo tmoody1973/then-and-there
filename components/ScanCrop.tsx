@@ -23,9 +23,12 @@ export function ScanCrop({ iiifBase, box, focus, pageId, alt, citation, ringed =
   const region = focus && !whole ? focus : box;
   const tall = !focus && box.h > box.w * 1.6;
   const expandable = Boolean(focus) || tall;
+  // Responsive candidates use the crop's true widths, never larger than the crop itself.
+  const widths = [...new Set([800, 1200, 1600].map((w) => Math.min(w, Math.round(region.w))))];
+  const native = widths[widths.length - 1];
   return (
     <figure className="scan">
-      <div className={`proof scan-proof ${tall && !whole ? "is-capped" : ""}`}>
+      <div className={`proof scan-proof ${tall && !whole ? "is-capped" : ""}`} style={{ maxWidth: `${native}px` }}>
         {failed ? (
           <p className="scan-fallback">
             Scan unavailable right now. <a href={pageUrl(pageId)}>Open this page at loc.gov</a>
@@ -33,7 +36,7 @@ export function ScanCrop({ iiifBase, box, focus, pageId, alt, citation, ringed =
         ) : (
           <img
             src={iiifCropUrl(iiifBase, region, 1200)}
-            srcSet={`${iiifCropUrl(iiifBase, region, 800)} 800w, ${iiifCropUrl(iiifBase, region, 1600)} 1600w`}
+            srcSet={widths.map((w) => `${iiifCropUrl(iiifBase, region, w)} ${w}w`).join(", ")}
             sizes="(min-width: 960px) 50vw, 100vw"
             alt={alt}
             loading="eager"

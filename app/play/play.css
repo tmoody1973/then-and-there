@@ -35,7 +35,9 @@
 
 /* ---------- Scan ---------- */
 .scan { margin: 0; }
-.scan-proof { position: relative; }
+/* A scan fills the column but never displays wider than its real pixel width (set inline):
+   narrow clippings stay sharp, and the pencil ring hugs the image rather than empty desk. */
+.scan-proof { position: relative; width: 100%; }
 .scan-proof.is-capped { max-height: 62vh; }
 .scan-proof.is-capped img { object-fit: cover; object-position: top; max-height: 62vh; }
 .scan-proof.is-capped::after {
