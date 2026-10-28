@@ -19,7 +19,7 @@ export type Clip = {
   text: string;
 };
 
-export type Pick = { day: number; clueClippingIds: string[]; revealClippingId: string; note: string };
+export type Pick = { day: number; clueClippingIds: string[]; revealClippingId: string; note: string; guidance?: string };
 
 type VerifySolvable = (input: { subjectId: string; question: string; clueText: string }) => Promise<{ pass: boolean; reason: string }>;
 type VerifyHint = (input: { subjectId: string; hint: string; answer: string }) => Promise<{ pass: boolean; reason: string }>;
@@ -95,7 +95,7 @@ export async function draftDay(pick: Pick, clips: Clip[], deps: { complete: Comp
 
   const draft = await askJson(DraftSchema, deps.complete, {
     model: deps.model ?? process.env.META_MODEL_SPARK ?? "",
-    prompt: CASE_WRITER_PROMPT(date1889, clueClips.map((c) => passage(c.text)), passage(reveal.text)),
+    prompt: CASE_WRITER_PROMPT(date1889, clueClips.map((c) => passage(c.text)), passage(reveal.text)) + (pick.guidance ? `\n\nCURATOR GUIDANCE: ${pick.guidance}` : ""),
   });
   if (!draft.ok) throw new Error(`day ${pick.day}: case writer failed: ${draft.error}`);
   const { title, answerStatement, question, hints, explanation } = draft.value;

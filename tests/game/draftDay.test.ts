@@ -83,6 +83,16 @@ describe("draftDay", () => {
     expect(seen[1].sourceText).toContain("arrived at Aden");
   });
 
+  test("passes curator guidance to the Case Writer only when a pick has it", async () => {
+    const prompts: string[] = [];
+    const { d } = deps();
+    const spy = { ...d, complete: async (req: { prompt: string }) => (prompts.push(req.prompt), d.complete()) };
+    await draftDay({ day: 16, clueClippingIds: ["clue"], revealClippingId: "rev", note: "", guidance: "Hints must not mention her lead in days." }, [...CLUES, REVEAL], spy);
+    await draftDay({ day: 16, clueClippingIds: ["clue"], revealClippingId: "rev", note: "" }, [...CLUES, REVEAL], spy);
+    expect(prompts[0]).toContain("Hints must not mention her lead in days.");
+    expect(prompts[1]).not.toContain("CURATOR GUIDANCE");
+  });
+
   test("rejects with reasons when one check fails", async () => {
     const { d } = deps([true, false]);
     const row = await draftDay({ day: 16, clueClippingIds: ["clue"], revealClippingId: "rev", note: "" }, [...CLUES, REVEAL], d);
