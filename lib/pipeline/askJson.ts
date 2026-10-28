@@ -1,7 +1,8 @@
 // Asks a model for JSON, validates it, and retries once. Never returns unvalidated data.
 import type { z } from "zod";
 
-export type CompleteReq = { model: string; prompt: string; imageDataUrl?: string };
+export type Effort = "minimal" | "low" | "medium" | "high";
+export type CompleteReq = { model: string; prompt: string; imageDataUrl?: string; effort?: Effort };
 export type Complete = (req: CompleteReq) => Promise<string>;
 export type JsonResult<T> = { ok: true; value: T } | { ok: false; error: string };
 

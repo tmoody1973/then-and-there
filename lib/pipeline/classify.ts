@@ -19,5 +19,5 @@ export function classifyClipping(
   deps: { complete: Complete; model?: string },
 ): Promise<JsonResult<Classification>> {
   const model = deps.model ?? process.env.META_MODEL_BULK ?? "";
-  return askJson(ClassificationSchema, deps.complete, { model, prompt: CLASSIFY_PROMPT(c.text) });
+  return askJson(ClassificationSchema, deps.complete, { model, effort: "minimal", prompt: CLASSIFY_PROMPT(c.text) });
 }

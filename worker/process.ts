@@ -9,6 +9,7 @@ import { altoScale, parseAlto } from "../lib/alto/parse";
 import { createLocClient } from "../lib/loc/client";
 import { makeComplete, makeImageLoader, makeSam, makeSpark, metaClient } from "../lib/meta/client";
 import { toDataUrl } from "../lib/meta/image";
+import { costOf, type Usage } from "../lib/meta/pricing";
 import type { JsonResult } from "../lib/pipeline/askJson";
 import type { Classification } from "../lib/pipeline/classify";
 import { classifyClipping } from "../lib/pipeline/classify";
@@ -162,6 +163,14 @@ if (import.meta.main) {
   const loadImage = async (url: string) => toDataUrl(await loc.getBytes(url));
   const calls: Record<string, number> = {};
   const count = (k: string) => (calls[k] = (calls[k] ?? 0) + 1);
+  // Live (uncached) calls only: what this run actually spent.
+  let spent = 0;
+  const spentBy: Record<string, number> = {};
+  const onUsage = (model: string, u: Usage) => {
+    const usd = costOf(model, u);
+    spent += usd;
+    spentBy[model] = (spentBy[model] ?? 0) + usd;
+  };
 
   const pages = cachedPages(cacheDir)
     .filter((p) => !only || p.pageId.includes(only))
@@ -169,9 +178,9 @@ if (import.meta.main) {
   let totals = { clippings: 0, cleaned: 0, failed: 0 };
   await mapPool(pages, PAGE_CONCURRENCY, async (page) => {
     const id = safeId(page.pageId);
-    const spark = makeSpark(meta, id);
-    const sam = makeSam(meta, id);
-    const complete = makeComplete(meta, id);
+    const spark = makeSpark(meta, id, onUsage);
+    const sam = makeSam(meta, id, onUsage);
+    const complete = makeComplete(meta, id, onUsage);
     const res = await processPage(page, {
       altoXml: readFileSync(join(cacheDir, id, "alto.xml"), "utf8"),
       segment: (p) =>
@@ -191,4 +200,6 @@ if (import.meta.main) {
     process.stdout.write(`${page.date} ${page.title.slice(0, 40)} p${page.sequence}: ${res.clippings} clippings, ${res.cleaned} cleaned, ${res.failed} failed\n`);
   });
   process.stdout.write(`\npages ${pages.length} | ${JSON.stringify(totals)}\nmodel calls (incl. cache hits): ${JSON.stringify(calls)}\n`);
+  const by = Object.entries(spentBy).map(([m, v]) => `${m} $${v.toFixed(4)}`).join(", ");
+  process.stdout.write(`spent this run: $${spent.toFixed(4)} (${by || "all cached"}) | per page: $${(spent / Math.max(1, pages.length)).toFixed(4)}\n`);
 }

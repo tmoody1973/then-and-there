@@ -5,9 +5,16 @@ const VALID = { type: "business", people: ["J. E. Ellmore"], places: ["Appleton"
 
 function deps(...replies: string[]) {
   let calls = 0;
+  const efforts: (string | undefined)[] = [];
   return {
     calls: () => calls,
-    d: { complete: async () => replies[Math.min(calls++, replies.length - 1)] },
+    efforts,
+    d: {
+      complete: async (req: { effort?: string }) => {
+        efforts.push(req.effort);
+        return replies[Math.min(calls++, replies.length - 1)];
+      },
+    },
   };
 }
 
@@ -15,6 +22,12 @@ describe("classifyClipping", () => {
   test("parses valid JSON", async () => {
     const out = await classifyClipping({ clippingId: "c1", text: "Mr. Ellmore has a beautiful shaving parlor" }, deps(JSON.stringify(VALID)).d);
     expect(out).toEqual({ ok: true, value: VALID });
+  });
+
+  test("asks for minimal reasoning", async () => {
+    const { d, efforts } = deps(JSON.stringify(VALID));
+    await classifyClipping({ clippingId: "c1", text: "x" }, d);
+    expect(efforts).toEqual(["minimal"]);
   });
 
   test("accepts JSON wrapped in prose", async () => {

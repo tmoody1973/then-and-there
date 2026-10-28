@@ -5,7 +5,6 @@ import { CLEAN_PROMPT } from "./prompts";
 
 const MIN_MEAN_WC = 0.8;
 const MAX_NON_DICT = 0.12;
-const STRONG_MODEL_ABOVE = 0.25;
 
 export const needsCleanup = (m: { meanWc: number; nonDictRate: number }) =>
   m.meanWc < MIN_MEAN_WC || m.nonDictRate > MAX_NON_DICT;
@@ -21,10 +20,12 @@ export async function cleanClipping(
   c: { clippingId: string; cropUrl: string; rawText: string; nonDictRate: number },
   deps: { complete: Complete; loadImage: (url: string) => Promise<string> },
 ): Promise<Cleaned> {
-  const model = c.nonDictRate > STRONG_MODEL_ABOVE ? process.env.META_MODEL_SPARK : process.env.META_MODEL_BULK;
-  if (!model) throw new Error("META_MODEL_SPARK / META_MODEL_BULK not set");
+  // Transcription is a direct task: cheap tier, minimal thinking (decision: cost control, ledger Task 10).
+  const model = process.env.META_MODEL_BULK;
+  if (!model) throw new Error("META_MODEL_BULK not set");
   const res = await askJson(CleanSchema, deps.complete, {
     model,
+    effort: "minimal",
     prompt: CLEAN_PROMPT(c.rawText),
     imageDataUrl: await deps.loadImage(c.cropUrl),
   });

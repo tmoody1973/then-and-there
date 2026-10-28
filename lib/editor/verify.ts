@@ -25,6 +25,7 @@ export async function verifyClaim(
   try {
     const res = await askJson(VerdictSchema, guarded, {
       model,
+      effort: "low",
       prompt: EDITOR_PROMPT(input.claim, input.sourceText),
       imageDataUrl: await deps.loadImage(input.cropUrl),
     });

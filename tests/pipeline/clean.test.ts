@@ -10,11 +10,14 @@ const clip = { clippingId: "c1", cropUrl: "https://iiif/x/1,2,3,4/!1600,3200/0/d
 
 function deps(reply: string) {
   const models: string[] = [];
+  const efforts: (string | undefined)[] = [];
   return {
     models,
+    efforts,
     d: {
-      complete: async (req: { model: string; prompt: string; imageDataUrl?: string }) => {
+      complete: async (req: { model: string; prompt: string; imageDataUrl?: string; effort?: string }) => {
         models.push(req.model);
+        efforts.push(req.effort);
         return reply;
       },
       loadImage: async () => "data:image/jpeg;base64,AA",
@@ -31,10 +34,11 @@ describe("needsCleanup", () => {
 describe("cleanClipping", () => {
   const ok = JSON.stringify({ cleanedText: "Nellie Bly's trip", language: "english" });
 
-  test("uses the strong model for heavy garble", async () => {
-    const { d, models } = deps(ok);
+  test("always uses the bulk model at minimal reasoning, even for heavy garble", async () => {
+    const { d, models, efforts } = deps(ok);
     await cleanClipping({ ...clip, nonDictRate: 0.3 }, d);
-    expect(models).toEqual(["strong-model"]);
+    expect(models).toEqual(["bulk-model"]);
+    expect(efforts).toEqual(["minimal"]);
   });
 
   test("uses the bulk model otherwise", async () => {
