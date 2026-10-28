@@ -4,13 +4,14 @@ import Link from "next/link";
 import { useQuery } from "convex/react";
 import { api } from "../../convex/_generated/api";
 import { iiifCropUrl } from "../../components/iiif";
+import { longDate, runDate } from "../../lib/game/format";
 import "./how.css";
 
 // A recorded run of the pipeline on one real page. Every number here is read from the database.
 const PAGE_ID = "http://www.loc.gov/resource/sn83030193/1889-11-29/ed-2/?sp=1";
 
 type Box = { x: number; y: number; w: number; h: number };
-type Clip = { _id: string; box: Box; segLabel: string; segSource: string; rawText: string; cleanedText?: string; type?: string; humanStoryScore?: number; status: string };
+type Clip = { _id: string; _creationTime: number; box: Box; segLabel: string; segSource: string; rawText: string; cleanedText?: string; type?: string; humanStoryScore?: number; status: string };
 type Page = { iiifBase: string; imageWidth: number; imageHeight: number; title: string; date: string };
 
 const STEPS: Array<[string, string]> = [
@@ -30,6 +31,7 @@ export default function HowItWorks() {
   const stats = useQuery(api.editorRuns.stats, {}) as { total: number; passed: number; failed: number } | undefined;
   const banner = clips?.find((c) => /IllyM/.test(c.rawText));
   const repaired = clips?.filter((c) => c.cleanedText).length ?? 0;
+  const ran = clips ? runDate(clips) : null;
   // Quote the stored text exactly, never retyped: a window around the bad and the repaired words.
   const around = (text: string, word: string, before = 28, after = 22) => {
     const i = text.indexOf(word);
@@ -46,8 +48,9 @@ export default function HowItWorks() {
       </p>
       <h1>How a page from 1889 becomes a clue.</h1>
       <p>
-        A recorded run of the pipeline on one real page: The Evening World, New York, November 29, 1889, the day it
-        announced the contest to guess Nellie Bly&apos;s time.
+        A recorded run of the pipeline
+        {ran ? <>, made <time dateTime={ran}>{longDate(ran)}</time>,</> : null} on one real page: The Evening World, New
+        York, November 29, 1889, the day it announced the contest to guess Nellie Bly&apos;s time.
       </p>
 
       {page && clips ? (
