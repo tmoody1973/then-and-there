@@ -44,6 +44,16 @@ describe("pickMorgue", () => {
     expect(out).toEqual([]);
   });
 
+  test("drops the same wire story reprinted by other papers", () => {
+    const wire = "The itinerary of the trip includes Southampton, London, Calais, Paris, Turin, Brindisi, Ismailia and Colombo";
+    const out = pickMorgue([
+      c("w1", "1889-11-18", wire, { paper: "A" }),
+      c("w2", "1889-11-21", wire.replace("Ismailia", "Ismail,"), { paper: "B" }),
+      c("other", "1889-11-20", "A steamer of the Oriental line is due at Colombo", { paper: "C" }),
+    ], opts);
+    expect(out.map((x) => x.clippingId)).toEqual(["other", "w2"]);
+  });
+
   test("matches terms case-insensitively as whole words", () => {
     expect(pickMorgue([c("x", "1889-12-01", "the HONG KONG steamer"), c("y", "1889-12-01", "Hongkonger")], opts).map((x) => x.clippingId)).toEqual(["x"]);
   });
