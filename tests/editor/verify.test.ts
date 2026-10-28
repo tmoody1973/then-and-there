@@ -1,6 +1,6 @@
 import { beforeAll, describe, expect, test } from "vitest";
 import type { EditorRun } from "../../convex/editorRuns";
-import { verifyClaim, verifyHint, verifySolvable } from "../../lib/editor/verify";
+import { verifyClaim, verifyHint, verifyRelevant, verifySolvable } from "../../lib/editor/verify";
 
 beforeAll(() => {
   process.env.META_MODEL_EDITOR = "editor-model";
@@ -96,5 +96,16 @@ describe("verifySolvable", () => {
     expect(prompts[0]).toContain("Chicago");
     expect(prompts[0]).toContain("1,500 miles");
     expect(logged[0]).toMatchObject({ subjectKind: "clue", subjectId: "day71-solvable" });
+  });
+});
+
+describe("verifyRelevant", () => {
+  test("asks whether a clipping is useful background, and logs it", async () => {
+    const { d, logged, prompts } = deps('{"pass": true, "reason": "prints her route"}');
+    const res = await verifyRelevant({ subjectId: "day30-morgue1", question: "Ahead at Hong Kong?", clippingText: "Southampton, Brindisi, Ismailia" }, d);
+    expect(res.pass).toBe(true);
+    expect(prompts[0]).toContain("background");
+    expect(prompts[0]).toContain("Brindisi");
+    expect(logged[0]).toMatchObject({ subjectKind: "context", subjectId: "day30-morgue1" });
   });
 });

@@ -47,6 +47,17 @@ ${question}
 CLUE:
 ${clueText}`;
 
+// Morgue relevance: is this earlier clipping useful background for the day's question?
+export const EDITOR_RELEVANT_PROMPT = (question: string, clippingText: string) =>
+  `A history game lets players consult earlier newspaper clippings as background before answering a question about Nellie Bly's 1889-90 race around the world (or her rival Elizabeth Bisland's). Decide whether this clipping gives a player relevant background: her route, schedule, steamers or trains, connections, pace, plans, or her rival. It does not need to answer the question by itself.
+Return only JSON: {"pass": boolean, "reason": string (one sentence)}.
+
+QUESTION:
+${question}
+
+CLIPPING:
+${clippingText}`;
+
 // Hint check: a different question from fact support. Does the hint give the answer away?
 export const EDITOR_HINT_PROMPT = (hint: string, answer: string) =>
   `A history game asks players a question whose correct answer is: "${answer}". Below is a hint the game will show before they answer. A good hint is a question that nudges reasoning. It fails if it states the answer, names it, or makes it obvious without thinking.

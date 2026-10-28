@@ -3,7 +3,7 @@
 import { z } from "zod";
 import type { EditorRun } from "../../convex/editorRuns";
 import { askJson, type Complete } from "../pipeline/askJson";
-import { EDITOR_HINT_PROMPT, EDITOR_PROMPT, EDITOR_SOLVABLE_PROMPT } from "../pipeline/prompts";
+import { EDITOR_HINT_PROMPT, EDITOR_PROMPT, EDITOR_RELEVANT_PROMPT, EDITOR_SOLVABLE_PROMPT } from "../pipeline/prompts";
 
 const VerdictSchema = z.object({ pass: z.boolean(), reason: z.string() });
 
@@ -84,5 +84,15 @@ export const verifySolvable = (
 ) =>
   textCheck(
     { subjectKind: "clue", subjectId: input.subjectId, claim: `The clue gives evidence to reason about: ${input.question}`, prompt: EDITOR_SOLVABLE_PROMPT(input.question, input.clueText) },
+    deps,
+  );
+
+// Is an earlier clipping useful background (the morgue)? It needn't answer the question alone.
+export const verifyRelevant = (
+  input: { subjectId: string; question: string; clippingText: string },
+  deps: { complete: Complete; log: (run: EditorRun) => Promise<void> },
+) =>
+  textCheck(
+    { subjectKind: "context", subjectId: input.subjectId, claim: `Relevant background for: ${input.question}`, prompt: EDITOR_RELEVANT_PROMPT(input.question, input.clippingText) },
     deps,
   );

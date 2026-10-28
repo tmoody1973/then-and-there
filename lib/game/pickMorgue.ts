@@ -6,7 +6,7 @@ const escape = (s: string) => s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 
 export function pickMorgue(
   clips: MeanwhileCandidate[],
-  opts: { date1889: string; terms: string[]; excludeIds: string[]; max?: number },
+  opts: { date1889: string; terms: string[]; excludeIds: string[]; cluePapers?: Array<{ paper: string; date: string }>; max?: number },
 ): MeanwhileCandidate[] {
   const max = opts.max ?? 3;
   const patterns = opts.terms.map((t) => new RegExp(`\\b${escape(t)}\\b`, "i"));
@@ -15,11 +15,14 @@ export function pickMorgue(
     .map((c) => ({ c, hits: patterns.filter((p) => p.test(c.text)).length }))
     .filter((x) => x.hits > 0)
     .sort((a, b) => b.hits - a.hits || b.c.date.localeCompare(a.c.date));
-  const pages = new Set<string>();
+  // Editions repeat stories: one item per page and per paper-and-date, never the clue's own paper that day.
+  const seen = new Set<string>((opts.cluePapers ?? []).map((p) => `${p.paper}|${p.date}`));
   const out: MeanwhileCandidate[] = [];
   for (const { c } of scored) {
-    if (pages.has(c.pageId)) continue;
-    pages.add(c.pageId);
+    const key = `${c.paper}|${c.date}`;
+    if (seen.has(key) || seen.has(c.pageId)) continue;
+    seen.add(key);
+    seen.add(c.pageId);
     out.push(c);
     if (out.length === max) break;
   }

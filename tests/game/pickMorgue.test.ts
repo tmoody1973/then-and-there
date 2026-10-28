@@ -34,6 +34,16 @@ describe("pickMorgue", () => {
     expect(out).toHaveLength(3);
     expect(new Set(out.map((x) => x.pageId)).size).toBe(3);
   });
+  test("one item per paper per date (editions repeat stories)", () => {
+    const out = pickMorgue([c("ed1", "1889-12-01", "Hong Kong", { paper: "The Evening World" }), c("ed2", "1889-12-01", "Hong Kong", { paper: "The Evening World" })], opts);
+    expect(out).toHaveLength(1);
+  });
+
+  test("never the clue's own paper on the clue's date", () => {
+    const out = pickMorgue([c("other-edition", "1889-12-13", "Hong Kong", { paper: "Clue Paper" })], { ...opts, cluePapers: [{ paper: "Clue Paper", date: "1889-12-13" }] });
+    expect(out).toEqual([]);
+  });
+
   test("matches terms case-insensitively as whole words", () => {
     expect(pickMorgue([c("x", "1889-12-01", "the HONG KONG steamer"), c("y", "1889-12-01", "Hongkonger")], opts).map((x) => x.clippingId)).toEqual(["x"]);
   });

@@ -3,7 +3,7 @@
 import { readFileSync, writeFileSync } from "node:fs";
 import { ConvexHttpClient } from "convex/browser";
 import { anyApi } from "convex/server";
-import { verifyClaim, verifyHint, verifySolvable } from "../../lib/editor/verify";
+import { verifyClaim, verifyHint, verifyRelevant, verifySolvable } from "../../lib/editor/verify";
 import { readFileSync as read } from "node:fs";
 import { altoScale, parseAlto } from "../../lib/alto/parse";
 import { draftDay, MENTION, ref, type Pick } from "../../lib/game/draftDay";
@@ -47,11 +47,12 @@ for (const pick of picks) {
   const morgue = [];
   if (pick.morgueTerms?.length) {
     const terms = new RegExp(`\\b(${pick.morgueTerms.map((t) => t.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")).join("|")})\\b`, "i");
-    const candidates = pickMorgue(loaded, { date1889: row.date1889, terms: pick.morgueTerms, excludeIds: [...pick.clueClippingIds, pick.revealClippingId] });
+    const cluePapers = clips.filter((c) => pick.clueClippingIds.includes(c.clippingId)).map((c) => ({ paper: c.paper, date: c.date }));
+    const candidates = pickMorgue(loaded, { date1889: row.date1889, terms: pick.morgueTerms, excludeIds: [...pick.clueClippingIds, pick.revealClippingId], cluePapers });
     for (const [i, m] of candidates.entries()) {
       const item = framed(m, terms);
-      const ok = await verifySolvable(
-        { subjectId: `day${pick.day}-morgue${i + 1}`, question: row.question.prompt, clueText: ref(item, terms).excerpt },
+      const ok = await verifyRelevant(
+        { subjectId: `day${pick.day}-morgue${i + 1}`, question: row.question.prompt, clippingText: ref(item, terms).excerpt },
         { complete, log },
       );
       if (ok.pass) morgue.push(ref(item, terms));
