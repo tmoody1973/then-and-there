@@ -13,6 +13,8 @@ const WINDOW_MS = 60_000;
 const BLOCK_PAUSE_MS = 10 * 60_000;
 const DEFAULT_429_WAIT_MS = 60_000;
 const MAX_429 = 3;
+const MAX_5XX = 3;
+const SERVER_ERROR_WAIT_MS = 30_000;
 // The Library 403s some default user agents; always identify ourselves.
 const USER_AGENT = "then-and-there/0.1 (historic newspaper research; Radio Milwaukee)";
 
@@ -86,6 +88,7 @@ export function createLocClient(opts: Opts = {}): LocClient {
   async function request(url: string, bucket: Bucket, kind: "json" | "text" | "bytes"): Promise<unknown> {
     let rateLimited = 0;
     let badBodies = 0;
+    let serverErrors = 0;
     for (;;) {
       await takeSlot(bucket);
       const res = await fetchImpl(url, { headers: { "user-agent": USER_AGENT } });
@@ -95,6 +98,12 @@ export function createLocClient(opts: Opts = {}): LocClient {
         if (rateLimited >= MAX_429) throw new LocRateLimitError(url);
         const retryAfter = Number(res.headers.get("retry-after"));
         await sleep(retryAfter > 0 ? retryAfter * 1000 : DEFAULT_429_WAIT_MS);
+        continue;
+      }
+      if (res.status >= 500) {
+        serverErrors += 1;
+        if (serverErrors >= MAX_5XX) throw new LocBadResponseError(url, `HTTP ${res.status} after ${MAX_5XX} tries`);
+        await sleep(SERVER_ERROR_WAIT_MS * serverErrors);
         continue;
       }
       if (!res.ok) throw new LocBadResponseError(url, `HTTP ${res.status}`);

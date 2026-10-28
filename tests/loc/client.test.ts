@@ -77,6 +77,17 @@ describe("LocClient", () => {
     expect(Math.max(...sleeps)).toBeGreaterThanOrEqual(60_000);
   });
 
+  test("503 backs off then retries", async () => {
+    const { client, sleeps } = harness([{ status: 503 }, { body: '{"ok":true}' }]);
+    await expect(client.getPageJson("https://www.loc.gov/resource/a/")).resolves.toEqual({ ok: true });
+    expect(Math.max(...sleeps)).toBeGreaterThanOrEqual(30_000);
+  });
+
+  test("three 503s throw LocBadResponseError", async () => {
+    const { client } = harness([{ status: 503 }, { status: 503 }, { status: 503 }]);
+    await expect(client.getJson("https://tile.loc.gov/x/info.json")).rejects.toBeInstanceOf(LocBadResponseError);
+  });
+
   test("three 429s throw LocRateLimitError", async () => {
     const { client } = harness([{ status: 429 }, { status: 429 }, { status: 429 }]);
     await expect(client.getPageJson("https://www.loc.gov/resource/a/")).rejects.toBeInstanceOf(
