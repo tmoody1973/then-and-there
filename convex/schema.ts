@@ -47,6 +47,7 @@ export const clippingFields = {
   places: v.optional(v.array(v.string())),
   humanStoryScore: v.optional(v.number()),
   hardHistory: v.optional(v.boolean()),
+  hardHistoryReason: v.optional(v.string()),
   status: v.union(v.literal("raw"), v.literal("cleaned"), v.literal("classified"), v.literal("failed")),
   editorStatus: v.union(v.literal("unchecked"), v.literal("pass"), v.literal("fail")),
   promptVersion: v.string(),

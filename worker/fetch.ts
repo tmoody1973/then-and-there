@@ -5,6 +5,7 @@ import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 import { createLocClient, type LocClient, type SearchParams } from "../lib/loc/client";
 import { pathsFromImageUrls } from "../lib/loc/paths";
+import { mapPool } from "../lib/util/pool";
 
 const PUBLIC_DOMAIN_BEFORE = "1931-01-01";
 const SEARCH_PAGE_SIZE = 100;
@@ -89,19 +90,6 @@ export async function fetchPage(client: LocClient, r: Result, cacheDir: string):
   }
   writeFileSync(metaPath, JSON.stringify(page, null, 2));
   return page;
-}
-
-async function mapPool<T, R>(items: T[], size: number, fn: (item: T) => Promise<R>): Promise<R[]> {
-  const out = new Array<R>(items.length);
-  let next = 0;
-  const lane = async () => {
-    while (next < items.length) {
-      const i = next++;
-      out[i] = await fn(items[i]);
-    }
-  };
-  await Promise.all(Array.from({ length: Math.min(size, items.length) }, lane));
-  return out;
 }
 
 export async function fetchManifest(client: LocClient, manifestPath: string, cacheDir: string): Promise<CachedPage[]> {
