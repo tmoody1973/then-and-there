@@ -19,6 +19,7 @@ import { wordsInBox } from "../lib/pipeline/mapWords";
 import { PROMPT_VERSION } from "../lib/pipeline/prompts";
 import { type Box, segmentPage } from "../lib/segment/segmentPage";
 import { mapPool } from "../lib/util/pool";
+import { withRetry } from "../lib/util/retry";
 import { type CachedPage, safeId } from "./fetch";
 
 const CLIPPING_CONCURRENCY = 8;
@@ -194,7 +195,9 @@ if (import.meta.main) {
     const spark = makeSpark(meta, id, onUsage);
     const sam = makeSam(meta, id, onUsage);
     const complete = makeComplete(meta, id, onUsage);
-    const res = await processPage(page, {
+    let res: Awaited<ReturnType<typeof processPage>>;
+    try {
+      res = await processPage(page, {
       altoXml: readFileSync(join(cacheDir, id, "alto.xml"), "utf8"),
       segment: (p) =>
         segmentPage(p, {
@@ -205,10 +208,16 @@ if (import.meta.main) {
       clean: (c) => (count("clean"), cleanClipping(c, { complete, loadImage })),
       classify: (c) => (count("classify"), classifyClipping(c, { complete })),
       store: {
-        upsertPage: async (p) => void (await convex.mutation(anyApi.pages.upsert, { page: p })),
-        replaceClippings: async (pageId, rows) => void (await convex.mutation(anyApi.clippings.replaceForPage, { pageId, clippings: rows })),
+        upsertPage: async (p) => void (await withRetry(() => convex.mutation(anyApi.pages.upsert, { page: p }))),
+        replaceClippings: async (pageId, rows) =>
+          void (await withRetry(() => convex.mutation(anyApi.clippings.replaceForPage, { pageId, clippings: rows }))),
       },
     });
+    } catch (e) {
+      // Not marked processed, so the next run retries this page.
+      process.stdout.write(`FAILED ${page.pageId}: ${e instanceof Error ? e.message.split("\n")[0] : String(e)}\n`);
+      return;
+    }
     totals = { clippings: totals.clippings + res.clippings, cleaned: totals.cleaned + res.cleaned, failed: totals.failed + res.failed };
     process.stdout.write(`${page.date} ${page.title.slice(0, 40)} p${page.sequence}: ${res.clippings} clippings, ${res.cleaned} cleaned, ${res.failed} failed\n`);
   });
