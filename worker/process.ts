@@ -59,6 +59,16 @@ export type ProcessDeps = {
 export const cropUrl = (iiifBase: string, b: ClippingRow["box"]) =>
   `${iiifBase}/${b.x},${b.y},${b.w},${b.h}/!1600,3200/0/default.jpg`;
 
+// Column splitting already starts each story at its headline, so a headline whose
+// center sits inside a story or ad box would only duplicate it. Mastheads stay.
+const centerIn = (a: Box, b: Box) => {
+  const cx = a.x + a.w / 2;
+  const cy = a.y + a.h / 2;
+  return cx >= b.x && cx <= b.x + b.w && cy >= b.y && cy <= b.y + b.h;
+};
+export const dropContainedHeadlines = (boxes: Box[]) =>
+  boxes.filter((b) => b.label !== "headline" || !boxes.some((o) => o !== b && o.label !== "headline" && centerIn(b, o)));
+
 const round = (b: Box) => ({ x: Math.round(b.x), y: Math.round(b.y), w: Math.round(b.w), h: Math.round(b.h) });
 
 async function processClipping(page: CachedPage, box: Box, index: number, scale: number, alto: ReturnType<typeof parseAlto>, deps: ProcessDeps): Promise<ClippingRow> {
@@ -112,7 +122,7 @@ export async function processPage(page: CachedPage, deps: ProcessDeps): Promise<
     await deps.store.upsertPage({ ...page, altoScale: scale, status: "failed", error: e instanceof Error ? e.message : String(e) });
     return { clippings: 0, cleaned: 0, failed: 0 };
   }
-  const rows = await mapPool(boxes, CLIPPING_CONCURRENCY, (b, i) => processClipping(page, b, i, scale, alto, deps));
+  const rows = await mapPool(dropContainedHeadlines(boxes), CLIPPING_CONCURRENCY, (b, i) => processClipping(page, b, i, scale, alto, deps));
   await deps.store.replaceClippings(page.pageId, rows);
   await deps.store.upsertPage({ ...page, altoScale: scale, status: "processed" });
   return {

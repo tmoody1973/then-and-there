@@ -99,6 +99,14 @@ describe("processPage", () => {
     expect(res.failed).toBe(1);
   });
 
+  test("headlines inside a story box are not stored separately", async () => {
+    const inside: Box = { label: "headline", x: 1330, y: 6935, w: 800, h: 40, score: 1, source: "spark" };
+    const masthead: Box = { label: "headline", x: 0, y: 0, w: 5000, h: 300, score: 1, source: "spark" };
+    const { d, stored } = deps([MARRIAGE, inside, masthead]);
+    await processPage(PAGE, d);
+    expect(stored.rows!.map((r) => r.segLabel)).toEqual(["article", "headline"]);
+  });
+
   test("segmentation failure marks the page failed and stores no clippings", async () => {
     const { d, stored } = deps(new Error("layout model returned no JSON array"));
     await processPage(PAGE, d);
