@@ -41,3 +41,8 @@ export function streak(p: Progress, today: string): number {
   while (onTime.includes(todayDay - n)) n += 1;
   return n;
 }
+
+// The finale guess, like a day's call, can only be made once.
+export function recordFinale(p: Progress, guessSeconds: number, answeredOn: string): Progress {
+  return p.finale ? p : { ...p, finale: { guessSeconds, answeredOn } };
+}

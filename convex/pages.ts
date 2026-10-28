@@ -35,3 +35,12 @@ export const processedIds = query({
     return pages.filter((p) => p.status === "processed").map((p) => p.pageId as string);
   },
 });
+
+export const byPageId = query({
+  args: { pageId: v.string() },
+  handler: (ctx, { pageId }) =>
+    ctx.db
+      .query("pages")
+      .withIndex("by_pageId", (q) => q.eq("pageId", pageId))
+      .unique(),
+});

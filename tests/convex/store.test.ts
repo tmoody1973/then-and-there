@@ -82,4 +82,11 @@ describe("store", () => {
     await t.mutation(api.pages.upsert, { page: { ...PAGE, pageId: "b", status: "failed" } });
     expect(await t.query(api.pages.processedIds, {})).toEqual(["a"]);
   });
+
+  test("byPageId returns one page or null", async () => {
+    const t = convexTest(schema, modules);
+    await t.mutation(api.pages.upsert, { page: { ...PAGE, pageId: "x" } });
+    expect((await t.query(api.pages.byPageId, { pageId: "x" }))?.pageId).toBe("x");
+    expect(await t.query(api.pages.byPageId, { pageId: "missing" })).toBeNull();
+  });
 });

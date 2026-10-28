@@ -40,6 +40,14 @@ describe("focusBox", () => {
     expect(f.y + f.h).toBeGreaterThan(7120);
   });
 
+  test("in a multi-column clipping, frames only the mention's column", () => {
+    const WIDE = { x: 0, y: 6000, w: 4000, h: 2400 };
+    const f = focusBox(page, 3, WIDE, /Swadley/i)!;
+    expect(f.x).toBeGreaterThan(1200);
+    expect(f.w).toBeLessThan(1100);
+    expect(f.h).toBeGreaterThan(150);
+  });
+
   test("returns undefined when the clipping never mentions it", () => {
     expect(focusBox(page, 3, COLUMN, /Nellie Bly/i)).toBeUndefined();
   });

@@ -16,10 +16,19 @@ export function focusBox(page: AltoPage, scale: number, clip: Box, mention: RegE
       return cx >= clip.x && cx <= clip.x + clip.w && cy >= clip.y && cy <= clip.y + clip.h;
     })
     .sort((a, b) => a.y - b.y);
-  const hit = inClip.findIndex((b) => mention.test(b.l.words.map((w) => w.subs ?? w.text).join(" ")));
-  if (hit < 0) return undefined;
-  const window = inClip.slice(Math.max(0, hit - LINES_BEFORE), hit + LINES_AFTER + 1);
+  const hitLine = inClip.find((b) => mention.test(b.l.words.map((w) => w.subs ?? w.text).join(" ")));
+  if (!hitLine) return undefined;
+  // Multi-column clippings interleave lines by height; keep to the mention's own column.
+  const sameColumn = (b: (typeof inClip)[number]) => {
+    const shared = Math.min(b.x + b.w, hitLine.x + hitLine.w) - Math.max(b.x, hitLine.x);
+    return shared > 0.5 * Math.min(b.w, hitLine.w);
+  };
+  const column = inClip.filter(sameColumn);
+  const hit = column.indexOf(hitLine);
+  const window = column.slice(Math.max(0, hit - LINES_BEFORE), hit + LINES_AFTER + 1);
   const top = Math.max(clip.y, Math.min(...window.map((b) => b.y)) - PAD);
   const bottom = Math.min(clip.y + clip.h, Math.max(...window.map((b) => b.y + b.h)) + PAD);
-  return { x: clip.x, y: top, w: clip.w, h: bottom - top };
+  const left = Math.max(clip.x, Math.min(...window.map((b) => b.x)) - PAD);
+  const right = Math.min(clip.x + clip.w, Math.max(...window.map((b) => b.x + b.w)) + PAD);
+  return { x: left, y: top, w: right - left, h: bottom - top };
 }

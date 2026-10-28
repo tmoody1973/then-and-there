@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
-import { loadProgress, recordAnswer, saveProgress } from "./progress";
+import { loadProgress, recordAnswer, recordFinale, saveProgress } from "./progress";
 import type { DayResult, Progress } from "./types";
 
 const DEMO_KEY = "tt.demo";
@@ -79,5 +79,14 @@ export function usePlayer() {
     [hints],
   );
 
-  return { ready, progress, today: localToday(), demo, setDemo, state, setState, hintsUsed: hints, useHint, answer };
+  const guessFinale = useCallback((guessSeconds: number) => {
+    setProgress((p) => {
+      const next = recordFinale(p, guessSeconds, localToday());
+      const s = store();
+      if (s && next !== p) saveProgress(s, next);
+      return next;
+    });
+  }, []);
+
+  return { ready, progress, today: localToday(), demo, setDemo, state, setState, hintsUsed: hints, useHint, answer, guessFinale };
 }

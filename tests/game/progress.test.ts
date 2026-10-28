@@ -1,5 +1,5 @@
 import { describe, expect, test } from "vitest";
-import { loadProgress, PROGRESS_KEY, recordAnswer, saveProgress, streak } from "../../lib/game/progress";
+import { loadProgress, PROGRESS_KEY, recordAnswer, recordFinale, saveProgress, streak } from "../../lib/game/progress";
 import { anniversaryForDay } from "../../lib/game/schedule";
 
 const r = (day: number, onTime = true) => ({ correct: true, hintsUsed: 0, answeredOn: onTime ? anniversaryForDay(day) : "2027-03-01" });
@@ -37,5 +37,12 @@ describe("progress", () => {
     const p = { days: { 1: r(1), 2: r(2), 3: r(3) } };
     expect(streak(p, anniversaryForDay(3))).toBe(3);
     expect(streak({ days: { 1: r(1), 2: r(2, false), 3: r(3) } }, anniversaryForDay(3))).toBe(1);
+  });
+
+  test("the finale guess is recorded once; the first guess wins", () => {
+    const first = recordFinale({ days: {} }, 6_243_000, "2027-01-25");
+    const again = recordFinale(first, 100, "2027-01-25");
+    expect(first.finale).toEqual({ guessSeconds: 6_243_000, answeredOn: "2027-01-25" });
+    expect(again.finale?.guessSeconds).toBe(6_243_000);
   });
 });
