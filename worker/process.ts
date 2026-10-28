@@ -22,7 +22,8 @@ import { mapPool } from "../lib/util/pool";
 import { type CachedPage, safeId } from "./fetch";
 
 const CLIPPING_CONCURRENCY = 8;
-const PAGE_CONCURRENCY = 2;
+// Contributor tier allows 150 req/min; the SDK backs off on 429 (maxRetries in metaClient).
+const PAGE_CONCURRENCY = 4;
 
 export type PageRow = Omit<CachedPage, "status"> & { altoScale: number; status: "fetched" | "processed" | "failed" };
 
@@ -154,6 +155,8 @@ if (import.meta.main) {
     return i >= 0 ? args.splice(i, 2)[1] : undefined;
   };
   const limit = Number(flag("--limit") ?? Infinity);
+  // Hard stop on spend (USD, live calls only). Pages already started finish; no new ones begin.
+  const budget = Number(flag("--budget") ?? 40);
   const only = flag("--only");
   const cacheDir = args[0] ?? "cache/pages";
   if (!process.env.CONVEX_URL) throw new Error("CONVEX_URL not set (run `bunx convex dev` first)");
@@ -178,7 +181,12 @@ if (import.meta.main) {
     .filter((p) => !only || p.pageId.includes(only))
     .slice(0, limit);
   let totals = { clippings: 0, cleaned: 0, failed: 0 };
+  let stopped = 0;
   await mapPool(pages, PAGE_CONCURRENCY, async (page) => {
+    if (spent >= budget) {
+      stopped += 1;
+      return;
+    }
     const id = safeId(page.pageId);
     const spark = makeSpark(meta, id, onUsage);
     const sam = makeSam(meta, id, onUsage);
@@ -203,5 +211,6 @@ if (import.meta.main) {
   });
   process.stdout.write(`\npages ${pages.length} | ${JSON.stringify(totals)}\nmodel calls (incl. cache hits): ${JSON.stringify(calls)}\n`);
   const by = Object.entries(spentBy).map(([m, v]) => `${m} $${v.toFixed(4)}`).join(", ");
+  if (stopped) process.stdout.write(`BUDGET STOP: $${budget} reached; ${stopped} pages not started (rerun to continue; finished work is cached)\n`);
   process.stdout.write(`spent this run: $${spent.toFixed(4)} (${by || "all cached"}) | per page: $${(spent / Math.max(1, pages.length)).toFixed(4)}\n`);
 }

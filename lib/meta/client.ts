@@ -21,7 +21,8 @@ const chatUsage = (u?: ChatUsage): Usage => ({
 export function metaClient(): OpenAI {
   const apiKey = process.env.META_API_KEY;
   if (!apiKey) throw new Error("META_API_KEY is not set (put it in .env)");
-  return new OpenAI({ apiKey, baseURL: process.env.META_BASE_URL ?? "https://api.meta.ai/v1" });
+  // maxRetries: the SDK backs off on 429/5xx; the contributor tier caps at 150 req/min.
+  return new OpenAI({ apiKey, baseURL: process.env.META_BASE_URL ?? "https://api.meta.ai/v1", maxRetries: 6 });
 }
 
 // Identify images in cache keys by content, not size: different crops can share a size.
