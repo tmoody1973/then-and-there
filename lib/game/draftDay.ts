@@ -21,6 +21,8 @@ export type Clip = {
 
 export type Pick = { day: number; clueClippingIds: string[]; revealClippingId: string; note: string };
 
+type VerifyHint = (input: { subjectId: string; hint: string; answer: string }) => Promise<{ pass: boolean; reason: string }>;
+
 type Verify = (input: {
   subjectKind: "clue" | "hint" | "context";
   subjectId: string;
@@ -42,6 +44,27 @@ const DraftSchema = z
 
 const answerText = (q: Question) => (q.kind === "choice" ? q.options[q.answerIndex] : `${q.answerDays} days`);
 
+// Many clippings are whole wire columns; start the teaser a little before the first mention.
+const MENTION = /\b(Bly|Bisland|Cochrane?)\b/i;
+const LEAD_IN = 60;
+// What both models see: the stretch of a (often mixed) column around the mentions.
+const PASSAGE_CHARS = 1400;
+const PASSAGE_LEAD = 300;
+export function passage(text: string): string {
+  if (text.length <= PASSAGE_CHARS) return text;
+  const at = text.search(MENTION);
+  if (at < 0) return text.slice(0, PASSAGE_CHARS);
+  const start = Math.max(0, text.lastIndexOf(" ", Math.max(0, at - PASSAGE_LEAD)) + 1);
+  return text.slice(start, start + PASSAGE_CHARS);
+}
+
+export function excerptAround(text: string): string {
+  const at = text.search(MENTION);
+  if (at <= LEAD_IN) return text.slice(0, EXCERPT_CHARS);
+  const start = text.lastIndexOf(" ", at - LEAD_IN) + 1;
+  return text.slice(start, start + EXCERPT_CHARS);
+}
+
 const ref = (c: Clip) => ({
   clippingId: c.clippingId,
   pageId: c.pageId,
@@ -50,10 +73,10 @@ const ref = (c: Clip) => ({
   paper: c.paper,
   date: c.date,
   citationMla: c.citationMla,
-  excerpt: c.text.slice(0, EXCERPT_CHARS),
+  excerpt: excerptAround(c.text),
 });
 
-export async function draftDay(pick: Pick, clips: Clip[], deps: { complete: Complete; verify: Verify; model?: string }) {
+export async function draftDay(pick: Pick, clips: Clip[], deps: { complete: Complete; verify: Verify; verifyHint: VerifyHint; model?: string }) {
   const date1889 = date1889ForDay(pick.day);
   const byId = new Map(clips.map((c) => [c.clippingId, c]));
   const clues = pick.clueClippingIds.map((id) => byId.get(id));
@@ -65,22 +88,28 @@ export async function draftDay(pick: Pick, clips: Clip[], deps: { complete: Comp
 
   const draft = await askJson(DraftSchema, deps.complete, {
     model: deps.model ?? process.env.META_MODEL_SPARK ?? "",
-    prompt: CASE_WRITER_PROMPT(date1889, clueClips.map((c) => c.text), reveal.text),
+    prompt: CASE_WRITER_PROMPT(date1889, clueClips.map((c) => passage(c.text)), passage(reveal.text)),
   });
   if (!draft.ok) throw new Error(`day ${pick.day}: case writer failed: ${draft.error}`);
   const { title, question, hints, explanation } = draft.value;
 
   const id = `day${pick.day}`;
-  const clueText = clueClips.map((c) => c.text).join("\n---\n");
+  const clueText = clueClips.map((c) => passage(c.text)).join("\n---\n");
+  const revealText = passage(reveal.text);
   const checks: Array<Parameters<Verify>[0]> = [
-    { subjectKind: "clue", subjectId: `${id}-solvable`, claim: `A reader on ${date1889} could reason toward an answer to this question from this clipping: ${question.prompt}`, sourceText: clueText, cropUrl: cropUrl(clueClips[0].iiifBase, clueClips[0].box) },
-    { subjectKind: "clue", subjectId: `${id}-answer`, claim: `The answer to "${question.prompt}" is: ${answerText(question)}.`, sourceText: reveal.text, cropUrl: cropUrl(reveal.iiifBase, reveal.box) },
-    { subjectKind: "context", subjectId: `${id}-explanation`, claim: explanation, sourceText: reveal.text, cropUrl: cropUrl(reveal.iiifBase, reveal.box) },
-    ...hints.map((hint, i) => ({ subjectKind: "hint" as const, subjectId: `${id}-hint${i + 1}`, claim: `This hint does not state or directly give away the answer "${answerText(question)}": ${hint}`, sourceText: hint, cropUrl: cropUrl(reveal.iiifBase, reveal.box) })),
+    { subjectKind: "clue", subjectId: `${id}-solvable`, claim: `This clipping gives a reader grounds to reason toward an answer to this question: ${question.prompt}`, sourceText: clueText, cropUrl: cropUrl(clueClips[0].iiifBase, clueClips[0].box) },
+    { subjectKind: "clue", subjectId: `${id}-answer`, claim: `The answer to "${question.prompt}" is: ${answerText(question)}.`, sourceText: revealText, cropUrl: cropUrl(reveal.iiifBase, reveal.box) },
+    { subjectKind: "context", subjectId: `${id}-explanation`, claim: explanation, sourceText: revealText, cropUrl: cropUrl(reveal.iiifBase, reveal.box) },
   ];
-  const verdicts = [];
-  for (const check of checks) verdicts.push(await deps.verify(check));
-  const rejectReasons = verdicts.flatMap((v, i) => (v.pass ? [] : [`${checks[i].subjectId}: ${v.reason}`]));
+  const rejectReasons: string[] = [];
+  for (const check of checks) {
+    const v = await deps.verify(check);
+    if (!v.pass) rejectReasons.push(`${check.subjectId}: ${v.reason}`);
+  }
+  for (const [i, hint] of hints.entries()) {
+    const v = await deps.verifyHint({ subjectId: `${id}-hint${i + 1}`, hint, answer: answerText(question) });
+    if (!v.pass) rejectReasons.push(`${id}-hint${i + 1}: ${v.reason}`);
+  }
 
   let finaleSeconds: number | undefined;
   if (pick.day === FINALE_DAY) {

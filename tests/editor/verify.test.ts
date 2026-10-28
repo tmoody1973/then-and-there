@@ -1,6 +1,6 @@
 import { beforeAll, describe, expect, test } from "vitest";
 import type { EditorRun } from "../../convex/editorRuns";
-import { verifyClaim } from "../../lib/editor/verify";
+import { verifyClaim, verifyHint } from "../../lib/editor/verify";
 
 beforeAll(() => {
   process.env.META_MODEL_EDITOR = "editor-model";
@@ -60,5 +60,20 @@ describe("verifyClaim", () => {
     expect(prompts[0]).toContain(INPUT.claim);
     expect(prompts[0]).toContain(INPUT.sourceText);
     expect(prompts[0].toLowerCase()).not.toContain("draft");
+  });
+});
+
+describe("verifyHint", () => {
+  test("passes a hint that doesn't give the answer away, with no image", async () => {
+    const { d, logged, prompts } = deps('{"pass": true, "reason": "asks a question only"}');
+    const res = await verifyHint({ subjectId: "day16-hint1", hint: "Which ocean lies west of San Francisco?", answer: "Yokohama" }, d);
+    expect(res.pass).toBe(true);
+    expect(prompts[0]).toContain("Yokohama");
+    expect(logged[0]).toMatchObject({ subjectKind: "hint", pass: true });
+  });
+
+  test("fails closed on malformed output", async () => {
+    const { d } = deps("no idea");
+    expect(await verifyHint({ subjectId: "h", hint: "x", answer: "y" }, d)).toEqual({ pass: false, reason: "unparseable" });
   });
 });

@@ -1,5 +1,5 @@
 import { describe, expect, test } from "vitest";
-import { draftDay, type Clip } from "../../lib/game/draftDay";
+import { draftDay, passage, type Clip } from "../../lib/game/draftDay";
 
 const clip = (id: string, date: string, text: string): Clip => ({
   clippingId: id, pageId: `p-${id}`, iiifBase: "https://iiif/x", box: { x: 0, y: 0, w: 10, h: 10 },
@@ -26,6 +26,11 @@ function deps(verdicts: boolean[] = []) {
         const pass = verdicts[i++] ?? true;
         return { pass, reason: pass ? "ok" : `check ${i} failed` };
       },
+      verifyHint: async (input: { hint: string }) => {
+        claims.push(input.hint);
+        const pass = verdicts[i++] ?? true;
+        return { pass, reason: pass ? "ok" : `check ${i} failed` };
+      },
     },
   };
 }
@@ -39,6 +44,26 @@ describe("draftDay", () => {
     expect(row.date1889).toBe("1889-11-29");
     expect(row.clue.excerpt).toContain("Suez");
     expect(row.reveal.explanation).toContain("Aden");
+  });
+
+  test("excerpts center on the Bly mention, not the column's first item", async () => {
+    const mixed = clip("rev", "1889-12-03", "The Brazilian minister will not resign. ".repeat(20) + "Nellie Bly arrived at Aden on the Victoria.");
+    const row = await draftDay({ day: 16, clueClippingIds: ["clue"], revealClippingId: "rev", note: "" }, [...CLUES, mixed], deps().d);
+    expect(row.reveal.excerpt).toContain("Nellie Bly arrived at Aden");
+    expect(row.reveal.excerpt.length).toBeLessThanOrEqual(320);
+  });
+
+  test("the solvability claim names no date (clippings rarely print a year)", async () => {
+    const { d, claims } = deps();
+    await draftDay({ day: 16, clueClippingIds: ["clue"], revealClippingId: "rev", note: "" }, [...CLUES, REVEAL], d);
+    expect(claims[0]).not.toMatch(/18[89]\d/);
+  });
+
+  test("passage keeps the text around mentions and drops the rest of a long column", () => {
+    const text = "Unrelated wire item. ".repeat(200) + "Nellie Bly reached Hong Kong two days ahead. " + "More wire. ".repeat(200);
+    const p = passage(text);
+    expect(p).toContain("Nellie Bly reached Hong Kong");
+    expect(p.length).toBeLessThanOrEqual(1400);
   });
 
   test("rejects with reasons when one check fails", async () => {

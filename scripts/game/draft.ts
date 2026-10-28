@@ -3,7 +3,7 @@
 import { readFileSync, writeFileSync } from "node:fs";
 import { ConvexHttpClient } from "convex/browser";
 import { anyApi } from "convex/server";
-import { verifyClaim } from "../../lib/editor/verify";
+import { verifyClaim, verifyHint } from "../../lib/editor/verify";
 import { draftDay, type Pick } from "../../lib/game/draftDay";
 import { convexUrl, loadClips } from "../../lib/game/load";
 import { createLocClient } from "../../lib/loc/client";
@@ -20,10 +20,11 @@ const loadImage = async (url: string) => toDataUrl(await loc.getBytes(url));
 const days = [];
 for (const pick of picks) {
   const complete = makeComplete(meta, `game-day-${pick.day}`);
+  const log = async (run: Parameters<typeof convex.mutation>[1]) => void (await convex.mutation(anyApi.editorRuns.log, { run }));
   const row = await draftDay(pick, clips, {
     complete,
-    verify: (input) =>
-      verifyClaim(input, { complete, loadImage, log: async (run) => void (await convex.mutation(anyApi.editorRuns.log, { run })) }),
+    verify: (input) => verifyClaim(input, { complete, loadImage, log }),
+    verifyHint: (input) => verifyHint(input, { complete, log }),
   });
   days.push(row);
   process.stdout.write(`day ${row.day}: ${row.status}${row.rejectReasons.length ? ` (${row.rejectReasons.join("; ")})` : ""}\n`);
