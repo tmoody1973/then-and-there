@@ -1,0 +1,142 @@
+[
+  {
+    "qs": "nellie bly",
+    "ops": "PHRASE",
+    "startDate": "1889-11-14",
+    "endDate": "1890-01-31",
+    "limit": 150
+  },
+  {
+    "startDate": "1889-11-14",
+    "endDate": "1890-01-25",
+    "frontPagesOnly": true,
+    "state": "minnesota",
+    "limit": 15
+  },
+  {
+    "startDate": "1889-11-14",
+    "endDate": "1890-01-25",
+    "frontPagesOnly": true,
+    "state": "kansas",
+    "limit": 15
+  },
+  {
+    "startDate": "1889-11-14",
+    "endDate": "1890-01-25",
+    "frontPagesOnly": true,
+    "state": "nebraska",
+    "limit": 15
+  },
+  {
+    "startDate": "1889-11-14",
+    "endDate": "1890-01-25",
+    "frontPagesOnly": true,
+    "state": "michigan",
+    "limit": 15
+  },
+  {
+    "startDate": "1889-11-14",
+    "endDate": "1890-01-25",
+    "frontPagesOnly": true,
+    "state": "indiana",
+    "limit": 15
+  },
+  {
+    "startDate": "1889-11-14",
+    "endDate": "1890-01-25",
+    "frontPagesOnly": true,
+    "state": "south dakota",
+    "limit": 15
+  },
+  {
+    "startDate": "1889-11-14",
+    "endDate": "1890-01-25",
+    "frontPagesOnly": true,
+    "state": "ohio",
+    "limit": 15
+  },
+  {
+    "startDate": "1889-11-14",
+    "endDate": "1890-01-25",
+    "frontPagesOnly": true,
+    "state": "illinois",
+    "limit": 15
+  },
+  {
+    "startDate": "1889-11-14",
+    "endDate": "1890-01-25",
+    "frontPagesOnly": true,
+    "state": "north dakota",
+    "limit": 15
+  },
+  {
+    "startDate": "1889-11-14",
+    "endDate": "1890-01-25",
+    "frontPagesOnly": true,
+    "state": "missouri",
+    "limit": 15
+  },
+  {
+    "startDate": "1889-11-14",
+    "endDate": "1890-01-25",
+    "frontPagesOnly": true,
+    "state": "wisconsin",
+    "limit": 15
+  },
+  {
+    "startDate": "1889-11-14",
+    "endDate": "1890-01-25",
+    "frontPagesOnly": true,
+    "state": "iowa",
+    "limit": 15
+  },
+  {
+    "startDate": "1880-01-01",
+    "endDate": "1930-12-31",
+    "frontPagesOnly": true,
+    "state": "wisconsin",
+    "city": "milwaukee",
+    "limit": 120
+  },
+  {
+    "startDate": "1880-01-01",
+    "endDate": "1930-12-31",
+    "frontPagesOnly": true,
+    "state": "illinois",
+    "city": "chicago",
+    "limit": 80
+  },
+  {
+    "startDate": "1880-01-01",
+    "endDate": "1930-12-31",
+    "frontPagesOnly": true,
+    "state": "michigan",
+    "city": "detroit",
+    "limit": 80
+  },
+  {
+    "facets": [
+      "partof_title:the wisconsin weekly advocate (milwaukee, wis.) 1898-19??"
+    ],
+    "startDate": "1898-12-09",
+    "endDate": "1898-12-09",
+    "limit": 8
+  },
+  {
+    "facets": [
+      "partof_title:der sonntagsbote (milwaukee, wis.) 1906-1912"
+    ],
+    "startDate": "1909-07-11",
+    "endDate": "1909-07-11",
+    "frontPagesOnly": true,
+    "limit": 1
+  },
+  {
+    "state": "wisconsin",
+    "city": "kenosha",
+    "startDate": "1889-12-05",
+    "endDate": "1889-12-05",
+    "frontPagesOnly": true,
+    "limit": 1
+  }
+]
