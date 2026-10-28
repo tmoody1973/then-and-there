@@ -4,11 +4,14 @@ import { anniversaryForDay } from "./schedule";
 import type { DayResult, Progress } from "./types";
 
 export const PROGRESS_KEY = "tt.progress.v1";
+// Demo play lives under its own keys, so trying days early never uses up the live race.
+export const storageKeys = (demo: boolean) =>
+  demo ? { progress: "tt.demo.progress.v1", hints: "tt.demo.hints.v1" } : { progress: PROGRESS_KEY, hints: "tt.hints.v1" };
 const EMPTY: Progress = { days: {} };
 
-export function loadProgress(store: Pick<Storage, "getItem">): Progress {
+export function loadProgress(store: Pick<Storage, "getItem">, key = PROGRESS_KEY): Progress {
   try {
-    const raw = store.getItem(PROGRESS_KEY);
+    const raw = store.getItem(key);
     if (!raw) return EMPTY;
     const parsed: unknown = JSON.parse(raw);
     if (!isRecord(parsed) || !isRecord(parsed.days)) return EMPTY;
@@ -36,9 +39,9 @@ const isRecord = (v: unknown): v is Record<string, unknown> => typeof v === "obj
 const isDayResult = (v: unknown): v is DayResult =>
   isRecord(v) && typeof v.correct === "boolean" && typeof v.hintsUsed === "number" && typeof v.answeredOn === "string";
 
-export function saveProgress(store: Pick<Storage, "setItem">, p: Progress): void {
+export function saveProgress(store: Pick<Storage, "setItem">, p: Progress, key = PROGRESS_KEY): void {
   try {
-    store.setItem(PROGRESS_KEY, JSON.stringify(p));
+    store.setItem(key, JSON.stringify(p));
   } catch {
     // ponytail: storage unavailable (private mode/quota); progress just isn't kept.
   }

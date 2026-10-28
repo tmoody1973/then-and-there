@@ -1,5 +1,5 @@
 import { describe, expect, test } from "vitest";
-import { loadProgress, parseHints, PROGRESS_KEY, recordAnswer, recordFinale, saveProgress, streak } from "../../lib/game/progress";
+import { loadProgress, parseHints, PROGRESS_KEY, recordAnswer, recordFinale, saveProgress, storageKeys, streak } from "../../lib/game/progress";
 import { anniversaryForDay } from "../../lib/game/schedule";
 
 const mem = (raw: string) => ({ getItem: () => raw });
@@ -50,6 +50,17 @@ describe("progress", () => {
     saveProgress({ setItem: (k, v) => void store.set(k, v) }, p);
     expect(loadProgress({ getItem: (k) => store.get(k) ?? null })).toEqual(p);
     expect(store.has(PROGRESS_KEY)).toBe(true);
+  });
+  test("demo answers are kept apart from live progress", () => {
+    const store = new Map<string, string>();
+    const io = { setItem: (k: string, v: string) => void store.set(k, v), getItem: (k: string) => store.get(k) ?? null };
+    const demo = storageKeys(true);
+    const live = storageKeys(false);
+    saveProgress(io, recordAnswer({ days: {} }, 16, r(16)), demo.progress);
+    expect(loadProgress(io, live.progress)).toEqual({ days: {} });
+    expect(loadProgress(io, demo.progress).days[16]).toBeDefined();
+    expect(demo.hints).not.toBe(live.hints);
+    expect(live.progress).toBe(PROGRESS_KEY);
   });
   test("saveProgress swallows storage errors", () => {
     expect(() => saveProgress({ setItem: () => { throw new Error("QuotaExceeded"); } }, { days: {} })).not.toThrow();

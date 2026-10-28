@@ -1,12 +1,11 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
-import { loadProgress, parseHints, recordAnswer, recordFinale, saveProgress } from "./progress";
+import { loadProgress, parseHints, recordAnswer, recordFinale, saveProgress, storageKeys } from "./progress";
 import type { DayResult, Progress } from "./types";
 
 const DEMO_KEY = "tt.demo";
 const STATE_KEY = "tt.state";
-const HINTS_KEY = "tt.hints.v1";
 const DEFAULT_STATE = "wisconsin";
 
 const store = () => (typeof window === "undefined" ? null : window.localStorage);
@@ -33,34 +32,50 @@ export function usePlayer() {
   const [hints, setHints] = useState<Record<number, number>>({});
   const [ready, setReady] = useState(false);
 
-  useEffect(() => {
+  // Progress and hints are read from the demo or live keys, whichever mode is on.
+  const loadFor = useCallback((on: boolean) => {
     const s = store();
-    setProgress(s ? loadProgress(s) : { days: {} });
-    const urlDemo = new URLSearchParams(window.location.search).get("demo") === "1";
-    if (urlDemo) safeSet(DEMO_KEY, "1");
-    setDemoState(urlDemo || safeGet(DEMO_KEY) === "1");
-    setStateName(safeGet(STATE_KEY) ?? DEFAULT_STATE);
-    setHints(parseHints(safeGet(HINTS_KEY)));
-    setReady(true);
+    const keys = storageKeys(on);
+    setProgress(s ? loadProgress(s, keys.progress) : { days: {} });
+    setHints(parseHints(safeGet(keys.hints)));
   }, []);
 
-  const setDemo = useCallback((on: boolean) => {
-    safeSet(DEMO_KEY, on ? "1" : "0");
+  useEffect(() => {
+    const urlDemo = new URLSearchParams(window.location.search).get("demo") === "1";
+    if (urlDemo) safeSet(DEMO_KEY, "1");
+    const on = urlDemo || safeGet(DEMO_KEY) === "1";
     setDemoState(on);
-  }, []);
+    loadFor(on);
+    setStateName(safeGet(STATE_KEY) ?? DEFAULT_STATE);
+    setReady(true);
+  }, [loadFor]);
+
+  const setDemo = useCallback(
+    (on: boolean) => {
+      safeSet(DEMO_KEY, on ? "1" : "0");
+      setDemoState(on);
+      loadFor(on);
+    },
+    [loadFor],
+  );
 
   const setState = useCallback((name: string) => {
     safeSet(STATE_KEY, name);
     setStateName(name);
   }, []);
 
-  const useHint = useCallback((day: number) => {
-    setHints((h) => {
-      const next = { ...h, [day]: (h[day] ?? 0) + 1 };
-      safeSet(HINTS_KEY, JSON.stringify(next));
-      return next;
-    });
-  }, []);
+  const keys = storageKeys(demo);
+
+  const useHint = useCallback(
+    (day: number) => {
+      setHints((h) => {
+        const next = { ...h, [day]: (h[day] ?? 0) + 1 };
+        safeSet(keys.hints, JSON.stringify(next));
+        return next;
+      });
+    },
+    [keys.hints],
+  );
 
   const answer = useCallback(
     (day: number, correct: boolean) => {
@@ -68,21 +83,24 @@ export function usePlayer() {
         const r: DayResult = { correct, hintsUsed: hints[day] ?? 0, answeredOn: localToday() };
         const next = recordAnswer(p, day, r);
         const s = store();
-        if (s && next !== p) saveProgress(s, next);
+        if (s && next !== p) saveProgress(s, next, keys.progress);
         return next;
       });
     },
-    [hints],
+    [hints, keys.progress],
   );
 
-  const guessFinale = useCallback((guessSeconds: number) => {
-    setProgress((p) => {
-      const next = recordFinale(p, guessSeconds, localToday());
-      const s = store();
-      if (s && next !== p) saveProgress(s, next);
-      return next;
-    });
-  }, []);
+  const guessFinale = useCallback(
+    (guessSeconds: number) => {
+      setProgress((p) => {
+        const next = recordFinale(p, guessSeconds, localToday());
+        const s = store();
+        if (s && next !== p) saveProgress(s, next, keys.progress);
+        return next;
+      });
+    },
+    [keys.progress],
+  );
 
   return { ready, progress, today: localToday(), demo, setDemo, state, setState, hintsUsed: hints, useHint, answer, guessFinale };
 }
