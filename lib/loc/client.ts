@@ -71,6 +71,8 @@ export function buildSearchUrl(p: SearchParams): string {
   return `${SEARCH_BASE}?${q.toString()}`;
 }
 
+const HTML_START = /^\s*<(!doctype html|html)/i;
+
 export function createLocClient(opts: Opts = {}): LocClient {
   const fetchImpl = opts.fetchImpl ?? fetch;
   const now = opts.now ?? Date.now;
@@ -112,13 +114,16 @@ export function createLocClient(opts: Opts = {}): LocClient {
         continue;
       }
       if (!res.ok) throw new LocBadResponseError(url, `HTTP ${res.status}`);
-      if (kind === "bytes") return new Uint8Array(await res.arrayBuffer());
-      const body = await res.text();
-      if (kind === "text") return body;
-      if ((res.headers.get("content-type") ?? "").includes("text/html")) {
+      const bytes = new Uint8Array(await res.arrayBuffer());
+      // A block (CAPTCHA) page arrives as 200 OK on any endpoint, sometimes mislabeled.
+      const head = new TextDecoder().decode(bytes.subarray(0, 256));
+      if ((res.headers.get("content-type") ?? "").includes("text/html") || HTML_START.test(head)) {
         blockedUntil = now() + BLOCK_PAUSE_MS;
         throw new LocBlockedError(url);
       }
+      if (kind === "bytes") return bytes;
+      const body = new TextDecoder().decode(bytes);
+      if (kind === "text") return body;
       try {
         return JSON.parse(body);
       } catch {

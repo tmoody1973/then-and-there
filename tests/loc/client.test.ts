@@ -135,6 +135,28 @@ describe("LocClient", () => {
     expect(sleeps[0]).toBeGreaterThanOrEqual(600_000);
   });
 
+  test("an html block served as OCR text is a block, not text", async () => {
+    const { client, sleeps } = harness([
+      { body: "<html>captcha</html>", contentType: "text/html" },
+      { body: "<alto/>", contentType: "text/xml" },
+    ]);
+    await expect(client.getText("https://tile.loc.gov/storage-services/x.xml")).rejects.toBeInstanceOf(LocBlockedError);
+    await client.getText("https://tile.loc.gov/storage-services/y.xml");
+    expect(sleeps[0]).toBeGreaterThanOrEqual(600_000);
+  });
+
+  test("an html block served as an image is a block, not bytes", async () => {
+    const { client } = harness([{ body: "<!DOCTYPE html><html>captcha</html>", contentType: "text/html; charset=utf-8" }]);
+    await expect(client.getBytes("https://tile.loc.gov/image-services/iiif/x/full/2000,/0/default.jpg")).rejects.toBeInstanceOf(
+      LocBlockedError,
+    );
+  });
+
+  test("an html body with the wrong content-type is still a block", async () => {
+    const { client } = harness([{ body: "  <!doctype html><html>captcha</html>", contentType: "text/plain" }]);
+    await expect(client.getPageJson("https://www.loc.gov/resource/a/")).rejects.toBeInstanceOf(LocBlockedError);
+  });
+
   test("truncated json retries once", async () => {
     const { client } = harness([{ body: '{"results":[{"a":' }, { body: '{"results":[]}' }]);
     await expect(client.getPageJson("https://www.loc.gov/resource/a/")).resolves.toEqual({ results: [] });
