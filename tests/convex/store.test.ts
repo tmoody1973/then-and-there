@@ -1,4 +1,5 @@
 // @vitest-environment edge-runtime
+/// <reference types="vite/client" />
 import { convexTest } from "convex-test";
 import { anyApi } from "convex/server";
 import { describe, expect, test } from "vitest";
