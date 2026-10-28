@@ -13,3 +13,8 @@ export function pathsFromImageUrls(imageUrls: string[]): { altoUrl: string; iiif
     iiifBase: `https://tile.loc.gov/image-services/iiif/${path.replace(/\//g, ":")}`,
   };
 }
+
+// Native size, capped at 1600 wide. Never enlarge: upscaled small cards blur and read as empty.
+const MAX_CROP_WIDTH = 1600;
+export const cropUrl = (iiifBase: string, b: { x: number; y: number; w: number; h: number }) =>
+  `${iiifBase}/${b.x},${b.y},${b.w},${b.h}/${Math.min(b.w, MAX_CROP_WIDTH)},/0/default.jpg`;

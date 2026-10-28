@@ -1,4 +1,4 @@
-import { mutationGeneric as mutation } from "convex/server";
+import { mutationGeneric as mutation, queryGeneric as query } from "convex/server";
 import { v } from "convex/values";
 import { pageFields } from "./schema";
 
@@ -14,5 +14,14 @@ export const upsert = mutation({
       return existing._id;
     }
     return ctx.db.insert("pages", page);
+  },
+});
+
+// ponytail: full scan; the corpus is a few hundred pages. Add a date index if it grows past ~10k.
+export const byDateRange = query({
+  args: { start: v.string(), end: v.string() },
+  handler: async (ctx, { start, end }) => {
+    const pages = await ctx.db.query("pages").collect();
+    return pages.filter((p) => p.date >= start && p.date <= end);
   },
 });

@@ -58,10 +58,8 @@ export type ProcessDeps = {
   shouldClean?: (m: { meanWc: number; nonDictRate: number }) => boolean;
 };
 
-// Native size, capped at 1600 wide. Never enlarge: upscaled small cards blur and read as empty.
-const MAX_CROP_WIDTH = 1600;
-export const cropUrl = (iiifBase: string, b: ClippingRow["box"]) =>
-  `${iiifBase}/${b.x},${b.y},${b.w},${b.h}/${Math.min(b.w, MAX_CROP_WIDTH)},/0/default.jpg`;
+import { cropUrl } from "../lib/loc/paths";
+export { cropUrl };
 
 // Column splitting already starts each story at its headline, so a headline whose
 // center sits inside a story or ad box would only duplicate it. Mastheads stay.

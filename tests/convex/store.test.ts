@@ -66,4 +66,13 @@ describe("store", () => {
     }
     expect(await t.query(api.editorRuns.stats, {})).toEqual({ total: 4, passed: 3, failed: 1 });
   });
+
+  test("byDateRange returns pages inside the range only", async () => {
+    const t = convexTest(schema, modules);
+    for (const date of ["1889-11-13", "1889-11-14", "1890-01-25", "1890-01-26"]) {
+      await t.mutation(api.pages.upsert, { page: { ...PAGE, pageId: `p-${date}`, date } });
+    }
+    const rows = await t.query(api.pages.byDateRange, { start: "1889-11-14", end: "1890-01-25" });
+    expect(rows.map((r: { date: string }) => r.date).sort()).toEqual(["1889-11-14", "1890-01-25"]);
+  });
 });

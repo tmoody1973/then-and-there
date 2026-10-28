@@ -35,3 +35,17 @@ ${claim}
 
 CLIPPING TRANSCRIPTION:
 ${sourceText}`;
+
+// Case Writer: drafts one game day. The Editor checks every claim it makes before publication.
+export const CASE_WRITER_PROMPT = (dateLabel: string, clueTexts: string[], revealText: string) =>
+  `You are writing one day of a history game: players race Nellie Bly around the world (Nov 14, 1889 - Jan 25, 1890) using only what newspapers printed. Today is ${dateLabel}. Readers that day saw the CLUE clipping(s). A later REVEAL clipping shows what happened.
+Write a "will she make it?" question that a careful reader on ${dateLabel} could reason about from the clue alone (connections, delays, days to the next port, her rival). Take the answer ONLY from the reveal. Use multiple choice (3-4 options) or a number of days.
+Also write exactly 2 hints. Each hint is a question that nudges reasoning and never states or implies the answer. Then write a 2-3 sentence explanation that quotes the reveal.
+Do not reference any other game, fictional detective or chase franchise. Facts must come only from these clippings.
+Return only JSON: {"title": string, "question": {"kind":"choice","prompt":string,"options":string[],"answerIndex":number} | {"kind":"days","prompt":string,"answerDays":number,"tolerance":number}, "hints": [string, string], "explanation": string}.
+
+CLUE:
+${clueTexts.join("\n---\n")}
+
+REVEAL:
+${revealText}`;
