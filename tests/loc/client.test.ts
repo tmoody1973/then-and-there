@@ -57,12 +57,25 @@ describe("LocClient", () => {
     expect(res).toEqual({ total: 410, results: [{ id: "x" }] });
   });
 
-  test("json bucket waits after 20 calls", async () => {
+  test("json bucket defaults to 10 per minute", async () => {
     const { client, sleeps, calls } = harness(() => ({ body: "{}" }));
-    for (let i = 0; i < 21; i++) await client.getPageJson("https://www.loc.gov/resource/a/?fo=json");
-    expect(calls.slice(0, 20).every((c) => c.at === 0)).toBe(true);
-    expect(calls[20].at).toBeGreaterThanOrEqual(60_000);
+    for (let i = 0; i < 11; i++) await client.getPageJson("https://www.loc.gov/resource/a/?fo=json");
+    expect(calls[10].at).toBeGreaterThanOrEqual(60_000);
     expect(Math.max(...sleeps)).toBeGreaterThanOrEqual(59_000);
+  });
+
+  test("json bucket waits after the configured limit", async () => {
+    let t = 0;
+    const calls: number[] = [];
+    const client = createLocClient({
+      jsonPerMinute: 20,
+      now: () => t,
+      sleep: async (ms) => void (t += ms),
+      fetchImpl: (async () => (calls.push(t), new Response("{}"))) as unknown as typeof fetch,
+    });
+    for (let i = 0; i < 21; i++) await client.getPageJson("https://www.loc.gov/resource/a/?fo=json");
+    expect(calls.slice(0, 20).every((c) => c === 0)).toBe(true);
+    expect(calls[20]).toBeGreaterThanOrEqual(60_000);
   });
 
   test("services bucket allows 150/min", async () => {

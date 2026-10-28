@@ -1,5 +1,6 @@
 // The only code allowed to call the Library of Congress. It enforces the published
-// rate limits (JSON API 20/min with a 1-hour block; services 150/min) with a sliding
+// rate limits (JSON API documented at 20/min with a 1-hour block, but 20/min got us blocked
+// on 2026-10-28, so default to 10; services 150/min) with a sliding
 // 60-second window per bucket, backs off on 429, and pauses everything on a block page.
 import {
   LocBadResponseError,
@@ -70,7 +71,7 @@ export function createLocClient(opts: Opts = {}): LocClient {
   const fetchImpl = opts.fetchImpl ?? fetch;
   const now = opts.now ?? Date.now;
   const sleep = opts.sleep ?? ((ms: number) => new Promise<void>((r) => setTimeout(r, ms)));
-  const json: Bucket = { limit: opts.jsonPerMinute ?? 20, stamps: [] };
+  const json: Bucket = { limit: opts.jsonPerMinute ?? 10, stamps: [] };
   const services: Bucket = { limit: opts.servicesPerMinute ?? 150, stamps: [] };
   let blockedUntil = 0;
 

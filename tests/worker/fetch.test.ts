@@ -128,4 +128,21 @@ describe("fetchManifest", () => {
     expect(pages).toHaveLength(8);
     expect(peak).toBe(4);
   });
+
+  test("a failing search is skipped and later searches still run", async () => {
+    const dir = tmp();
+    let searches = 0;
+    const { client } = fakeClient({
+      searchPages: async () => {
+        searches += 1;
+        if (searches === 1) throw new Error("Library rate limit hit repeatedly (429)");
+        return { total: 1, results: [RESULT] };
+      },
+    });
+    const manifest = join(dir, "m.json");
+    writeFileSync(manifest, JSON.stringify([{ state: "kansas", limit: 1 }, { state: "ohio", limit: 1 }]));
+    const pages = await fetchManifest(client, manifest, join(dir, "cache"));
+    expect(searches).toBe(2);
+    expect(pages.map((p) => p.status)).toEqual(["fetched"]);
+  });
 });

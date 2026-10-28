@@ -97,15 +97,25 @@ export async function fetchManifest(client: LocClient, manifestPath: string, cac
   const out: CachedPage[] = [];
   for (const { limit, ...params } of specs) {
     const results: Result[] = [];
+    try {
+      await collect(params, limit, results);
+    } catch (e) {
+      // One failed search shouldn't sink the run; rerunning the manifest retries it.
+      process.stderr.write(`search skipped ${JSON.stringify(params)}: ${e instanceof Error ? e.message : String(e)}\n`);
+      continue;
+    }
+    out.push(...(await mapPool(results.slice(0, limit), CONCURRENCY, (r) => fetchPage(client, r, cacheDir))));
+  }
+  return out;
+
+  async function collect(params: SearchParams, limit: number, results: Result[]) {
     for (let p = 1; results.length < limit; p += 1) {
       const { results: batch } = await client.searchPages({ ...params, count: Math.min(limit, SEARCH_PAGE_SIZE), page: p });
       if (!batch.length) break;
       results.push(...batch);
       if (batch.length < Math.min(limit, SEARCH_PAGE_SIZE)) break;
     }
-    out.push(...(await mapPool(results.slice(0, limit), CONCURRENCY, (r) => fetchPage(client, r, cacheDir))));
   }
-  return out;
 }
 
 if (import.meta.main) {
