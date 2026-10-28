@@ -2,7 +2,7 @@ import { readFileSync } from "node:fs";
 import { describe, expect, test } from "vitest";
 import type { Box } from "../../lib/segment/segmentPage";
 import type { CachedPage } from "../../worker/fetch";
-import { processPage, type ClippingRow, type PageRow } from "../../worker/process";
+import { cropUrl, processPage, type ClippingRow, type PageRow } from "../../worker/process";
 
 const altoXml = readFileSync("tests/fixtures/alto-advocate-1898-12-09-p6.xml", "utf8");
 const PAGE: CachedPage = {
@@ -25,7 +25,7 @@ const MARRIAGE: Box = { label: "article", x: 1320, y: 6930, w: 880, h: 560, scor
 const PHOTO: Box = { label: "photograph", x: 0, y: 0, w: 100, h: 100, score: 0.9, source: "sam" };
 const CLASS = { type: "event" as const, people: ["Nicholas Swadley"], places: ["Poysippi"], humanStoryScore: 0.7, hardHistory: false };
 
-function deps(boxes: Box[] | Error, opts: { shouldClean?: boolean; classifyFailsFor?: number } = {}) {
+function deps(boxes: Box[] | Error, opts: { shouldClean?: boolean; classifyFailsFor?: number; cleanFails?: boolean } = {}) {
   const stored: { page?: PageRow; rows?: ClippingRow[] } = {};
   let classifyCalls = 0;
   let cleanCalls = 0;
@@ -41,6 +41,7 @@ function deps(boxes: Box[] | Error, opts: { shouldClean?: boolean; classifyFails
       },
       clean: async () => {
         cleanCalls += 1;
+        if (opts.cleanFails) throw new Error("clean c1: malformed model output: empty cleanedText");
         return { cleanedText: "cleaned", language: "english" };
       },
       classify: async () => {
@@ -82,6 +83,19 @@ describe("processPage", () => {
     await processPage(PAGE, d);
     expect(counts().cleanCalls).toBe(1);
     expect(stored.rows![0]).toMatchObject({ cleanedText: "cleaned", status: "classified" });
+  });
+
+  test("a failed repair keeps the raw text and still classifies", async () => {
+    const { d, stored, counts } = deps([MARRIAGE], { shouldClean: true, cleanFails: true });
+    await processPage(PAGE, d);
+    expect(counts().classifyCalls).toBe(1);
+    expect(stored.rows![0].cleanedText).toBeUndefined();
+    expect(stored.rows![0].status).toBe("classified");
+  });
+
+  test("crops are never enlarged; wide crops are capped at 1600", () => {
+    expect(cropUrl("https://iiif/x", { x: 1, y: 2, w: 551, h: 277 })).toBe("https://iiif/x/1,2,551,277/551,/0/default.jpg");
+    expect(cropUrl("https://iiif/x", { x: 0, y: 0, w: 3000, h: 400 })).toBe("https://iiif/x/0,0,3000,400/1600,/0/default.jpg");
   });
 
   test("photographs are not classified for text", async () => {

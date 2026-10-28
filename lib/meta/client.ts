@@ -41,14 +41,21 @@ export function makeImageLoader(loc: LocClient) {
   };
 }
 
-// Page layout: standard Spark, low thinking (grounding needs the stronger model; ledger Task 10).
-export function makeSpark(client: OpenAI, subjectId: string, onUsage: OnUsage = noop, effort: Effort = "low") {
+// Page layout: standard Spark. Lower thinking missed ads on the Homer page (low 8, medium 13,
+// model default 21), so leave it unset unless META_LAYOUT_EFFORT says otherwise.
+export function makeSpark(
+  client: OpenAI,
+  subjectId: string,
+  onUsage: OnUsage = noop,
+  // Unset = the model's own level, which found the most ads/stories on Homer (21/8 vs 13/7 at medium).
+  effort: Effort | undefined = (process.env.META_LAYOUT_EFFORT as Effort | undefined) || undefined,
+) {
   const m = model("META_MODEL_SPARK");
   return (imageDataUrl: string, prompt: string) =>
     cachedCall({ model: m, promptVersion: PROMPT_VERSION, subjectId, input: { prompt, effort, image: fingerprint(imageDataUrl) } }, async () => {
       const res = await client.chat.completions.create({
         model: m,
-        reasoning_effort: effort as never,
+        ...(effort ? { reasoning_effort: effort as never } : {}),
         messages: [{ role: "user", content: [
           { type: "text", text: prompt },
           { type: "image_url", image_url: { url: imageDataUrl } },

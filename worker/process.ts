@@ -57,8 +57,10 @@ export type ProcessDeps = {
   shouldClean?: (m: { meanWc: number; nonDictRate: number }) => boolean;
 };
 
+// Native size, capped at 1600 wide. Never enlarge: upscaled small cards blur and read as empty.
+const MAX_CROP_WIDTH = 1600;
 export const cropUrl = (iiifBase: string, b: ClippingRow["box"]) =>
-  `${iiifBase}/${b.x},${b.y},${b.w},${b.h}/!1600,3200/0/default.jpg`;
+  `${iiifBase}/${b.x},${b.y},${b.w},${b.h}/${Math.min(b.w, MAX_CROP_WIDTH)},/0/default.jpg`;
 
 // Column splitting already starts each story at its headline, so a headline whose
 // center sits inside a story or ad box would only duplicate it. Mastheads stay.
@@ -95,7 +97,7 @@ async function processClipping(page: CachedPage, box: Box, index: number, scale:
       const cleaned = await deps.clean({ clippingId, cropUrl: cropUrl(page.iiifBase, row.box), rawText: text, nonDictRate });
       current = { ...current, ...cleaned, status: "cleaned" };
     } catch {
-      return { ...current, status: "failed" };
+      // Repair gave up (often "nothing readable"); the raw OCR is still worth classifying.
     }
   }
   const res = await deps.classify({ clippingId, text: current.cleanedText ?? text });
