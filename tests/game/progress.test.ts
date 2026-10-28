@@ -1,7 +1,8 @@
 import { describe, expect, test } from "vitest";
-import { loadProgress, PROGRESS_KEY, recordAnswer, recordFinale, saveProgress, streak } from "../../lib/game/progress";
+import { loadProgress, parseHints, PROGRESS_KEY, recordAnswer, recordFinale, saveProgress, streak } from "../../lib/game/progress";
 import { anniversaryForDay } from "../../lib/game/schedule";
 
+const mem = (raw: string) => ({ getItem: () => raw });
 const r = (day: number, onTime = true) => ({ correct: true, hintsUsed: 0, answeredOn: onTime ? anniversaryForDay(day) : "2027-03-01" });
 
 describe("progress", () => {
@@ -23,6 +24,26 @@ describe("progress", () => {
   test("loadProgress survives corrupt JSON", () => {
     expect(loadProgress({ getItem: () => "{not json" })).toEqual({ days: {} });
   });
+  test("loadProgress drops a days map that is null or an array", () => {
+    expect(loadProgress(mem('{"days":null}'))).toEqual({ days: {} });
+    expect(loadProgress(mem('{"days":[1,2]}'))).toEqual({ days: {} });
+    expect(loadProgress(mem("null"))).toEqual({ days: {} });
+  });
+
+  test("loadProgress keeps only well-formed day results and finale", () => {
+    const good = { correct: true, hintsUsed: 1, answeredOn: "2026-11-29" };
+    const raw = JSON.stringify({ days: { "16": 5, "30": good, "71": { correct: "yes" } }, finale: { guessSeconds: "soon" } });
+    expect(loadProgress(mem(raw))).toEqual({ days: { "30": good } });
+  });
+
+  test("parseHints accepts only a map of counts", () => {
+    expect(parseHints(null)).toEqual({});
+    expect(parseHints("null")).toEqual({});
+    expect(parseHints("[3]")).toEqual({});
+    expect(parseHints("{nope")).toEqual({});
+    expect(parseHints('{"16":2,"30":"x","71":-1}')).toEqual({ "16": 2 });
+  });
+
   test("loadProgress round-trips through saveProgress", () => {
     const store = new Map<string, string>();
     const p = recordAnswer({ days: {} }, 1, r(1));

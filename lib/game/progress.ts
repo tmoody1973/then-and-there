@@ -10,12 +10,31 @@ export function loadProgress(store: Pick<Storage, "getItem">): Progress {
   try {
     const raw = store.getItem(PROGRESS_KEY);
     if (!raw) return EMPTY;
-    const parsed = JSON.parse(raw) as Progress;
-    return parsed && typeof parsed.days === "object" ? parsed : EMPTY;
+    const parsed: unknown = JSON.parse(raw);
+    if (!isRecord(parsed) || !isRecord(parsed.days)) return EMPTY;
+    const days = Object.fromEntries(Object.entries(parsed.days).filter(([, r]) => isDayResult(r))) as Progress["days"];
+    const f = parsed.finale;
+    const finaleOk = isRecord(f) && typeof f.guessSeconds === "number" && typeof f.answeredOn === "string";
+    return finaleOk ? { days, finale: f as Progress["finale"] } : { days };
   } catch {
     return EMPTY;
   }
 }
+
+// Hint counts per day; anything that isn't a map of non-negative numbers is dropped.
+export function parseHints(raw: string | null): Record<number, number> {
+  try {
+    const parsed: unknown = JSON.parse(raw ?? "{}");
+    if (!isRecord(parsed)) return {};
+    return Object.fromEntries(Object.entries(parsed).filter(([, n]) => typeof n === "number" && n >= 0)) as Record<number, number>;
+  } catch {
+    return {};
+  }
+}
+
+const isRecord = (v: unknown): v is Record<string, unknown> => typeof v === "object" && v !== null && !Array.isArray(v);
+const isDayResult = (v: unknown): v is DayResult =>
+  isRecord(v) && typeof v.correct === "boolean" && typeof v.hintsUsed === "number" && typeof v.answeredOn === "string";
 
 export function saveProgress(store: Pick<Storage, "setItem">, p: Progress): void {
   try {

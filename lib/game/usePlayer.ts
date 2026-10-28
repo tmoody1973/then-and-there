@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
-import { loadProgress, recordAnswer, recordFinale, saveProgress } from "./progress";
+import { loadProgress, parseHints, recordAnswer, recordFinale, saveProgress } from "./progress";
 import type { DayResult, Progress } from "./types";
 
 const DEMO_KEY = "tt.demo";
@@ -40,11 +40,7 @@ export function usePlayer() {
     if (urlDemo) safeSet(DEMO_KEY, "1");
     setDemoState(urlDemo || safeGet(DEMO_KEY) === "1");
     setStateName(safeGet(STATE_KEY) ?? DEFAULT_STATE);
-    try {
-      setHints(JSON.parse(safeGet(HINTS_KEY) ?? "{}"));
-    } catch {
-      setHints({});
-    }
+    setHints(parseHints(safeGet(HINTS_KEY)));
     setReady(true);
   }, []);
 
