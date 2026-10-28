@@ -2,7 +2,8 @@
 import type { z } from "zod";
 
 export type Effort = "minimal" | "low" | "medium" | "high";
-export type CompleteReq = { model: string; prompt: string; imageDataUrl?: string; effort?: Effort };
+// attempt > 0 marks a retry: a fresh model call with its own cache entry.
+export type CompleteReq = { model: string; prompt: string; imageDataUrl?: string; effort?: Effort; attempt?: number };
 export type Complete = (req: CompleteReq) => Promise<string>;
 export type JsonResult<T> = { ok: true; value: T } | { ok: false; error: string };
 
@@ -18,7 +19,7 @@ export async function askJson<T>(schema: z.ZodType<T>, complete: Complete, req: 
   let error = "";
   for (let i = 0; i < ATTEMPTS; i += 1) {
     try {
-      const parsed = schema.safeParse(extract(await complete(req)));
+      const parsed = schema.safeParse(extract(await complete({ ...req, attempt: i })));
       if (parsed.success) return { ok: true, value: parsed.data };
       error = parsed.error.message;
     } catch (e) {

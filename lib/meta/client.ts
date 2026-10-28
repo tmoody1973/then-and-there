@@ -6,7 +6,7 @@ import { PROMPT_VERSION } from "../pipeline/prompts";
 import { cachedCall } from "./cache";
 import { jpegSize, toDataUrl } from "./image";
 import type { Usage } from "./pricing";
-import type { Effort } from "../pipeline/askJson";
+import type { CompleteReq, Effort } from "../pipeline/askJson";
 
 export type OnUsage = (model: string, usage: Usage) => void;
 const noop: OnUsage = () => {};
@@ -85,10 +85,11 @@ export function makeSam(client: OpenAI, subjectId: string, onUsage: OnUsage = no
 }
 
 // Generic cached completion (text, optional image) for clean / classify / Editor.
-export function makeComplete(client: OpenAI, subjectId: string, onUsage: OnUsage = noop) {
-  return (req: { model: string; prompt: string; imageDataUrl?: string; effort?: Effort }) =>
+export function makeComplete(client: OpenAI, subjectId: string, onUsage: OnUsage = noop, cacheDir?: string) {
+  return (req: CompleteReq) =>
     cachedCall(
-      { model: req.model, promptVersion: PROMPT_VERSION, subjectId, input: { prompt: req.prompt, effort: req.effort, image: fingerprint(req.imageDataUrl) } },
+      { model: req.model, promptVersion: PROMPT_VERSION, subjectId, // Attempt 0 is left out of the key so replies cached before retries were keyed stay valid.
+      input: { prompt: req.prompt, effort: req.effort, image: fingerprint(req.imageDataUrl), ...(req.attempt ? { attempt: req.attempt } : {}) } },
       async () => {
         const content: OpenAI.Chat.Completions.ChatCompletionContentPart[] = [{ type: "text", text: req.prompt }];
         if (req.imageDataUrl) content.push({ type: "image_url", image_url: { url: req.imageDataUrl } });
@@ -98,7 +99,11 @@ export function makeComplete(client: OpenAI, subjectId: string, onUsage: OnUsage
           ...(req.effort ? { reasoning_effort: req.effort as never } : {}),
         });
         onUsage(req.model, chatUsage(res.usage as ChatUsage));
-        return res.choices[0]?.message?.content ?? "";
+        const text = res.choices[0]?.message?.content ?? "";
+        // Throwing keeps an empty reply out of the cache; callers treat it as a failed attempt.
+        if (!text) throw new Error("empty model reply");
+        return text;
       },
+      cacheDir,
     );
 }
