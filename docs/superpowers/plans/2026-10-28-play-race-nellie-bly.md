@@ -184,6 +184,16 @@
 
 ---
 
+### Task 6b: The Morgue (decision 008, added 2026-10-28)
+
+**Files:** Create `lib/game/pickMorgue.ts`, `components/Morgue.tsx`; Modify `convex/schema.ts` (`gameDayFields.morgue?: clipRef[]`), `lib/game/draftDay.ts` (Pick gains `morgueTerms?: string[]`), `scripts/game/draft.ts`, `app/play/[day]/page.tsx`, `data/game/picks.json`; Test `tests/game/pickMorgue.test.ts`.
+
+- `pickMorgue(clips, { date1889, terms, excludeIds, max = 3 }): Clip[]`: candidates dated **on or before** `date1889`, `status === "classified"`, `hardHistory !== true`, not in `excludeIds`, whose text matches at least one term. Rank by number of distinct terms matched, then the latest date, at most one per page. Tests: excludes later dates (no hindsight); excludes the clue clipping; excludes hard history; ranks by terms, then recency; one per page; max 3.
+- The draft script frames each item (`focusBox` on its terms) and keeps an item only if `verifySolvable` says it offers relevant evidence for the day's question. Items that fail are dropped; the day is not rejected.
+- UI: a "Check the morgue · N clippings from the files · free" disclosure between the transcript and the call; each item shows paper, date, excerpt and an evidence-framed scan.
+
+---
+
 ### Task 7: Finale and "how it works" pages
 
 **Files:**
