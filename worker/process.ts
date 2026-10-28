@@ -145,7 +145,8 @@ if (import.meta.main) {
   const cacheDir = args[0] ?? "cache/pages";
   if (!process.env.CONVEX_URL) throw new Error("CONVEX_URL not set (run `bunx convex dev` first)");
 
-  const loc = createLocClient();
+  // Leaves headroom for a concurrent fetch run: both share the Library's 150/min image limit.
+  const loc = createLocClient({ servicesPerMinute: 100 });
   const meta = metaClient();
   const convex = new ConvexHttpClient(process.env.CONVEX_URL);
   const loadImage = async (url: string) => toDataUrl(await loc.getBytes(url));
