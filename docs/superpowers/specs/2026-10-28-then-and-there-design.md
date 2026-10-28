@@ -245,7 +245,7 @@ From Tarik's original plan, kept: **Next.js on Vercel** (web app), **Convex** (d
 - Exact day-budget numbers and hint costs
 - Clipping thresholds for "needs cleanup" and the "human story" score
 - Notification channel
-- Visual design. Must work on a phone; should feel like newsprint, not a SaaS dashboard
+- Visual design, **using the `/impeccable` skill for all UX and design work** (Tarik's call, 2026-10-28). Must work on a phone; should feel like newsprint, not a SaaS dashboard
 - Exact Explore corpus size within the budget
 - Prompt wording, provided the Editor gate and question-only hints hold
 - Data model details, so long as every claim links to a stored clipping
