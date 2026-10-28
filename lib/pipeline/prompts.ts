@@ -24,3 +24,14 @@ Return only JSON: {"type": string, "people": string[], "places": string[], "huma
 
 Clipping:
 ${text}`;
+
+// The Editor sees only the claim and its source. Nothing about how the claim was produced.
+export const EDITOR_PROMPT = (claim: string, sourceText: string) =>
+  `You are a strict fact-checker for a history publication. The image is a clipping from a historic newspaper; its transcription is below. Decide whether the CLAIM is fully supported by what is printed in this clipping alone. Outside knowledge does not count. If any part of the claim is not supported, or the clipping is unreadable, the claim fails.
+Return only JSON: {"pass": boolean, "reason": string (one sentence; quote the supporting words when it passes)}.
+
+CLAIM:
+${claim}
+
+CLIPPING TRANSCRIPTION:
+${sourceText}`;
