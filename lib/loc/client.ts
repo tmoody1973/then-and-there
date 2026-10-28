@@ -52,10 +52,14 @@ type Opts = {
 
 type Bucket = { limit: number; stamps: number[] };
 
+// Since 2026-10-28 afternoon the Library redirect-loops advanced searches with no keyword
+// or no ops. Keyword-free searches match any of a few common words across our languages.
+const ANY_WORD = "the der und w i a ir";
+
 export function buildSearchUrl(p: SearchParams): string {
   const q = new URLSearchParams({ dl: "page", searchType: "advanced", fo: "json" });
-  if (p.qs) q.set("qs", p.qs);
-  if (p.ops) q.set("ops", p.ops);
+  q.set("qs", p.qs || ANY_WORD);
+  q.set("ops", p.qs ? (p.ops ?? "AND") : "OR");
   if (p.startDate) q.set("start_date", p.startDate);
   if (p.endDate) q.set("end_date", p.endDate);
   if (p.state) q.set("location_state", p.state);

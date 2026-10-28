@@ -57,6 +57,21 @@ describe("LocClient", () => {
     expect(res).toEqual({ total: 410, results: [{ id: "x" }] });
   });
 
+  test("keyword-free search sends a multilingual OR keyword (Library loops without one)", async () => {
+    const { client, calls } = harness([{ body: JSON.stringify({ pagination: { of: 1 }, results: [] }) }]);
+    await client.searchPages({ startDate: "1889-11-14", endDate: "1890-01-25", state: "kansas", frontPagesOnly: true });
+    const params = new URL(calls[0].url).searchParams;
+    expect(params.get("ops")).toBe("OR");
+    expect(params.get("qs")).toBe("the der und w i a ir");
+    expect(params.get("searchType")).toBe("advanced");
+  });
+
+  test("a keyword without ops defaults ops to AND", async () => {
+    const { client, calls } = harness([{ body: JSON.stringify({ pagination: { of: 1 }, results: [] }) }]);
+    await client.searchPages({ qs: "nellie bly" });
+    expect(new URL(calls[0].url).searchParams.get("ops")).toBe("AND");
+  });
+
   test("json bucket defaults to 10 per minute", async () => {
     const { client, sleeps, calls } = harness(() => ({ body: "{}" }));
     for (let i = 0; i < 11; i++) await client.getPageJson("https://www.loc.gov/resource/a/?fo=json");
