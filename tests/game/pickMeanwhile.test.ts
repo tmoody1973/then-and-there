@@ -23,6 +23,12 @@ describe("pickMeanwhile", () => {
     expect(rows.find((r) => r.scope === "kansas")?.clip.clippingId).toBe("near");
   });
 
+  test("shows the English translation of a foreign-language story", () => {
+    const rows = pickMeanwhile([c("de", "minnesota", "1889-11-29", 0.9, { language: "german", translation: "The bishop plans a German church." })], "1889-11-29");
+    expect(rows[0].clip.excerpt).toContain("The bishop plans");
+    expect(rows[0].clip.translatedFrom).toBe("german");
+  });
+
   test("returns nothing beyond 3 days", () => {
     expect(pickMeanwhile([c("a", "iowa", "1889-11-25", 0.9)], "1889-11-29")).toEqual([]);
   });

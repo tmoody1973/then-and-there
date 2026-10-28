@@ -9,6 +9,8 @@ type ClipRow = {
   box: { x: number; y: number; w: number; h: number };
   rawText: string;
   cleanedText?: string;
+  translation?: string;
+  language?: string;
   type?: string;
   humanStoryScore?: number;
   hardHistory?: boolean;
@@ -34,6 +36,8 @@ export async function loadClips(convex: ConvexHttpClient, start: string, end: st
         date: p.date,
         citationMla: plainCitation(p.citeThis.mla),
         text: r.cleanedText ?? r.rawText,
+        translation: r.translation,
+        language: r.language,
         state: p.state,
         type: r.type,
         humanStoryScore: r.humanStoryScore,

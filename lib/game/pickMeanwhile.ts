@@ -1,6 +1,7 @@
 // "Meanwhile, back home": for a game date, the strongest human story printed in each Midwest
 // state that day (or up to 3 days earlier), plus a Midwest-wide pick. Deterministic: no model calls.
 import type { Clip } from "./draftDay";
+import { tidy } from "./text";
 
 export const MIDWEST_STATES = [
   "illinois", "indiana", "iowa", "kansas", "michigan", "minnesota",
@@ -36,7 +37,12 @@ export function pickMeanwhile(cands: MeanwhileCandidate[], date1889: string) {
   );
   const toRow = (scope: string, c: MeanwhileCandidate) => ({
     scope,
-    clip: { clippingId: c.clippingId, pageId: c.pageId, iiifBase: c.iiifBase, box: c.box, paper: c.paper, date: c.date, citationMla: c.citationMla, excerpt: c.text.slice(0, 300) },
+    clip: {
+      clippingId: c.clippingId, pageId: c.pageId, iiifBase: c.iiifBase, box: c.box, paper: c.paper, date: c.date, citationMla: c.citationMla,
+      // Foreign-language stories show the pipeline's English translation, labeled.
+      excerpt: tidy((c.translation ?? c.text).slice(0, 300)),
+      ...(c.translation && c.language && c.language !== "english" ? { translatedFrom: c.language } : {}),
+    },
     humanStoryScore: c.humanStoryScore ?? 0,
   });
   const rows = MIDWEST_STATES.flatMap((state) => {

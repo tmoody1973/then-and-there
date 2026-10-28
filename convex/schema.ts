@@ -79,6 +79,8 @@ export const clipRef = v.object({
   date: v.string(),
   citationMla: v.string(),
   excerpt: v.string(),
+  focus: v.optional(box),
+  translatedFrom: v.optional(v.string()),
 });
 
 export const question = v.union(

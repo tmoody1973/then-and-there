@@ -5,6 +5,7 @@ import { cropUrl } from "../loc/paths";
 import { askJson, type Complete } from "../pipeline/askJson";
 import { CASE_WRITER_PROMPT } from "../pipeline/prompts";
 import { parseDuration } from "./finale";
+import { tidy } from "./text";
 import { date1889ForDay } from "./schedule";
 import type { Question } from "./types";
 
@@ -17,6 +18,9 @@ export type Clip = {
   date: string;
   citationMla: string;
   text: string;
+  focus?: { x: number; y: number; w: number; h: number };
+  language?: string;
+  translation?: string;
 };
 
 export type Pick = { day: number; clueClippingIds: string[]; revealClippingId: string; note: string; guidance?: string };
@@ -52,7 +56,7 @@ const DraftSchema = z
 const answerText = (q: Question) => (q.kind === "choice" ? q.options[q.answerIndex] : `${q.answerDays} days`);
 
 // Many clippings are whole wire columns; start the teaser a little before the first mention.
-const MENTION = /\b(Bly|Bisland|Cochrane?)\b/i;
+export const MENTION = /\b(Bly|Bisland|Cochrane?)\b/i;
 const LEAD_IN = 60;
 // What both models see: the stretch of a (often mixed) column around the mentions.
 const PASSAGE_CHARS = 1400;
@@ -65,11 +69,17 @@ export function passage(text: string): string {
   return text.slice(start, start + PASSAGE_CHARS);
 }
 
+const SENTENCE_LOOKBACK = 250;
 export function excerptAround(text: string): string {
   const at = text.search(MENTION);
-  if (at <= LEAD_IN) return text.slice(0, EXCERPT_CHARS);
-  const start = text.lastIndexOf(" ", at - LEAD_IN) + 1;
-  return text.slice(start, start + EXCERPT_CHARS);
+  if (at <= LEAD_IN) return tidy(text.slice(0, EXCERPT_CHARS));
+  // Prefer the start of the sentence leading into the mention; else a word boundary.
+  const window = text.slice(Math.max(0, at - SENTENCE_LOOKBACK), at);
+  const ends = [...window.matchAll(/[.!?]["”’]?\s+(?=[A-Z“"])/g)];
+  const start = ends.length
+    ? Math.max(0, at - SENTENCE_LOOKBACK) + (ends[ends.length - 1].index ?? 0) + ends[ends.length - 1][0].length
+    : text.lastIndexOf(" ", at - LEAD_IN) + 1;
+  return tidy(text.slice(start, start + EXCERPT_CHARS));
 }
 
 const ref = (c: Clip) => ({
@@ -81,6 +91,7 @@ const ref = (c: Clip) => ({
   date: c.date,
   citationMla: c.citationMla,
   excerpt: excerptAround(c.text),
+  ...(c.focus ? { focus: c.focus } : {}),
 });
 
 export async function draftDay(pick: Pick, clips: Clip[], deps: { complete: Complete; verify: Verify; verifySolvable: VerifySolvable; verifyHint: VerifyHint; model?: string }) {
