@@ -237,7 +237,10 @@ Not TDD. Output is a decision, not product code.
   - `cachedCall runs fn once`: two calls with the same key → `fn` called once; a changed `promptVersion` → called again.
   - `segmentPage scales boxes to full resolution`: page `imageWidth: 5808`, request width 2000, fake response with a box at `x:100, w:200` → returned `x ≈ 290.4`, `w ≈ 580.8`.
   - `segmentPage drops degenerate boxes`: a response box with `w: 0` is filtered out.
-  - The approach-specific test (per the decision): for `sam`, one request per prompt in `["photograph","advertisement","headline","article"]`; for `hybrid`, SAM only for `photograph` plus one Spark request for the rest. Assert on the fake `call`'s received requests, using the exact shapes recorded in `spikes/sam/README.md`.
+  - **Per decision 007 (hybrid):** `segmentPage` sends one Spark layout request (prompt from `spikes/sam/run.ts`, coordinates 0–1000), then one SAM concept request for `illustration`, then SAM box-prompt requests (≤16 boxes each) to refine every non-headline box. Images go inline as base64 data URLs (the Library 403s Meta's fetcher).
+  - `parseSamOutput(text)` → `{objectId, x1, y1, x2, y2, w, h, c?}[]`; test with the doc example `<0f>1<|box;x1=444;y1=625;x2=679;y2=850;w=1800;h=1200;c=0.9609375|><|mask;x=0;y=0;c=0.9609375;data=226,236,!AB|>` → one record, `c === 0.9609375`; empty string → `[]`.
+  - `splitColumnsAtHeadlines(boxes)`: an `article` box that contains headline boxes is cut into pieces starting at each headline's top edge. Test: an article `{x:0,y:0,w:100,h:1000}` with headlines at `y:300` and `y:700` → three articles `[0,300)`, `[300,700)`, `[700,1000)`.
+  - SAM refine keeps Spark's box when SAM returns no record for that id; uses SAM's box and `c` as `score` when it does. Test with a fake that answers only id 0 of 2.
 - [ ] **Step 2:** Run. Expected: FAIL.
 - [ ] **Step 3:** Implement, wrapping each model request in `cachedCall`.
 - [ ] **Step 4:** Run. Expected: PASS.
