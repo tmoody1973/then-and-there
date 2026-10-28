@@ -13,6 +13,8 @@ const WINDOW_MS = 60_000;
 const BLOCK_PAUSE_MS = 10 * 60_000;
 const DEFAULT_429_WAIT_MS = 60_000;
 const MAX_429 = 3;
+// The Library 403s some default user agents; always identify ourselves.
+const USER_AGENT = "then-and-there/0.1 (historic newspaper research; Radio Milwaukee)";
 
 export type SearchParams = {
   qs?: string;
@@ -85,7 +87,7 @@ export function createLocClient(opts: Opts = {}): LocClient {
     let badBodies = 0;
     for (;;) {
       await takeSlot(bucket);
-      const res = await fetchImpl(url);
+      const res = await fetchImpl(url, { headers: { "user-agent": USER_AGENT } });
       if (res.status === 404) throw new LocNotFoundError(url);
       if (res.status === 429) {
         rateLimited += 1;

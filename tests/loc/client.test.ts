@@ -13,11 +13,11 @@ type Reply = { status?: number; body?: string; contentType?: string };
 function harness(replies: Reply[] | ((url: string) => Reply)) {
   let t = 0;
   const sleeps: number[] = [];
-  const calls: { url: string; at: number }[] = [];
+  const calls: { url: string; at: number; ua: string }[] = [];
   const queue = Array.isArray(replies) ? [...replies] : null;
-  const fetchImpl = (async (input: string | URL) => {
+  const fetchImpl = (async (input: string | URL, init?: RequestInit) => {
     const url = String(input);
-    calls.push({ url, at: t });
+    calls.push({ url, at: t, ua: new Headers(init?.headers).get("user-agent") ?? "" });
     const r = queue ? queue.shift() ?? {} : (replies as (u: string) => Reply)(url);
     return new Response(r.body ?? "{}", {
       status: r.status ?? 200,
@@ -106,6 +106,12 @@ describe("LocClient", () => {
     await expect(client.getPageJson("https://www.loc.gov/resource/a/")).rejects.toBeInstanceOf(
       LocBadResponseError,
     );
+  });
+
+  test("sends a descriptive User-Agent", async () => {
+    const { client, calls } = harness([{ body: "<alto/>", contentType: "text/xml" }]);
+    await client.getText("https://tile.loc.gov/storage-services/x.xml");
+    expect(calls[0].ua).toMatch(/^then-and-there\//);
   });
 
   test("404 is not retried", async () => {
