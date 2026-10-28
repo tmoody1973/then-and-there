@@ -1,10 +1,19 @@
 // The finale: players guess Bly's exact time, as readers did in The World's 1889 contest.
 const UNITS: Record<string, number> = { day: 86400, hour: 3600, minute: 60, second: 1 };
 
+// Reads the FIRST duration phrase only ("72 days, 6 hours and 10 minutes"): parts joined by
+// commas, spaces or "and". A long column mentions many other durations; never add those in.
 export function parseDuration(text: string): number {
   const parts = [...text.matchAll(/(\d+)\s*(day|hour|minute|second)s?\b/gi)];
   if (!parts.length) throw new Error(`no duration found in text: ${text.slice(0, 80)}`);
-  return parts.reduce((sum, m) => sum + Number(m[1]) * UNITS[m[2].toLowerCase()], 0);
+  let total = Number(parts[0][1]) * UNITS[parts[0][2].toLowerCase()];
+  for (let i = 1; i < parts.length; i += 1) {
+    const prev = parts[i - 1];
+    const gap = text.slice((prev.index ?? 0) + prev[0].length, parts[i].index);
+    if (!/^[\s,]*(and\s+)?$/i.test(gap)) break;
+    total += Number(parts[i][1]) * UNITS[parts[i][2].toLowerCase()];
+  }
+  return total;
 }
 
 export function finaleResult(guessSeconds: number, actualSeconds: number): { offBySeconds: number; label: string } {

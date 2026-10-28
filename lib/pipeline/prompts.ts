@@ -59,8 +59,12 @@ ${hint}`;
 export const CASE_WRITER_PROMPT = (dateLabel: string, clueTexts: string[], revealText: string) =>
   `You are writing one day of a history game: players race Nellie Bly around the world (Nov 14, 1889 - Jan 25, 1890) using only what newspapers printed. Today is ${dateLabel}. Readers that day saw the CLUE clipping(s). A later REVEAL clipping shows what happened.
 Write a "will she make it?" question that a careful reader on ${dateLabel} could weigh from the clue alone. Good questions ask whether she will be ahead of, on, or behind her schedule; which way she or her rival will go; whether she will make a connection; or roughly how many days something will take. Do not ask for a specific town, hour or minute the clue gives no basis to guess. Take the answer ONLY from the reveal. Use multiple choice (3-4 options) or a number of days.
-Also write exactly 2 hints. Each hint is a question that nudges the player to reread the clue's evidence. A hint must never name, quote or describe any of the options or the answer. Then write a 2-3 sentence explanation that quotes the reveal.
-Every fact in the question, the options, the hints and the explanation must be printed in the text below. Do not add places, routes, times, names or numbers that are not printed there, even if you know them; a fact-checker will reject anything else. Wrong options may be plausible alternatives, but must not be stated as facts. Do not reference any other game, fictional detective or chase franchise.
+Also write exactly 2 hints. Each hint is in the voice of a gruff-but-kind 1889 city editor, at most 20 words, and points the player at one specific piece of evidence in the clue, asking how it bears on the question (e.g. "Two days to the good at last report. Does a lead like that hold up across the China Sea?"). A hint must never name, quote or describe any option or the answer.
+WRITING RULES (the game's readers are on phones):
+- Question: plain modern English, at most 25 words, no OCR misspellings. If the clipping has an obvious misprint (a number that contradicts the rest of the story), don't repeat it.
+- Options: 2-4 options, each at most 8 words, parallel in form, plain modern English. No option may be longer, more specific or more detailed than the others, and the correct option must not reuse the reveal's wording.
+- Title: a headline of at most 6 words.
+- Explanation: 2-3 sentences in plain modern English that quote the clipping (quotes may keep the original spelling).
 Also write "answerStatement": one declarative sentence stating what happened, using ONLY facts printed in the REVEAL.
 Return only JSON: {"title": string, "answerStatement": string, "question": {"kind":"choice","prompt":string,"options":string[],"answerIndex":number} | {"kind":"days","prompt":string,"answerDays":number,"tolerance":number}, "hints": [string, string], "explanation": string}.
 
