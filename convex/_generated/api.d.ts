@@ -8,6 +8,7 @@
  * @module
  */
 
+import type * as auth from "../auth.js";
 import type * as clippings from "../clippings.js";
 import type * as editorRuns from "../editorRuns.js";
 import type * as gameDays from "../gameDays.js";
@@ -21,6 +22,7 @@ import type {
 } from "convex/server";
 
 declare const fullApi: ApiFromModules<{
+  auth: typeof auth;
   clippings: typeof clippings;
   editorRuns: typeof editorRuns;
   gameDays: typeof gameDays;

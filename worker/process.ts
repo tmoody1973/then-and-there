@@ -7,6 +7,7 @@ import { ConvexHttpClient } from "convex/browser";
 import { anyApi } from "convex/server";
 import { altoScale, parseAlto } from "../lib/alto/parse";
 import { createLocClient } from "../lib/loc/client";
+import { writeSecret } from "../lib/game/load";
 import { makeComplete, makeImageLoader, makeSam, makeSpark, metaClient } from "../lib/meta/client";
 import { toDataUrl } from "../lib/meta/image";
 import { costOf, type Usage } from "../lib/meta/pricing";
@@ -179,7 +180,7 @@ if (import.meta.main) {
   // Skip pages already processed: reprocessing would replace their clippings with new IDs,
   // breaking game picks that reference them. Pass --reprocess to force it.
   const reprocess = args.includes("--reprocess");
-  const done = new Set(reprocess ? [] : ((await convex.query(anyApi.pages.processedIds, {})) as string[]));
+  const done = new Set(reprocess ? [] : ((await convex.query(anyApi.pages.processedIds, { secret: writeSecret() })) as string[]));
   const pages = cachedPages(cacheDir)
     .filter((p) => !only || p.pageId.includes(only))
     .filter((p) => !done.has(p.pageId))
@@ -208,9 +209,9 @@ if (import.meta.main) {
       clean: (c) => (count("clean"), cleanClipping(c, { complete, loadImage })),
       classify: (c) => (count("classify"), classifyClipping(c, { complete })),
       store: {
-        upsertPage: async (p) => void (await withRetry(() => convex.mutation(anyApi.pages.upsert, { page: p }))),
+        upsertPage: async (p) => void (await withRetry(() => convex.mutation(anyApi.pages.upsert, { secret: writeSecret(), page: p }))),
         replaceClippings: async (pageId, rows) =>
-          void (await withRetry(() => convex.mutation(anyApi.clippings.replaceForPage, { pageId, clippings: rows }))),
+          void (await withRetry(() => convex.mutation(anyApi.clippings.replaceForPage, { secret: writeSecret(), pageId, clippings: rows }))),
       },
     });
     } catch (e) {

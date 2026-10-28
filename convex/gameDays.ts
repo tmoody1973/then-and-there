@@ -1,10 +1,12 @@
 import { mutationGeneric as mutation, queryGeneric as query } from "convex/server";
 import { v } from "convex/values";
+import { requireSecret } from "./auth";
 import { gameDayFields } from "./schema";
 
 export const upsert = mutation({
-  args: { row: v.object(gameDayFields) },
-  handler: async (ctx, { row }) => {
+  args: { secret: v.string(), row: v.object(gameDayFields) },
+  handler: async (ctx, { secret, row }) => {
+    requireSecret(secret);
     const existing = await ctx.db
       .query("gameDays")
       .withIndex("by_day", (q) => q.eq("day", row.day))

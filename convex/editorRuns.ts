@@ -1,13 +1,17 @@
 import { mutationGeneric as mutation, queryGeneric as query } from "convex/server";
 import { type Infer, v } from "convex/values";
+import { requireSecret } from "./auth";
 import { editorRunFields } from "./schema";
 
 const runValidator = v.object(editorRunFields);
 export type EditorRun = Infer<typeof runValidator>;
 
 export const log = mutation({
-  args: { run: runValidator },
-  handler: (ctx, { run }) => ctx.db.insert("editorRuns", run),
+  args: { secret: v.string(), run: runValidator },
+  handler: (ctx, { secret, run }) => {
+    requireSecret(secret);
+    return ctx.db.insert("editorRuns", run);
+  },
 });
 
 // ponytail: full scan; fine for a hackathon-sized log, add a counter doc if it grows past ~10k rows.

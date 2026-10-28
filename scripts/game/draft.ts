@@ -10,7 +10,7 @@ import { draftDay, MENTION, ref, type Pick } from "../../lib/game/draftDay";
 import { pickMorgue } from "../../lib/game/pickMorgue";
 import { focusBox } from "../../lib/game/focus";
 import { safeId } from "../../worker/fetch";
-import { convexUrl, loadClips } from "../../lib/game/load";
+import { convexUrl, loadClips, writeSecret } from "../../lib/game/load";
 import { createLocClient } from "../../lib/loc/client";
 import { makeComplete, metaClient } from "../../lib/meta/client";
 import { toDataUrl } from "../../lib/meta/image";
@@ -36,7 +36,7 @@ const loadImage = async (url: string) => toDataUrl(await loc.getBytes(url));
 const days = [];
 for (const pick of picks) {
   const complete = makeComplete(meta, `game-day-${pick.day}`);
-  const log = async (run: Parameters<typeof convex.mutation>[1]) => void (await convex.mutation(anyApi.editorRuns.log, { run }));
+  const log = async (run: Parameters<typeof convex.mutation>[1]) => void (await convex.mutation(anyApi.editorRuns.log, { secret: writeSecret(), run }));
   const row = await draftDay(pick, clips, {
     complete,
     verify: (input) => verifyClaim(input, { complete, loadImage, log }),

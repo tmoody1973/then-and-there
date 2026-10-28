@@ -7,6 +7,8 @@ import schema from "../../convex/schema";
 
 const modules = import.meta.glob("../../convex/**/*.*s");
 const api = anyApi;
+const SECRET = "test-secret";
+process.env.CONVEX_WRITE_SECRET = SECRET;
 
 const PAGE = {
   pageId: "http://www.loc.gov/resource/sn88064119/1889-11-29/ed-1/?sp=1",
@@ -42,8 +44,8 @@ const clip = (y: number) => ({
 describe("store", () => {
   test("upsert is idempotent", async () => {
     const t = convexTest(schema, modules);
-    await t.mutation(api.pages.upsert, { page: PAGE });
-    await t.mutation(api.pages.upsert, { page: { ...PAGE, status: "processed" } });
+    await t.mutation(api.pages.upsert, { secret: SECRET, page: PAGE });
+    await t.mutation(api.pages.upsert, { secret: SECRET, page: { ...PAGE, status: "processed" } });
     const rows = await t.run((ctx) => ctx.db.query("pages").collect());
     expect(rows).toHaveLength(1);
     expect(rows[0].status).toBe("processed");
@@ -51,8 +53,8 @@ describe("store", () => {
 
   test("replaceForPage replaces", async () => {
     const t = convexTest(schema, modules);
-    await t.mutation(api.clippings.replaceForPage, { pageId: PAGE.pageId, clippings: [clip(0), clip(1), clip(2)] });
-    await t.mutation(api.clippings.replaceForPage, { pageId: PAGE.pageId, clippings: [clip(5), clip(6)] });
+    await t.mutation(api.clippings.replaceForPage, { secret: SECRET, pageId: PAGE.pageId, clippings: [clip(0), clip(1), clip(2)] });
+    await t.mutation(api.clippings.replaceForPage, { secret: SECRET, pageId: PAGE.pageId, clippings: [clip(5), clip(6)] });
     const rows = await t.query(api.clippings.byPage, { pageId: PAGE.pageId });
     expect(rows.map((r: { box: { y: number } }) => r.box.y).sort()).toEqual([5, 6]);
   });
@@ -61,6 +63,7 @@ describe("store", () => {
     const t = convexTest(schema, modules);
     for (const pass of [true, true, true, false]) {
       await t.mutation(api.editorRuns.log, {
+        secret: SECRET,
         run: { subjectKind: "clipping", subjectId: "c1", claim: "x", pass, reason: "r", model: "m", createdAt: 1 },
       });
     }
@@ -70,23 +73,32 @@ describe("store", () => {
   test("byDateRange returns pages inside the range only", async () => {
     const t = convexTest(schema, modules);
     for (const date of ["1889-11-13", "1889-11-14", "1890-01-25", "1890-01-26"]) {
-      await t.mutation(api.pages.upsert, { page: { ...PAGE, pageId: `p-${date}`, date } });
+      await t.mutation(api.pages.upsert, { secret: SECRET, page: { ...PAGE, pageId: `p-${date}`, date } });
     }
-    const rows = await t.query(api.pages.byDateRange, { start: "1889-11-14", end: "1890-01-25" });
+    const rows = await t.query(api.pages.byDateRange, { secret: SECRET, start: "1889-11-14", end: "1890-01-25" });
     expect(rows.map((r: { date: string }) => r.date).sort()).toEqual(["1889-11-14", "1890-01-25"]);
   });
 
   test("processedIds lists only pages marked processed", async () => {
     const t = convexTest(schema, modules);
-    await t.mutation(api.pages.upsert, { page: { ...PAGE, pageId: "a", status: "processed" } });
-    await t.mutation(api.pages.upsert, { page: { ...PAGE, pageId: "b", status: "failed" } });
-    expect(await t.query(api.pages.processedIds, {})).toEqual(["a"]);
+    await t.mutation(api.pages.upsert, { secret: SECRET, page: { ...PAGE, pageId: "a", status: "processed" } });
+    await t.mutation(api.pages.upsert, { secret: SECRET, page: { ...PAGE, pageId: "b", status: "failed" } });
+    expect(await t.query(api.pages.processedIds, { secret: SECRET })).toEqual(["a"]);
   });
 
   test("byPageId returns one page or null", async () => {
     const t = convexTest(schema, modules);
-    await t.mutation(api.pages.upsert, { page: { ...PAGE, pageId: "x" } });
+    await t.mutation(api.pages.upsert, { secret: SECRET, page: { ...PAGE, pageId: "x" } });
     expect((await t.query(api.pages.byPageId, { pageId: "x" }))?.pageId).toBe("x");
     expect(await t.query(api.pages.byPageId, { pageId: "missing" })).toBeNull();
+  });
+
+  test("writes and script-only reads are refused without the secret", async () => {
+    const t = convexTest(schema, modules);
+    await expect(t.mutation(api.pages.upsert, { secret: "wrong", page: PAGE })).rejects.toThrow(/not allowed/);
+    await expect(t.mutation(api.clippings.replaceForPage, { secret: "", pageId: "x", clippings: [] })).rejects.toThrow(/not allowed/);
+    await expect(t.mutation(api.editorRuns.log, { secret: "nope", run: { subjectKind: "clue", subjectId: "c", claim: "x", pass: true, reason: "r", model: "m", createdAt: 1 } })).rejects.toThrow(/not allowed/);
+    await expect(t.query(api.pages.processedIds, { secret: "x" })).rejects.toThrow(/not allowed/);
+    expect(await t.run((ctx) => ctx.db.query("pages").collect())).toHaveLength(0);
   });
 });

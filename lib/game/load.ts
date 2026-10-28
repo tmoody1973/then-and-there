@@ -22,7 +22,7 @@ const paperName = (p: PageRow) => p.citeThis.mla.match(/<cite>(.*?)<\/cite>/)?.[
 const plainCitation = (mla: string) => mla.replace(/<\/?cite>/g, "");
 
 export async function loadClips(convex: ConvexHttpClient, start: string, end: string): Promise<MeanwhileCandidate[]> {
-  const pages = ((await convex.query(anyApi.pages.byDateRange, { start, end })) as PageRow[]).filter((p) => p.status === "processed");
+  const pages = ((await convex.query(anyApi.pages.byDateRange, { secret: writeSecret(), start, end })) as PageRow[]).filter((p) => p.status === "processed");
   const out: MeanwhileCandidate[] = [];
   for (const p of pages) {
     const rows = (await convex.query(anyApi.clippings.byPage, { pageId: p.pageId })) as ClipRow[];
@@ -47,6 +47,13 @@ export async function loadClips(convex: ConvexHttpClient, start: string, end: st
     }
   }
   return out;
+}
+
+// The shared secret Convex requires for writes and script-only reads (never shipped to the browser).
+export function writeSecret(): string {
+  const secret = process.env.CONVEX_WRITE_SECRET;
+  if (!secret) throw new Error("CONVEX_WRITE_SECRET not set (see .env.example)");
+  return secret;
 }
 
 export function convexUrl(): string {

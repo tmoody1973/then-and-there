@@ -1,10 +1,12 @@
 import { mutationGeneric as mutation, queryGeneric as query } from "convex/server";
 import { v } from "convex/values";
+import { requireSecret } from "./auth";
 import { meanwhileFields } from "./schema";
 
 export const replaceForDate = mutation({
-  args: { date1889: v.string(), rows: v.array(v.object(meanwhileFields)) },
-  handler: async (ctx, { date1889, rows }) => {
+  args: { secret: v.string(), date1889: v.string(), rows: v.array(v.object(meanwhileFields)) },
+  handler: async (ctx, { secret, date1889, rows }) => {
+    requireSecret(secret);
     const old = await ctx.db
       .query("meanwhile")
       .withIndex("by_date_scope", (q) => q.eq("date1889", date1889))

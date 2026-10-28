@@ -7,6 +7,8 @@ import schema from "../../convex/schema";
 
 const modules = import.meta.glob("../../convex/**/*.*s");
 const api = anyApi;
+const SECRET = "test-secret";
+process.env.CONVEX_WRITE_SECRET = SECRET;
 
 const clip = {
   clippingId: "c1",
@@ -33,30 +35,30 @@ const day = (n: number, status: "draft" | "published" | "rejected") => ({
 describe("gameDays", () => {
   test("getPublished returns null for a draft", async () => {
     const t = convexTest(schema, modules);
-    await t.mutation(api.gameDays.upsert, { row: day(16, "draft") });
+    await t.mutation(api.gameDays.upsert, { secret: SECRET, row: day(16, "draft") });
     expect(await t.query(api.gameDays.getPublished, { day: 16 })).toBeNull();
   });
 
   test("listPublished omits drafts and rejected days", async () => {
     const t = convexTest(schema, modules);
-    await t.mutation(api.gameDays.upsert, { row: day(1, "published") });
-    await t.mutation(api.gameDays.upsert, { row: day(2, "draft") });
-    await t.mutation(api.gameDays.upsert, { row: day(3, "rejected") });
+    await t.mutation(api.gameDays.upsert, { secret: SECRET, row: day(1, "published") });
+    await t.mutation(api.gameDays.upsert, { secret: SECRET, row: day(2, "draft") });
+    await t.mutation(api.gameDays.upsert, { secret: SECRET, row: day(3, "rejected") });
     const rows = await t.query(api.gameDays.listPublished, {});
     expect(rows.map((r: { day: number }) => r.day)).toEqual([1]);
   });
 
   test("listPublished rows carry no question or clue fields", async () => {
     const t = convexTest(schema, modules);
-    await t.mutation(api.gameDays.upsert, { row: day(1, "published") });
+    await t.mutation(api.gameDays.upsert, { secret: SECRET, row: day(1, "published") });
     const [row] = await t.query(api.gameDays.listPublished, {});
     expect(Object.keys(row).sort()).toEqual(["date1889", "day", "title"]);
   });
 
   test("upsert replaces by day", async () => {
     const t = convexTest(schema, modules);
-    await t.mutation(api.gameDays.upsert, { row: day(1, "draft") });
-    await t.mutation(api.gameDays.upsert, { row: day(1, "published") });
+    await t.mutation(api.gameDays.upsert, { secret: SECRET, row: day(1, "draft") });
+    await t.mutation(api.gameDays.upsert, { secret: SECRET, row: day(1, "published") });
     expect((await t.query(api.gameDays.getPublished, { day: 1 }))?.status).toBe("published");
   });
 });
@@ -66,14 +68,14 @@ describe("meanwhile", () => {
 
   test("falls back to midwest", async () => {
     const t = convexTest(schema, modules);
-    await t.mutation(api.meanwhile.replaceForDate, { date1889: "1889-11-29", rows: [row("midwest")] });
+    await t.mutation(api.meanwhile.replaceForDate, { secret: SECRET, date1889: "1889-11-29", rows: [row("midwest")] });
     const got = await t.query(api.meanwhile.forDay, { date1889: "1889-11-29", state: "wisconsin" });
     expect(got).toMatchObject({ scope: "midwest", fellBackFrom: "wisconsin" });
   });
 
   test("prefers the state row", async () => {
     const t = convexTest(schema, modules);
-    await t.mutation(api.meanwhile.replaceForDate, { date1889: "1889-11-29", rows: [row("midwest"), row("wisconsin")] });
+    await t.mutation(api.meanwhile.replaceForDate, { secret: SECRET, date1889: "1889-11-29", rows: [row("midwest"), row("wisconsin")] });
     const got = await t.query(api.meanwhile.forDay, { date1889: "1889-11-29", state: "wisconsin" });
     expect(got?.scope).toBe("wisconsin");
     expect(got?.fellBackFrom).toBeUndefined();
@@ -82,5 +84,12 @@ describe("meanwhile", () => {
   test("returns null when nothing exists for the date", async () => {
     const t = convexTest(schema, modules);
     expect(await t.query(api.meanwhile.forDay, { date1889: "1889-12-01", state: "ohio" })).toBeNull();
+  });
+
+  test("game writes are refused without the secret", async () => {
+    const t = convexTest(schema, modules);
+    await expect(t.mutation(api.gameDays.upsert, { secret: "wrong", row: day(1, "published") })).rejects.toThrow(/not allowed/);
+    await expect(t.mutation(api.meanwhile.replaceForDate, { secret: "wrong", date1889: "1889-11-29", rows: [] })).rejects.toThrow(/not allowed/);
+    expect(await t.query(api.gameDays.listPublished, {})).toEqual([]);
   });
 });
