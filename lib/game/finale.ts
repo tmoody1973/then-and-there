@@ -1,4 +1,10 @@
 // The finale: players guess Bly's exact time, as readers did in The World's 1889 contest.
+import type { Progress } from "./types";
+
+// Day 73 (Jan 25) and the ballot unlock together; Day 73's reveal prints her exact time.
+export const FINALE_DAY = 73;
+export const revealWaitsForBallot = (day: number, p: Progress): boolean => day === FINALE_DAY && !p.finale;
+
 const UNITS: Record<string, number> = { day: 86400, hour: 3600, minute: 60, second: 1 };
 
 // Reads the FIRST duration phrase only ("72 days, 6 hours and 10 minutes"): parts joined by

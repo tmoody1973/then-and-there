@@ -1,5 +1,5 @@
 import { describe, expect, test } from "vitest";
-import { finaleResult, parseDuration } from "../../lib/game/finale";
+import { FINALE_DAY, finaleResult, parseDuration, revealWaitsForBallot } from "../../lib/game/finale";
 
 describe("finale", () => {
   test("parses a printed duration", () => {
@@ -20,5 +20,16 @@ describe("finale", () => {
     expect(finaleResult(100, 100).offBySeconds).toBe(0);
     expect(finaleResult(0, 11520).label).toBe("off by 3 hours 12 minutes");
     expect(finaleResult(100, 100).label).toBe("exactly right");
+  });
+});
+
+describe("revealWaitsForBallot", () => {
+  const ballot = { guessSeconds: 6_000_000, answeredOn: "2027-01-25" };
+  test("the finale day's reveal waits until a ballot is cast (it prints her exact time)", () => {
+    expect(revealWaitsForBallot(FINALE_DAY, { days: {} })).toBe(true);
+    expect(revealWaitsForBallot(FINALE_DAY, { days: {}, finale: ballot })).toBe(false);
+  });
+  test("every other day reveals right away", () => {
+    expect(revealWaitsForBallot(FINALE_DAY - 2, { days: {} })).toBe(false);
   });
 });

@@ -10,6 +10,7 @@ import { CityEditorHint } from "../../../components/CityEditorHint";
 import { Meanwhile } from "../../../components/Meanwhile";
 import { Morgue } from "../../../components/Morgue";
 import { ScanCrop } from "../../../components/ScanCrop";
+import { revealWaitsForBallot } from "../../../lib/game/finale";
 import { longDate } from "../../../lib/game/format";
 import { anniversaryForDay, isUnlocked } from "../../../lib/game/schedule";
 import { daysLeft } from "../../../lib/game/scoring";
@@ -95,7 +96,16 @@ export default function DispatchPage() {
           <Morgue items={row.morgue ?? []} />
           <CallForm question={row.question} filed={result} onFile={(correct) => p.answer(day, correct)} />
           <CityEditorHint hints={row.hints} used={result ? result.hintsUsed : p.hintsUsed[day] ?? 0} disabled={Boolean(result)} onAsk={() => p.useHint(day)} />
-          {result ? (
+          {result && revealWaitsForBallot(day, p.progress) ? (
+            <section className="reveal" aria-labelledby="reveal-h">
+              <h2 id="reveal-h">Cast your ballot first</h2>
+              <p>
+                The papers that came next printed her exact time. File your guess for the finale, then come back for
+                the reveal.
+              </p>
+              <p><Link href="/play/finale">Fill in your ballot</Link></p>
+            </section>
+          ) : result ? (
             <>
               <section className="reveal" aria-labelledby="reveal-h">
                 <h2 id="reveal-h">What the papers said next</h2>

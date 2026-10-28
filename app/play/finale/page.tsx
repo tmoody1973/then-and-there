@@ -5,12 +5,11 @@ import { useQuery } from "convex/react";
 import { useState } from "react";
 import { api } from "../../../convex/_generated/api";
 import { ScanCrop } from "../../../components/ScanCrop";
-import { finaleResult } from "../../../lib/game/finale";
+import { FINALE_DAY, finaleResult } from "../../../lib/game/finale";
 import { longDate } from "../../../lib/game/format";
 import { anniversaryForDay, isUnlocked } from "../../../lib/game/schedule";
 import { usePlayer } from "../../../lib/game/usePlayer";
 
-const FINALE_DAY = 73;
 // The World's own contest, Nov 29, 1889 (verified on the scan): the reason this ballot exists.
 const CONTEST = {
   pageId: "http://www.loc.gov/resource/sn83030193/1889-11-29/ed-2/?sp=1",
