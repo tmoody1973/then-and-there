@@ -21,6 +21,7 @@ export type Clip = {
 
 export type Pick = { day: number; clueClippingIds: string[]; revealClippingId: string; note: string };
 
+type VerifySolvable = (input: { subjectId: string; question: string; clueText: string }) => Promise<{ pass: boolean; reason: string }>;
 type VerifyHint = (input: { subjectId: string; hint: string; answer: string }) => Promise<{ pass: boolean; reason: string }>;
 
 type Verify = (input: {
@@ -39,7 +40,13 @@ const QuestionSchema = z.union([
   z.object({ kind: z.literal("days"), prompt: z.string().min(1), answerDays: z.number().int().min(0), tolerance: z.number().int().min(0) }),
 ]);
 const DraftSchema = z
-  .object({ title: z.string().min(1), question: QuestionSchema, hints: z.array(z.string().min(1)).length(2), explanation: z.string().min(1) })
+  .object({
+    title: z.string().min(1),
+    answerStatement: z.string().min(1),
+    question: QuestionSchema,
+    hints: z.array(z.string().min(1)).length(2),
+    explanation: z.string().min(1),
+  })
   .refine((d) => d.question.kind !== "choice" || d.question.answerIndex < d.question.options.length, "answerIndex out of range");
 
 const answerText = (q: Question) => (q.kind === "choice" ? q.options[q.answerIndex] : `${q.answerDays} days`);
@@ -76,7 +83,7 @@ const ref = (c: Clip) => ({
   excerpt: excerptAround(c.text),
 });
 
-export async function draftDay(pick: Pick, clips: Clip[], deps: { complete: Complete; verify: Verify; verifyHint: VerifyHint; model?: string }) {
+export async function draftDay(pick: Pick, clips: Clip[], deps: { complete: Complete; verify: Verify; verifySolvable: VerifySolvable; verifyHint: VerifyHint; model?: string }) {
   const date1889 = date1889ForDay(pick.day);
   const byId = new Map(clips.map((c) => [c.clippingId, c]));
   const clues = pick.clueClippingIds.map((id) => byId.get(id));
@@ -91,17 +98,22 @@ export async function draftDay(pick: Pick, clips: Clip[], deps: { complete: Comp
     prompt: CASE_WRITER_PROMPT(date1889, clueClips.map((c) => passage(c.text)), passage(reveal.text)),
   });
   if (!draft.ok) throw new Error(`day ${pick.day}: case writer failed: ${draft.error}`);
-  const { title, question, hints, explanation } = draft.value;
+  const { title, answerStatement, question, hints, explanation } = draft.value;
 
   const id = `day${pick.day}`;
   const clueText = clueClips.map((c) => passage(c.text)).join("\n---\n");
   const revealText = passage(reveal.text);
-  const checks: Array<Parameters<Verify>[0]> = [
-    { subjectKind: "clue", subjectId: `${id}-solvable`, claim: `This clipping gives a reader grounds to reason toward an answer to this question: ${question.prompt}`, sourceText: clueText, cropUrl: cropUrl(clueClips[0].iiifBase, clueClips[0].box) },
-    { subjectKind: "clue", subjectId: `${id}-answer`, claim: `The answer to "${question.prompt}" is: ${answerText(question)}.`, sourceText: revealText, cropUrl: cropUrl(reveal.iiifBase, reveal.box) },
-    { subjectKind: "context", subjectId: `${id}-explanation`, claim: explanation, sourceText: revealText, cropUrl: cropUrl(reveal.iiifBase, reveal.box) },
-  ];
+  const questionText = question.kind === "choice" ? `${question.prompt} Options: ${question.options.join(" / ")}` : question.prompt;
   const rejectReasons: string[] = [];
+  const solvable = await deps.verifySolvable({ subjectId: `${id}-solvable`, question: questionText, clueText });
+  if (!solvable.pass) rejectReasons.push(`${id}-solvable: ${solvable.reason}`);
+  const revealCrop = cropUrl(reveal.iiifBase, reveal.box);
+  const checks: Array<Parameters<Verify>[0]> = [
+    // The answer, stated with reveal facts only, must be printed in the reveal.
+    { subjectKind: "clue", subjectId: `${id}-answer`, claim: answerStatement, sourceText: revealText, cropUrl: revealCrop },
+    // A good explanation draws on both what readers saw and what came next.
+    { subjectKind: "context", subjectId: `${id}-explanation`, claim: explanation, sourceText: `CLUE (printed ${clueClips[0].date}):\n${clueText}\n\nLATER REPORT:\n${revealText}`, cropUrl: revealCrop },
+  ];
   for (const check of checks) {
     const v = await deps.verify(check);
     if (!v.pass) rejectReasons.push(`${check.subjectId}: ${v.reason}`);

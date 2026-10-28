@@ -12,6 +12,7 @@ const DRAFT = JSON.stringify({
   question: { kind: "choice", prompt: "Where will she next touch land?", options: ["Aden", "Bombay", "Colombo"], answerIndex: 0 },
   hints: ["Where do steamers coal after the Red Sea?", "Which port guards its southern mouth?"],
   explanation: "The papers reported she arrived at Aden on the Victoria.",
+  answerStatement: "Nellie Bly arrived at Aden on the Victoria.",
 });
 
 function deps(verdicts: boolean[] = []) {
@@ -23,6 +24,11 @@ function deps(verdicts: boolean[] = []) {
       complete: async () => DRAFT,
       verify: async (input: { claim: string }) => {
         claims.push(input.claim);
+        const pass = verdicts[i++] ?? true;
+        return { pass, reason: pass ? "ok" : `check ${i} failed` };
+      },
+      verifySolvable: async (input: { question: string }) => {
+        claims.push(input.question);
         const pass = verdicts[i++] ?? true;
         return { pass, reason: pass ? "ok" : `check ${i} failed` };
       },
@@ -64,6 +70,17 @@ describe("draftDay", () => {
     const p = passage(text);
     expect(p).toContain("Nellie Bly reached Hong Kong");
     expect(p.length).toBeLessThanOrEqual(1400);
+  });
+
+  test("the answer check uses the answer statement against the reveal, not the question", async () => {
+    const seen: Array<{ claim: string; sourceText: string }> = [];
+    const { d } = deps();
+    const wrapped = { ...d, verify: async (input: { claim: string; sourceText: string }) => (seen.push(input), d.verify(input)) };
+    await draftDay({ day: 16, clueClippingIds: ["clue"], revealClippingId: "rev", note: "" }, [...CLUES, REVEAL], wrapped);
+    expect(seen[0].claim).toBe("Nellie Bly arrived at Aden on the Victoria.");
+    expect(seen[0].sourceText).toContain("arrived at Aden");
+    expect(seen[1].sourceText).toContain("Suez");
+    expect(seen[1].sourceText).toContain("arrived at Aden");
   });
 
   test("rejects with reasons when one check fails", async () => {

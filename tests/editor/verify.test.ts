@@ -1,6 +1,6 @@
 import { beforeAll, describe, expect, test } from "vitest";
 import type { EditorRun } from "../../convex/editorRuns";
-import { verifyClaim, verifyHint } from "../../lib/editor/verify";
+import { verifyClaim, verifyHint, verifySolvable } from "../../lib/editor/verify";
 
 beforeAll(() => {
   process.env.META_MODEL_EDITOR = "editor-model";
@@ -75,5 +75,16 @@ describe("verifyHint", () => {
   test("fails closed on malformed output", async () => {
     const { d } = deps("no idea");
     expect(await verifyHint({ subjectId: "h", hint: "x", answer: "y" }, d)).toEqual({ pass: false, reason: "unparseable" });
+  });
+});
+
+describe("verifySolvable", () => {
+  test("asks about the clue and question, logs as a clue check", async () => {
+    const { d, logged, prompts } = deps('{"pass": true, "reason": "gives her schedule"}');
+    const res = await verifySolvable({ subjectId: "day71-solvable", question: "Will she reach Chicago early?", clueText: "1,500 miles in 36 hours" }, d);
+    expect(res.pass).toBe(true);
+    expect(prompts[0]).toContain("Chicago");
+    expect(prompts[0]).toContain("1,500 miles");
+    expect(logged[0]).toMatchObject({ subjectKind: "clue", subjectId: "day71-solvable" });
   });
 });

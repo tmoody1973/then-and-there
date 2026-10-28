@@ -3,7 +3,7 @@
 import { readFileSync, writeFileSync } from "node:fs";
 import { ConvexHttpClient } from "convex/browser";
 import { anyApi } from "convex/server";
-import { verifyClaim, verifyHint } from "../../lib/editor/verify";
+import { verifyClaim, verifyHint, verifySolvable } from "../../lib/editor/verify";
 import { draftDay, type Pick } from "../../lib/game/draftDay";
 import { convexUrl, loadClips } from "../../lib/game/load";
 import { createLocClient } from "../../lib/loc/client";
@@ -24,6 +24,7 @@ for (const pick of picks) {
   const row = await draftDay(pick, clips, {
     complete,
     verify: (input) => verifyClaim(input, { complete, loadImage, log }),
+    verifySolvable: (input) => verifySolvable(input, { complete, log }),
     verifyHint: (input) => verifyHint(input, { complete, log }),
   });
   days.push(row);

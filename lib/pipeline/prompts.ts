@@ -36,6 +36,17 @@ ${claim}
 CLIPPING TRANSCRIPTION:
 ${sourceText}`;
 
+// Solvability: could a reader of the clue reason toward an answer? Future events are fine.
+export const EDITOR_SOLVABLE_PROMPT = (question: string, clueText: string) =>
+  `A history game shows players this newspaper clue, then asks a question about what happens next. The question may mention places or events the clue doesn't print yet; that's expected. Decide whether the clue gives a careful reader relevant evidence (schedules, positions, pace, plans, delays) to reason toward an answer, rather than making it a blind guess.
+Return only JSON: {"pass": boolean, "reason": string (one sentence)}.
+
+QUESTION:
+${question}
+
+CLUE:
+${clueText}`;
+
 // Hint check: a different question from fact support. Does the hint give the answer away?
 export const EDITOR_HINT_PROMPT = (hint: string, answer: string) =>
   `A history game asks players a question whose correct answer is: "${answer}". Below is a hint the game will show before they answer. A good hint is a question that nudges reasoning. It fails if it states the answer, names it, or makes it obvious without thinking.
@@ -50,7 +61,8 @@ export const CASE_WRITER_PROMPT = (dateLabel: string, clueTexts: string[], revea
 Write a "will she make it?" question that a careful reader on ${dateLabel} could reason about from the clue alone (connections, delays, days to the next port, her rival). Take the answer ONLY from the reveal. Use multiple choice (3-4 options) or a number of days.
 Also write exactly 2 hints. Each hint is a question that nudges reasoning and never states or implies the answer. Then write a 2-3 sentence explanation that quotes the reveal.
 Every fact in the question, the options, the hints and the explanation must be printed in the text below. Do not add places, routes, times, names or numbers that are not printed there, even if you know them; a fact-checker will reject anything else. Wrong options may be plausible alternatives, but must not be stated as facts. Do not reference any other game, fictional detective or chase franchise.
-Return only JSON: {"title": string, "question": {"kind":"choice","prompt":string,"options":string[],"answerIndex":number} | {"kind":"days","prompt":string,"answerDays":number,"tolerance":number}, "hints": [string, string], "explanation": string}.
+Also write "answerStatement": one declarative sentence stating what happened, using ONLY facts printed in the REVEAL.
+Return only JSON: {"title": string, "answerStatement": string, "question": {"kind":"choice","prompt":string,"options":string[],"answerIndex":number} | {"kind":"days","prompt":string,"answerDays":number,"tolerance":number}, "hints": [string, string], "explanation": string}.
 
 CLUE:
 ${clueTexts.join("\n---\n")}

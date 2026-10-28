@@ -3,7 +3,7 @@
 import { z } from "zod";
 import type { EditorRun } from "../../convex/editorRuns";
 import { askJson, type Complete } from "../pipeline/askJson";
-import { EDITOR_HINT_PROMPT, EDITOR_PROMPT } from "../pipeline/prompts";
+import { EDITOR_HINT_PROMPT, EDITOR_PROMPT, EDITOR_SOLVABLE_PROMPT } from "../pipeline/prompts";
 
 const VerdictSchema = z.object({ pass: z.boolean(), reason: z.string() });
 
@@ -45,9 +45,9 @@ export async function verifyClaim(
   return verdict;
 }
 
-// Does a hint give the answer away? Text-only, and it fails closed like every Editor check.
-export async function verifyHint(
-  input: { subjectId: string; hint: string; answer: string },
+// Text-only Editor questions (no image). Fail closed like every Editor check.
+async function textCheck(
+  run: { subjectKind: EditorRun["subjectKind"]; subjectId: string; claim: string; prompt: string },
   deps: { complete: Complete; log: (run: EditorRun) => Promise<void> },
 ): Promise<{ pass: boolean; reason: string }> {
   const model = process.env.META_MODEL_EDITOR ?? "";
@@ -60,16 +60,28 @@ export async function verifyHint(
       throw e;
     }
   };
-  const res = await askJson(VerdictSchema, guarded, { model, effort: "low", prompt: EDITOR_HINT_PROMPT(input.hint, input.answer) });
+  const res = await askJson(VerdictSchema, guarded, { model, effort: "low", prompt: run.prompt });
   const verdict = res.ok ? res.value : { pass: false, reason: unreachable ? "editor-unavailable" : "unparseable" };
-  await deps.log({
-    subjectKind: "hint",
-    subjectId: input.subjectId,
-    claim: `Hint does not give away "${input.answer}": ${input.hint}`,
-    pass: verdict.pass,
-    reason: verdict.reason,
-    model,
-    createdAt: Date.now(),
-  });
+  await deps.log({ subjectKind: run.subjectKind, subjectId: run.subjectId, claim: run.claim, pass: verdict.pass, reason: verdict.reason, model, createdAt: Date.now() });
   return verdict;
 }
+
+// Does a hint give the answer away?
+export const verifyHint = (
+  input: { subjectId: string; hint: string; answer: string },
+  deps: { complete: Complete; log: (run: EditorRun) => Promise<void> },
+) =>
+  textCheck(
+    { subjectKind: "hint", subjectId: input.subjectId, claim: `Hint does not give away "${input.answer}": ${input.hint}`, prompt: EDITOR_HINT_PROMPT(input.hint, input.answer) },
+    deps,
+  );
+
+// Does the clue give a reader real evidence to reason with?
+export const verifySolvable = (
+  input: { subjectId: string; question: string; clueText: string },
+  deps: { complete: Complete; log: (run: EditorRun) => Promise<void> },
+) =>
+  textCheck(
+    { subjectKind: "clue", subjectId: input.subjectId, claim: `The clue gives evidence to reason about: ${input.question}`, prompt: EDITOR_SOLVABLE_PROMPT(input.question, input.clueText) },
+    deps,
+  );
