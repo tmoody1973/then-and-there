@@ -70,6 +70,42 @@ export const editorRunFields = {
   createdAt: v.number(),
 };
 
+export const clipRef = v.object({
+  clippingId: v.string(),
+  pageId: v.string(),
+  iiifBase: v.string(),
+  box,
+  paper: v.string(),
+  date: v.string(),
+  citationMla: v.string(),
+  excerpt: v.string(),
+});
+
+export const question = v.union(
+  v.object({ kind: v.literal("choice"), prompt: v.string(), options: v.array(v.string()), answerIndex: v.number() }),
+  v.object({ kind: v.literal("days"), prompt: v.string(), answerDays: v.number(), tolerance: v.number() }),
+);
+
+export const gameDayFields = {
+  day: v.number(),
+  date1889: v.string(),
+  title: v.string(),
+  clue: clipRef,
+  question,
+  hints: v.array(v.string()),
+  reveal: v.object({ ...clipRef.fields, explanation: v.string() }),
+  finaleSeconds: v.optional(v.number()),
+  status: v.union(v.literal("draft"), v.literal("published"), v.literal("rejected")),
+  rejectReasons: v.array(v.string()),
+};
+
+export const meanwhileFields = {
+  date1889: v.string(),
+  scope: v.string(),
+  clip: clipRef,
+  humanStoryScore: v.number(),
+};
+
 export default defineSchema({
   pages: defineTable(pageFields).index("by_pageId", ["pageId"]).index("by_state_date", ["state", "date"]),
   clippings: defineTable(clippingFields)
@@ -77,4 +113,6 @@ export default defineSchema({
     .index("by_type_score", ["type", "humanStoryScore"])
     .searchIndex("search_text", { searchField: "cleanedText", filterFields: ["pageId", "type"] }),
   editorRuns: defineTable(editorRunFields),
+  gameDays: defineTable(gameDayFields).index("by_day", ["day"]),
+  meanwhile: defineTable(meanwhileFields).index("by_date_scope", ["date1889", "scope"]),
 });

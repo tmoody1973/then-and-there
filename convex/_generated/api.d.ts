@@ -10,6 +10,8 @@
 
 import type * as clippings from "../clippings.js";
 import type * as editorRuns from "../editorRuns.js";
+import type * as gameDays from "../gameDays.js";
+import type * as meanwhile from "../meanwhile.js";
 import type * as pages from "../pages.js";
 
 import type {
@@ -21,6 +23,8 @@ import type {
 declare const fullApi: ApiFromModules<{
   clippings: typeof clippings;
   editorRuns: typeof editorRuns;
+  gameDays: typeof gameDays;
+  meanwhile: typeof meanwhile;
   pages: typeof pages;
 }>;
 
