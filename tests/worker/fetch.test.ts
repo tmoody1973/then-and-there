@@ -106,4 +106,26 @@ describe("fetchManifest", () => {
     expect(pages.map((p) => p.status)).toEqual(["failed", "fetched"]);
     expect(JSON.parse(readFileSync(manifest, "utf8"))).toHaveLength(1);
   });
+
+  test("fetches up to 4 pages at once", async () => {
+    const dir = tmp();
+    let inFlight = 0;
+    let peak = 0;
+    const results = Array.from({ length: 8 }, (_, i) => ({ ...RESULT, id: RESULT.id.replace("sp=1", `sp=${i + 1}`) }));
+    const { client } = fakeClient({
+      searchPages: async () => ({ total: 8, results }),
+      getPageJson: async () => {
+        inFlight += 1;
+        peak = Math.max(peak, inFlight);
+        await new Promise((r) => setTimeout(r, 5));
+        inFlight -= 1;
+        return { cite_this: CITE };
+      },
+    });
+    const manifest = join(dir, "m.json");
+    writeFileSync(manifest, JSON.stringify([{ qs: "x", limit: 8 }]));
+    const pages = await fetchManifest(client, manifest, join(dir, "cache"));
+    expect(pages).toHaveLength(8);
+    expect(peak).toBe(4);
+  });
 });

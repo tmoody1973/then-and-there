@@ -8,6 +8,8 @@ import { pathsFromImageUrls } from "../lib/loc/paths";
 
 const PUBLIC_DOMAIN_BEFORE = "1931-01-01";
 const SEARCH_PAGE_SIZE = 100;
+// Library calls are slow (3-50 s); overlap a few. The client's limiter still caps the rate.
+const CONCURRENCY = 4;
 
 export type CachedPage = {
   pageId: string;
@@ -89,6 +91,19 @@ export async function fetchPage(client: LocClient, r: Result, cacheDir: string):
   return page;
 }
 
+async function mapPool<T, R>(items: T[], size: number, fn: (item: T) => Promise<R>): Promise<R[]> {
+  const out = new Array<R>(items.length);
+  let next = 0;
+  const lane = async () => {
+    while (next < items.length) {
+      const i = next++;
+      out[i] = await fn(items[i]);
+    }
+  };
+  await Promise.all(Array.from({ length: Math.min(size, items.length) }, lane));
+  return out;
+}
+
 export async function fetchManifest(client: LocClient, manifestPath: string, cacheDir: string): Promise<CachedPage[]> {
   const specs = JSON.parse(readFileSync(manifestPath, "utf8")) as ManifestSpec[];
   const out: CachedPage[] = [];
@@ -100,7 +115,7 @@ export async function fetchManifest(client: LocClient, manifestPath: string, cac
       results.push(...batch);
       if (batch.length < Math.min(limit, SEARCH_PAGE_SIZE)) break;
     }
-    for (const r of results.slice(0, limit)) out.push(await fetchPage(client, r, cacheDir));
+    out.push(...(await mapPool(results.slice(0, limit), CONCURRENCY, (r) => fetchPage(client, r, cacheDir))));
   }
   return out;
 }
