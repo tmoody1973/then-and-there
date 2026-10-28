@@ -198,3 +198,16 @@
 }
 .demo-toggle { font-size: var(--step--1); color: var(--ink-2); }
 .demo-toggle input { width: 1.1rem; height: 1.1rem; vertical-align: -0.2em; margin-right: var(--s2); }
+
+/* ---------- The Morgue: the files, open on the desk ---------- */
+.morgue { margin: 0 0 var(--s5); border-top: 1px solid var(--rule); border-bottom: 1px solid var(--rule); }
+.morgue summary {
+  display: flex; justify-content: space-between; align-items: baseline; gap: var(--s3);
+  min-height: 48px; padding: var(--s3) 0; cursor: pointer; list-style: none;
+}
+.morgue summary::-webkit-details-marker { display: none; }
+.morgue-title { font-family: var(--font-head); font-weight: 700; color: var(--pencil); text-decoration: underline; text-underline-offset: 0.2em; }
+.morgue[open] .morgue-title { text-decoration: none; color: var(--ink); }
+.morgue-list { list-style: none; margin: 0; padding: 0 0 var(--s4); display: grid; gap: var(--s6); }
+.morgue-source { display: flex; justify-content: space-between; gap: var(--s3); margin: 0 0 var(--s2); font-family: var(--font-head); font-weight: 600; font-size: var(--step--1); }
+.morgue-text { font-size: var(--step--1); color: var(--ink-2); margin-bottom: var(--s3); }

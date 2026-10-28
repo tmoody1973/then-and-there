@@ -23,7 +23,7 @@ export type Clip = {
   translation?: string;
 };
 
-export type Pick = { day: number; clueClippingIds: string[]; revealClippingId: string; note: string; guidance?: string };
+export type Pick = { day: number; clueClippingIds: string[]; revealClippingId: string; note: string; guidance?: string; morgueTerms?: string[] };
 
 type VerifySolvable = (input: { subjectId: string; question: string; clueText: string }) => Promise<{ pass: boolean; reason: string }>;
 type VerifyHint = (input: { subjectId: string; hint: string; answer: string }) => Promise<{ pass: boolean; reason: string }>;
@@ -70,8 +70,8 @@ export function passage(text: string): string {
 }
 
 const SENTENCE_LOOKBACK = 250;
-export function excerptAround(text: string): string {
-  const at = text.search(MENTION);
+export function excerptAround(text: string, mention: RegExp = MENTION): string {
+  const at = text.search(mention);
   if (at <= LEAD_IN) return tidy(text.slice(0, EXCERPT_CHARS));
   // Prefer the start of the sentence leading into the mention; else a word boundary.
   const window = text.slice(Math.max(0, at - SENTENCE_LOOKBACK), at);
@@ -82,7 +82,7 @@ export function excerptAround(text: string): string {
   return tidy(text.slice(start, start + EXCERPT_CHARS));
 }
 
-const ref = (c: Clip) => ({
+export const ref = (c: Clip, mention: RegExp = MENTION) => ({
   clippingId: c.clippingId,
   pageId: c.pageId,
   iiifBase: c.iiifBase,
@@ -90,7 +90,7 @@ const ref = (c: Clip) => ({
   paper: c.paper,
   date: c.date,
   citationMla: c.citationMla,
-  excerpt: excerptAround(c.text),
+  excerpt: excerptAround(c.text, mention),
   ...(c.focus ? { focus: c.focus } : {}),
 });
 

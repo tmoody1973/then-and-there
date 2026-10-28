@@ -97,6 +97,7 @@ export const gameDayFields = {
   hints: v.array(v.string()),
   reveal: v.object({ ...clipRef.fields, explanation: v.string() }),
   finaleSeconds: v.optional(v.number()),
+  morgue: v.optional(v.array(clipRef)),
   status: v.union(v.literal("draft"), v.literal("published"), v.literal("rejected")),
   rejectReasons: v.array(v.string()),
 };

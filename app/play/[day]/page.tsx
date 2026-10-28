@@ -8,6 +8,7 @@ import { api } from "../../../convex/_generated/api";
 import { CallForm } from "../../../components/CallForm";
 import { CityEditorHint } from "../../../components/CityEditorHint";
 import { Meanwhile } from "../../../components/Meanwhile";
+import { Morgue } from "../../../components/Morgue";
 import { ScanCrop } from "../../../components/ScanCrop";
 import { longDate } from "../../../lib/game/format";
 import { anniversaryForDay, isUnlocked } from "../../../lib/game/schedule";
@@ -18,7 +19,7 @@ import { usePlayer } from "../../../lib/game/usePlayer";
 
 type Box = { x: number; y: number; w: number; h: number };
 type Clip = { pageId: string; iiifBase: string; box: Box; focus?: Box; paper: string; date: string; citationMla: string; excerpt: string };
-type Day = { day: number; date1889: string; title: string; clue: Clip; question: Question; hints: string[]; reveal: Clip & { explanation: string } };
+type Day = { day: number; date1889: string; title: string; clue: Clip; question: Question; hints: string[]; reveal: Clip & { explanation: string }; morgue?: Array<Clip & { clippingId: string }> };
 
 export default function DispatchPage() {
   const day = Number(useParams<{ day: string }>().day);
@@ -91,6 +92,7 @@ export default function DispatchPage() {
             What readers saw on <time dateTime={row.date1889}>{longDate(row.date1889)}</time>
           </p>
           <blockquote className="transcript">{row.clue.excerpt}…</blockquote>
+          <Morgue items={row.morgue ?? []} />
           <CallForm question={row.question} filed={result} onFile={(correct) => p.answer(day, correct)} />
           <CityEditorHint hints={row.hints} used={result ? result.hintsUsed : p.hintsUsed[day] ?? 0} disabled={Boolean(result)} onAsk={() => p.useHint(day)} />
           {result ? (
