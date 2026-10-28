@@ -156,7 +156,7 @@ if (import.meta.main) {
   // Hard stop on spend (USD, live calls only). Pages already started finish; no new ones begin.
   const budget = Number(flag("--budget") ?? 40);
   const only = flag("--only");
-  const cacheDir = args[0] ?? "cache/pages";
+  const cacheDir = args.find((a) => !a.startsWith("--")) ?? "cache/pages";
   if (!process.env.CONVEX_URL) throw new Error("CONVEX_URL not set (run `bunx convex dev` first)");
 
   // Leaves headroom for a concurrent fetch run: both share the Library's 150/min image limit.
@@ -175,8 +175,13 @@ if (import.meta.main) {
     spentBy[model] = (spentBy[model] ?? 0) + usd;
   };
 
+  // Skip pages already processed: reprocessing would replace their clippings with new IDs,
+  // breaking game picks that reference them. Pass --reprocess to force it.
+  const reprocess = args.includes("--reprocess");
+  const done = new Set(reprocess ? [] : ((await convex.query(anyApi.pages.processedIds, {})) as string[]));
   const pages = cachedPages(cacheDir)
     .filter((p) => !only || p.pageId.includes(only))
+    .filter((p) => !done.has(p.pageId))
     .slice(0, limit);
   let totals = { clippings: 0, cleaned: 0, failed: 0 };
   let stopped = 0;

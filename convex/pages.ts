@@ -25,3 +25,13 @@ export const byDateRange = query({
     return pages.filter((p) => p.date >= start && p.date <= end);
   },
 });
+
+// Already-processed pages: the worker skips these so their clipping IDs never change
+// (game picks reference clipping IDs).
+export const processedIds = query({
+  args: {},
+  handler: async (ctx) => {
+    const pages = await ctx.db.query("pages").collect();
+    return pages.filter((p) => p.status === "processed").map((p) => p.pageId as string);
+  },
+});

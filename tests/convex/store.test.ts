@@ -75,4 +75,11 @@ describe("store", () => {
     const rows = await t.query(api.pages.byDateRange, { start: "1889-11-14", end: "1890-01-25" });
     expect(rows.map((r: { date: string }) => r.date).sort()).toEqual(["1889-11-14", "1890-01-25"]);
   });
+
+  test("processedIds lists only pages marked processed", async () => {
+    const t = convexTest(schema, modules);
+    await t.mutation(api.pages.upsert, { page: { ...PAGE, pageId: "a", status: "processed" } });
+    await t.mutation(api.pages.upsert, { page: { ...PAGE, pageId: "b", status: "failed" } });
+    expect(await t.query(api.pages.processedIds, {})).toEqual(["a"]);
+  });
 });
