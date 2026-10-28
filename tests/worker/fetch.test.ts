@@ -40,6 +40,7 @@ function fakeClient(over: Partial<LocClient> = {}) {
       counts.json += 1;
       return { width: 5956, height: 9351 };
     },
+    getBytes: async () => new Uint8Array(),
     ...over,
   };
   return { client, counts };

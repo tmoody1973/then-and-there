@@ -114,6 +114,12 @@ describe("LocClient", () => {
     expect(calls[0].ua).toMatch(/^then-and-there\//);
   });
 
+  test("getBytes returns raw bytes on the services bucket", async () => {
+    const { client } = harness([{ body: "JPEGDATA", contentType: "image/jpeg" }]);
+    const bytes = await client.getBytes("https://tile.loc.gov/image-services/iiif/x/full/2000,/0/default.jpg");
+    expect(new TextDecoder().decode(bytes)).toBe("JPEGDATA");
+  });
+
   test("404 is not retried", async () => {
     const { client, calls } = harness([{ status: 404 }]);
     await expect(client.getText("https://tile.loc.gov/storage-services/x.xml")).rejects.toBeInstanceOf(

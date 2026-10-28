@@ -36,6 +36,7 @@ export type LocClient = {
   getPageJson(resourceUrl: string): Promise<unknown>;
   getText(url: string): Promise<string>;
   getJson(url: string): Promise<unknown>;
+  getBytes(url: string): Promise<Uint8Array>;
 };
 
 type Opts = {
@@ -82,7 +83,7 @@ export function createLocClient(opts: Opts = {}): LocClient {
     b.stamps = [...b.stamps, now()];
   }
 
-  async function request(url: string, bucket: Bucket, kind: "json" | "text"): Promise<unknown> {
+  async function request(url: string, bucket: Bucket, kind: "json" | "text" | "bytes"): Promise<unknown> {
     let rateLimited = 0;
     let badBodies = 0;
     for (;;) {
@@ -97,6 +98,7 @@ export function createLocClient(opts: Opts = {}): LocClient {
         continue;
       }
       if (!res.ok) throw new LocBadResponseError(url, `HTTP ${res.status}`);
+      if (kind === "bytes") return new Uint8Array(await res.arrayBuffer());
       const body = await res.text();
       if (kind === "text") return body;
       if ((res.headers.get("content-type") ?? "").includes("text/html")) {
@@ -123,5 +125,6 @@ export function createLocClient(opts: Opts = {}): LocClient {
     getPageJson: (url) => request(url, json, "json"),
     getText: (url) => request(url, services, "text") as Promise<string>,
     getJson: (url) => request(url, services, "json"),
+    getBytes: (url) => request(url, services, "bytes") as Promise<Uint8Array>,
   };
 }
