@@ -63,6 +63,16 @@ describe("verifyClaim", () => {
   });
 });
 
+describe("verifyClaim without an image", () => {
+  test("checks text only when no crop is given", async () => {
+    let loads = 0;
+    const { d } = deps('{"pass": true, "reason": "printed"}');
+    const res = await verifyClaim({ ...INPUT, cropUrl: undefined }, { ...d, loadImage: async () => (loads++, "data:,") });
+    expect(res.pass).toBe(true);
+    expect(loads).toBe(0);
+  });
+});
+
 describe("verifyHint", () => {
   test("passes a hint that doesn't give the answer away, with no image", async () => {
     const { d, logged, prompts } = deps('{"pass": true, "reason": "asks a question only"}');

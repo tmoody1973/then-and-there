@@ -29,7 +29,7 @@ type Verify = (input: {
   subjectId: string;
   claim: string;
   sourceText: string;
-  cropUrl: string;
+  cropUrl?: string;
 }) => Promise<{ pass: boolean; reason: string }>;
 
 const FINALE_DAY = 73;
@@ -112,7 +112,7 @@ export async function draftDay(pick: Pick, clips: Clip[], deps: { complete: Comp
     // The answer, stated with reveal facts only, must be printed in the reveal.
     { subjectKind: "clue", subjectId: `${id}-answer`, claim: answerStatement, sourceText: revealText, cropUrl: revealCrop },
     // A good explanation draws on both what readers saw and what came next.
-    { subjectKind: "context", subjectId: `${id}-explanation`, claim: explanation, sourceText: `CLUE (printed ${clueClips[0].date}):\n${clueText}\n\nLATER REPORT:\n${revealText}`, cropUrl: revealCrop },
+    { subjectKind: "context", subjectId: `${id}-explanation`, claim: explanation, sourceText: `CLUE (printed ${clueClips[0].date}):\n${clueText}\n\nLATER REPORT:\n${revealText}` },
   ];
   for (const check of checks) {
     const v = await deps.verify(check);
