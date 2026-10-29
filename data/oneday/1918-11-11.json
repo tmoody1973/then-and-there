@@ -1,0 +1,233 @@
+{
+  "slug": "1918-11-11",
+  "builtAt": "2026-10-29T16:34:17.702Z",
+  "papers": [
+    {
+      "paper": "The Washington herald",
+      "city": "Washington",
+      "state": "District Of Columbia",
+      "date": "1918-11-12",
+      "pageId": "http://www.loc.gov/resource/sn83045433/1918-11-12/ed-1/?sp=1",
+      "iiifBase": "https://tile.loc.gov/image-services/iiif/service:ndnp:dlc:batch_dlc_englishsetter_ver01:data:sn83045433:00280763986:1918111201:0744",
+      "width": 4708,
+      "height": 6102,
+      "citationMla": "The Washington herald. (Washington, DC) 12 Nov. 1918, p. 1. Retrieved from the Library of Congress, www.loc.gov/item/sn83045433/1918-11-12/ed-1/.",
+      "language": null,
+      "share": 0.7921995225878278,
+      "marks": [
+        {
+          "box": {
+            "h": 488,
+            "w": 4600,
+            "x": 47,
+            "y": 525
+          },
+          "mark": "own",
+          "excerpt": "REVOLUTIONISTS DENOUNCE ARMISTICE; WORLD GOES WILD OVER ALLIED VICTORY"
+        },
+        {
+          "box": {
+            "h": 440,
+            "w": 1144,
+            "x": 45,
+            "y": 1040
+          },
+          "mark": "own",
+          "excerpt": "GERMAN BALTIC FORCES CALLED OUT TO RESIST TERMS OF ARMISTICE"
+        },
+        {
+          "box": {
+            "h": 4200,
+            "w": 1208,
+            "x": 0,
+            "y": 1902
+          },
+          "mark": "wire",
+          "excerpt": "Former Foreign Minister Begs Wilson to Provide Food for Starving Women and Children in Germany. London, Nov. 11 (8:39 p. m.)—The German revolutionary council in command of the German fleet, denouncing the armistice terms as \"unjust,\" particularly the continuation of the blockade,"
+        },
+        {
+          "box": {
+            "h": 2432,
+            "w": 2260,
+            "x": 1219,
+            "y": 1088
+          },
+          "mark": "wire",
+          "excerpt": "The President's Address and Armistice Terms GENTLEMEN OF THE CONGRESS: In these anxious times of rapid and stupendous change it will in some degree lighten my sense of responsibility to perform in person the duty of communicating to you some of the larger circumstances of the sit"
+        },
+        {
+          "box": {
+            "h": 4160,
+            "w": 1210,
+            "x": 3498,
+            "y": 1928
+          },
+          "mark": "own",
+          "excerpt": "Estimate 350,000 Celebrators Throng Streets, With Enthusiasm Running Riot—Thrills and Scenes to Be Seen Everywhere. \"The war thus comes to an end.\" Succinctly, yet with a dignity that matched perfectly the full import of the words, Woodrow Wilson, President of the United States, "
+        },
+        {
+          "box": {
+            "h": 1893,
+            "w": 1158,
+            "x": 1777,
+            "y": 3649
+          },
+          "mark": "own",
+          "excerpt": "Rebels Thwart Kaiser in Move to Give Himself Up Amsterdam, Nov. 11.—It is reported here that the Kaiser attempted to enter the British lines to surrender, but was prevented by revolutionary troops. It was only after this unsuccessful attempt to hand himself over to the enemy that"
+        },
+        {
+          "box": {
+            "h": 2338,
+            "w": 584,
+            "x": 2926,
+            "y": 3651
+          },
+          "mark": "wire",
+          "excerpt": "BAKER HALTS DRAFT CALLS Men Ready to Depart for Camps Are Sent Home. Movement of men to training camps was ordered stopped by the President early yesterday morning, after definite news of the signing of the armistice was received. Gen. Crowder at once sent telegrams to all distri"
+        },
+        {
+          "box": {
+            "h": 219,
+            "w": 1097,
+            "x": 1815,
+            "y": 5485
+          },
+          "mark": "own",
+          "excerpt": "“ARMISTICE SIGNED” Official news of this greatest event of his- tory was first given the public of Washington by"
+        },
+        {
+          "box": {
+            "h": 539,
+            "w": 1130,
+            "x": 1789,
+            "y": 5518
+          },
+          "mark": "own",
+          "excerpt": "\"ARMISTICE SIGNED\" Official news of this greatest event of his- tory was first given the public of Washington by THE WASHINGTON HERALD Through an extra edition, published shortly after the announcement of the State Depart- ment at 2:45 o'clock yesterday morning."
+        }
+      ]
+    },
+    {
+      "paper": "Evening Public Ledger",
+      "city": "Philadelphia",
+      "state": "Pennsylvania",
+      "date": "1918-11-11",
+      "pageId": "http://www.loc.gov/resource/sn83045211/1918-11-11/ed-1/?sp=1",
+      "iiifBase": "https://tile.loc.gov/image-services/iiif/service:ndnp:pst:batch_pst_geary_ver01:data:sn83045211:00237282541:1918111101:0773",
+      "width": 5440,
+      "height": 6602,
+      "citationMla": "Evening Public Ledger. (Philadelphia, PA) 11 Nov. 1918, p. 1. Retrieved from the Library of Congress, www.loc.gov/item/sn83045211/1918-11-11/ed-1/.",
+      "language": null,
+      "share": 0.31593094561362867,
+      "marks": [
+        {
+          "box": {
+            "h": 594,
+            "w": 5114,
+            "x": 163,
+            "y": 726
+          },
+          "mark": "own",
+          "excerpt": "PRESIDENT READS ARMISTICE TERMS TO CONGRESS; CROWDER CANCELS ALL OUTSTANDING DRAFT CALLS; REVOLUTIONISTS CONTROL ENTIRE GERMAN NATION"
+        },
+        {
+          "box": {
+            "h": 5065,
+            "w": 707,
+            "x": 139,
+            "y": 1330
+          },
+          "mark": "wire",
+          "excerpt": "FOCH ORDERED CEASE FIRING AT 6 THIS MORNING German Envoys Agreed to Drastic Conditions Five Hours Earlier WASHINGTON GIVES NEWS OF SIGNING Glorious Allied Peace Dawns on World as Teutons Accept COURIER WAS DELAYED Lansing May Head U. S. Dele- gation to Sit at Peace Table American"
+        },
+        {
+          "box": {
+            "h": 3259,
+            "w": 1254,
+            "x": 821,
+            "y": 2119
+          },
+          "mark": "wire",
+          "excerpt": "President Proclaims Signing of Armistice to People By the Associated Press Washington, Nov. 11. President Wilson today issued the following proclamation: \"My fellow countrymen—The armistice was signed this morning. Everything for which America fought has been accomplished. It wil"
+        },
+        {
+          "box": {
+            "h": 571,
+            "w": 715,
+            "x": 4523,
+            "y": 1371
+          },
+          "mark": "own",
+          "excerpt": "NEARLY WHOLE GERMAN NATION IN REDS' HANDS 14 States and Four King- doms Dominated by the Revolutionaries KAISER FLEES INTO"
+        },
+        {
+          "box": {
+            "h": 340,
+            "w": 685,
+            "x": 4523,
+            "y": 1858
+          },
+          "mark": "own",
+          "excerpt": "KAISER FLEES INTO NEUTRAL COUNTRY With Ex-Crown Prince and Large Party He Takes"
+        }
+      ]
+    },
+    {
+      "paper": "The Seattle star",
+      "city": "Seattle",
+      "state": "Washington",
+      "date": "1918-11-11",
+      "pageId": "http://www.loc.gov/resource/sn87093407/1918-11-11/ed-1/?sp=1",
+      "iiifBase": "https://tile.loc.gov/image-services/iiif/service:ndnp:wa:batch_wa_alki_ver01:data:sn87093407:00200290768:1918111101:0898",
+      "width": 5209,
+      "height": 7039,
+      "citationMla": "The Seattle star. (Seattle, WA) 11 Nov. 1918, p. 1. Retrieved from the Library of Congress, www.loc.gov/item/sn87093407/1918-11-11/ed-1/.",
+      "language": null,
+      "share": 0.27519305203319544,
+      "marks": [
+        {
+          "box": {
+            "h": 598,
+            "w": 4214,
+            "x": 531,
+            "y": 1436
+          },
+          "mark": "own",
+          "excerpt": "ARMISTICE TERMS"
+        },
+        {
+          "box": {
+            "h": 2493,
+            "w": 680,
+            "x": 401,
+            "y": 2037
+          },
+          "mark": "wire",
+          "excerpt": "HUNS GIVE UP ALSACE LORRAINE Evacuate Left Bank of the Rhine; Must Give Rep- aration for Damage ARMISTICE FOR 30 DAYS BY CARL D. GROAT (United Press Correspondent) WASHINGTON, Nov. 11.— President Wilson this afternoon told congress and the world the terms Germany accepted when sh"
+        },
+        {
+          "box": {
+            "h": 4769,
+            "w": 630,
+            "x": 2886,
+            "y": 2042
+          },
+          "mark": "own",
+          "excerpt": "GERMANY IS NOW MINUS AN EMPEROR Royalty Flees Empire as Revolution Gains Strength THE PRINCE IS WOUNDED Dispatch From Ed. L. Keene By United Press Leased Wire Direct to The Star LONDON, Nov. 11.—Germany today is kaiserless and kingless. All reports tended to show that in addition"
+        },
+        {
+          "box": {
+            "h": 4571,
+            "w": 628,
+            "x": 4128,
+            "y": 2029
+          },
+          "mark": "wire",
+          "excerpt": "ARMISTICE IS SIGNED; WAR ENDS Allied Officials Announce Acceptance of Terms by Germany HOSTILITIES ARE OVER WASHINGTON, Nov. 11.—Armistice between the allies and the Germans has been signed. The signing took place at 5:40 o'clock this morning (Paris time), according to the French"
+        }
+      ]
+    }
+  ],
+  "noticed": "Washington Herald gave 79% with 3 wire and 6 own pieces; Evening Public Ledger gave 32% with 2 wire and 3 own. Seattle Star gave 28% with 2 wire and 2 own, headlining \"GERMANY IS NOW MINUS AN EMPEROR.\"",
+  "question": "Look at the front pages: how does each paper show celebration, politics, and revolution differently?"
+}

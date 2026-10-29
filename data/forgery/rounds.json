@@ -1,0 +1,390 @@
+{
+  "builtAt": "2026-10-29T15:41:54.228Z",
+  "rounds": [
+    {
+      "round": 1,
+      "image": "/forgery/round-1.jpg",
+      "width": 1600,
+      "height": 2512,
+      "pageId": "http://www.loc.gov/resource/sn88064119/1889-11-29/ed-1/?sp=1",
+      "iiifBase": "https://tile.loc.gov/image-services/iiif/service:ndnp:lu:batch_lu_iceman_ver01:data:sn88064119:00280761837:1889112901:0223",
+      "paper": "Homer Guardian",
+      "place": "Homer, Louisiana",
+      "date": "1889-11-29",
+      "citationMla": "Homer Guardian. (Homer, LA) 29 Nov. 1889, p. 1. Retrieved from the Library of Congress, www.loc.gov/item/sn88064119/1889-11-29/ed-1/.",
+      "product": "a radio receiver",
+      "why": "Nobody could buy a radio in 1889. Radio waves had only just been shown in a laboratory, and home radio sets went on sale in the 1920s.",
+      "parts": [
+        {
+          "n": 1,
+          "label": "The nameplate",
+          "forged": false,
+          "box": {
+            "x": 0,
+            "y": 0,
+            "w": 1600,
+            "h": 251
+          }
+        },
+        {
+          "n": 2,
+          "label": "A story",
+          "forged": false,
+          "box": {
+            "x": 906,
+            "y": 295,
+            "w": 218,
+            "h": 1488
+          }
+        },
+        {
+          "n": 3,
+          "label": "A story",
+          "forged": false,
+          "box": {
+            "x": 1334,
+            "y": 300,
+            "w": 208,
+            "h": 999
+          }
+        },
+        {
+          "n": 4,
+          "label": "An advertisement",
+          "forged": false,
+          "box": {
+            "x": 27,
+            "y": 1175,
+            "w": 459,
+            "h": 350
+          }
+        },
+        {
+          "n": 5,
+          "label": "An advertisement",
+          "forged": true,
+          "box": {
+            "x": 13,
+            "y": 1763,
+            "w": 251,
+            "h": 738
+          }
+        }
+      ],
+      "originalBox": {
+        "h": 2746,
+        "w": 935,
+        "x": 48,
+        "y": 6564
+      }
+    },
+    {
+      "round": 2,
+      "image": "/forgery/round-2.jpg",
+      "width": 1600,
+      "height": 2317,
+      "pageId": "http://www.loc.gov/resource/sn96061150/1889-11-17/ed-1/?sp=1",
+      "iiifBase": "https://tile.loc.gov/image-services/iiif/service:ndnp:oru:batch_oru_hufnagel_ver03:data:sn96061150:00200298111:1889111701:0460",
+      "paper": "The daily morning Astorian",
+      "place": "Astoria, Oregon",
+      "date": "1889-11-17",
+      "citationMla": "The daily morning Astorian. (Astoria, OR) 17 Nov. 1889, p. 1. Retrieved from the Library of Congress, www.loc.gov/item/sn96061150/1889-11-17/ed-1/.",
+      "product": "a pocket telephone",
+      "why": "Telephones in 1889 were fixed to a wall and wired to an exchange. Nothing you could carry in a pocket would exist for about a hundred years.",
+      "parts": [
+        {
+          "n": 1,
+          "label": "The nameplate",
+          "forged": false,
+          "box": {
+            "x": 0,
+            "y": 0,
+            "w": 1600,
+            "h": 232
+          }
+        },
+        {
+          "n": 2,
+          "label": "An advertisement",
+          "forged": false,
+          "box": {
+            "x": 51,
+            "y": 956,
+            "w": 215,
+            "h": 757
+          }
+        },
+        {
+          "n": 3,
+          "label": "An advertisement",
+          "forged": true,
+          "box": {
+            "x": 1072,
+            "y": 958,
+            "w": 456,
+            "h": 369
+          }
+        },
+        {
+          "n": 4,
+          "label": "An advertisement",
+          "forged": false,
+          "box": {
+            "x": 470,
+            "y": 962,
+            "w": 200,
+            "h": 552
+          }
+        },
+        {
+          "n": 5,
+          "label": "A story",
+          "forged": false,
+          "box": {
+            "x": 268,
+            "y": 1376,
+            "w": 202,
+            "h": 727
+          }
+        }
+      ],
+      "originalBox": {
+        "h": 1514,
+        "w": 1872,
+        "x": 4401,
+        "y": 3931
+      }
+    },
+    {
+      "round": 3,
+      "image": "/forgery/round-3.jpg",
+      "width": 1600,
+      "height": 2151,
+      "pageId": "http://www.loc.gov/resource/sn99063952/1890-01-25/ed-1/?sp=1",
+      "iiifBase": "https://tile.loc.gov/image-services/iiif/service:ndnp:oru:batch_oru_desalvo_ver01:data:sn99063952:00280760298:1890012501:0091",
+      "paper": "Evening Capital Journal",
+      "place": "Salem, Oregon",
+      "date": "1890-01-25",
+      "citationMla": "Evening Capital Journal. (Salem, OR) 25 Jan. 1890, p. 1. Retrieved from the Library of Congress, www.loc.gov/item/sn99063952/1890-01-25/ed-1/.",
+      "product": "a television set",
+      "why": "Television was first demonstrated in the 1920s. In 1889 there was no way to send a moving picture anywhere, let alone into a parlor.",
+      "parts": [
+        {
+          "n": 1,
+          "label": "The nameplate",
+          "forged": false,
+          "box": {
+            "x": 0,
+            "y": 0,
+            "w": 1600,
+            "h": 215
+          }
+        },
+        {
+          "n": 2,
+          "label": "An advertisement",
+          "forged": false,
+          "box": {
+            "x": 1060,
+            "y": 264,
+            "w": 500,
+            "h": 461
+          }
+        },
+        {
+          "n": 3,
+          "label": "A story",
+          "forged": false,
+          "box": {
+            "x": 478,
+            "y": 319,
+            "w": 212,
+            "h": 880
+          }
+        },
+        {
+          "n": 4,
+          "label": "An advertisement",
+          "forged": true,
+          "box": {
+            "x": 1102,
+            "y": 1217,
+            "w": 447,
+            "h": 347
+          }
+        },
+        {
+          "n": 5,
+          "label": "A story",
+          "forged": false,
+          "box": {
+            "x": 478,
+            "y": 1622,
+            "w": 210,
+            "h": 430
+          }
+        }
+      ],
+      "originalBox": {
+        "h": 1127,
+        "w": 1451,
+        "x": 3577,
+        "y": 3949
+      }
+    },
+    {
+      "round": 4,
+      "image": "/forgery/round-4.jpg",
+      "width": 1600,
+      "height": 2269,
+      "pageId": "http://www.loc.gov/resource/sn85032814/1890-01-30/ed-1/?sp=1",
+      "iiifBase": "https://tile.loc.gov/image-services/iiif/service:ndnp:khi:batch_khi_earhart_ver01:data:sn85032814:00237283260:1890013001:0228",
+      "paper": "Thomas County cat",
+      "place": "Colby, Kansas",
+      "date": "1890-01-30",
+      "citationMla": "Thomas County cat. (Colby, KS) 30 Jan. 1890, p. 1. Retrieved from the Library of Congress, www.loc.gov/item/sn85032814/1890-01-30/ed-1/.",
+      "product": "airplane passage",
+      "why": "The first powered airplane flight was in December 1903. In 1889 nobody had flown a machine with wings and an engine.",
+      "parts": [
+        {
+          "n": 1,
+          "label": "The nameplate",
+          "forged": false,
+          "box": {
+            "x": 0,
+            "y": 0,
+            "w": 1600,
+            "h": 227
+          }
+        },
+        {
+          "n": 2,
+          "label": "An advertisement",
+          "forged": false,
+          "box": {
+            "x": 100,
+            "y": 403,
+            "w": 450,
+            "h": 365
+          }
+        },
+        {
+          "n": 3,
+          "label": "A story",
+          "forged": false,
+          "box": {
+            "x": 780,
+            "y": 869,
+            "w": 446,
+            "h": 622
+          }
+        },
+        {
+          "n": 4,
+          "label": "An advertisement",
+          "forged": true,
+          "box": {
+            "x": 97,
+            "y": 1112,
+            "w": 452,
+            "h": 365
+          }
+        },
+        {
+          "n": 5,
+          "label": "A story",
+          "forged": false,
+          "box": {
+            "x": 780,
+            "y": 1846,
+            "w": 446,
+            "h": 368
+          }
+        }
+      ],
+      "originalBox": {
+        "h": 1376,
+        "w": 1702,
+        "x": 367,
+        "y": 4187
+      }
+    },
+    {
+      "round": 5,
+      "image": "/forgery/round-5.jpg",
+      "width": 1600,
+      "height": 1835,
+      "pageId": "http://www.loc.gov/resource/sn83030193/1890-01-17/ed-1/?sp=1",
+      "iiifBase": "https://tile.loc.gov/image-services/iiif/service:ndnp:nn:batch_nn_hanyu_ver01:data:sn83030193:00206539537:1890011701:0191",
+      "paper": "The Evening World",
+      "place": "New York, New York",
+      "date": "1890-01-17",
+      "citationMla": "The Evening World. (New York, NY) 17 Jan. 1890, p. 1. Retrieved from the Library of Congress, www.loc.gov/item/sn83030193/1890-01-17/ed-1/.",
+      "product": "an electric refrigerator",
+      "why": "Kitchens in 1889 kept food cold with blocks of ice. Electric home refrigerators went on sale in the 1910s, and few homes yet had electricity.",
+      "parts": [
+        {
+          "n": 1,
+          "label": "The nameplate",
+          "forged": false,
+          "box": {
+            "x": 0,
+            "y": 0,
+            "w": 1600,
+            "h": 184
+          }
+        },
+        {
+          "n": 2,
+          "label": "An advertisement",
+          "forged": false,
+          "box": {
+            "x": 253,
+            "y": 209,
+            "w": 1047,
+            "h": 240
+          }
+        },
+        {
+          "n": 3,
+          "label": "An advertisement",
+          "forged": true,
+          "box": {
+            "x": 1315,
+            "y": 226,
+            "w": 218,
+            "h": 244
+          }
+        },
+        {
+          "n": 4,
+          "label": "A story",
+          "forged": false,
+          "box": {
+            "x": 18,
+            "y": 477,
+            "w": 206,
+            "h": 1310
+          }
+        },
+        {
+          "n": 5,
+          "label": "A story",
+          "forged": false,
+          "box": {
+            "x": 1154,
+            "y": 1190,
+            "w": 376,
+            "h": 627
+          }
+        }
+      ],
+      "originalBox": {
+        "h": 811,
+        "w": 723,
+        "x": 4370,
+        "y": 750
+      }
+    }
+  ]
+}
