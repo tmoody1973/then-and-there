@@ -116,15 +116,19 @@ async function processClipping(page: CachedPage, box: Box, index: number, scale:
   };
 }
 
-export async function processPage(page: CachedPage, deps: ProcessDeps): Promise<{ clippings: number; cleaned: number; failed: number }> {
+export async function processPage(
+  page: CachedPage,
+  deps: ProcessDeps,
+): Promise<{ clippings: number; cleaned: number; failed: number; error?: string }> {
   const alto = parseAlto(deps.altoXml);
   const scale = altoScale(alto.width, page.imageWidth);
   let boxes: Box[];
   try {
     boxes = await deps.segment(page);
   } catch (e) {
-    await deps.store.upsertPage({ ...page, altoScale: scale, status: "failed", error: e instanceof Error ? e.message : String(e) });
-    return { clippings: 0, cleaned: 0, failed: 0 };
+    const error = e instanceof Error ? e.message : String(e);
+    await deps.store.upsertPage({ ...page, altoScale: scale, status: "failed", error });
+    return { clippings: 0, cleaned: 0, failed: 0, error };
   }
   const rows = await mapPool(dropContainedHeadlines(boxes), CLIPPING_CONCURRENCY, (b, i) => processClipping(page, b, i, scale, alto, deps));
   await deps.store.replaceClippings(page.pageId, rows);
@@ -220,7 +224,12 @@ if (import.meta.main) {
       return;
     }
     totals = { clippings: totals.clippings + res.clippings, cleaned: totals.cleaned + res.cleaned, failed: totals.failed + res.failed };
-    process.stdout.write(`${page.date} ${page.title.slice(0, 40)} p${page.sequence}: ${res.clippings} clippings, ${res.cleaned} cleaned, ${res.failed} failed\n`);
+    const label = `${page.date} ${page.title.slice(0, 40)} p${page.sequence}`;
+    process.stdout.write(
+      res.error
+        ? `FAILED ${label}: ${res.error.split("\n")[0]}\n`
+        : `${label}: ${res.clippings} clippings, ${res.cleaned} cleaned, ${res.failed} failed\n`,
+    );
   });
   process.stdout.write(`\npages ${pages.length} | ${JSON.stringify(totals)}\nmodel calls (incl. cache hits): ${JSON.stringify(calls)}\n`);
   const by = Object.entries(spentBy).map(([m, v]) => `${m} $${v.toFixed(4)}`).join(", ");
