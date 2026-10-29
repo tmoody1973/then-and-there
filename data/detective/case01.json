@@ -1,6 +1,35 @@
 {
-  "builtAt": "2026-10-29T16:41:01.887Z",
+  "builtAt": "2026-10-29T16:45:08.769Z",
   "stops": [
+    {
+      "n": 0,
+      "name": "New York",
+      "place": "New York",
+      "clue": {
+        "clippingId": "j57e5ak2dk2wz7fxrav019ypeh8h6d1c",
+        "pageId": "http://www.loc.gov/resource/sn83030193/1889-11-14/ed-3/?sp=1",
+        "iiifBase": "https://tile.loc.gov/image-services/iiif/service:ndnp:nn:batch_nn_hanyu_ver01:data:sn83030193:00206539525:1889111403:0534",
+        "box": {
+          "h": 4821,
+          "w": 778,
+          "x": 90,
+          "y": 1405
+        },
+        "paper": "The Evening World",
+        "date": "1889-11-14",
+        "citationMla": "The Evening World. (New York, NY) 14 Nov. 1889, p. 1. Retrieved from the Library of Congress, www.loc.gov/item/sn83030193/1889-11-14/ed-3/.",
+        "excerpt": "Nellie Bly Starts Out on a Wondrous Flying Trip Around the Globe.\n\nThirty Thousand Miles Through Many Countries and Back to New York.\n\nTo Surpass Jules Verne's Dream of Rapid Transit Round the Earth.\n\n\"The World's\" Woman Writer Embarks on the Augusta Victoria.\n\nIt's Her Own Adventure and She Is Pluc",
+        "focus": {
+          "x": 147.03016505406944,
+          "y": 1519.290457218744,
+          "w": 698.127869474483,
+          "h": 462.0830961866818
+        }
+      },
+      "summary": "Miss Bly sails away from New York this morning aboard the Augusta Victoria to start her round-the-world trip.",
+      "title": "Sails From New York",
+      "hint": "Kid, she's steaming east across the pond — think England's south coast, get moving!"
+    },
     {
       "n": 1,
       "name": "Southampton",
@@ -29,6 +58,93 @@
       "summary": "She is due in Southampton and rides by rail to London in three hours.",
       "title": "Due in Southampton",
       "hint": "Listen, kid, she hops rails to London then dashes across to France — follow south."
+    },
+    {
+      "n": 2,
+      "name": "Amiens",
+      "place": "Amiens, France",
+      "clue": {
+        "clippingId": "j57cc3b10krd3a3e3375se722s8h4gte",
+        "pageId": "http://www.loc.gov/resource/sn84020355/1889-11-26/ed-1/?sp=3",
+        "iiifBase": "https://tile.loc.gov/image-services/iiif/service:ndnp:nvln:batch_nvln_lasvegas_ver01:data:sn84020355:0027955498A:1889112601:1120",
+        "box": {
+          "h": 1076,
+          "w": 920,
+          "x": 1028,
+          "y": 613
+        },
+        "paper": "Daily Independent",
+        "date": "1889-11-26",
+        "citationMla": "Daily Independent. (Elko, NV) 26 Nov. 1889, p. 3. Retrieved from the Library of Congress, www.loc.gov/item/sn84020355/1889-11-26/ed-1/.",
+        "excerpt": "The enterprising Nellie Bly is making good progress in her trip around the world, having arrived at Amiens, France, last Saturday where she met Jules Verne, the celebrated novelist. Miss Bisland will not be heard from for some time, as she is now crossing the Pacific on board the Oceanic.",
+        "focus": {
+          "x": 1028,
+          "y": 990.75,
+          "w": 920,
+          "h": 458.5
+        }
+      },
+      "summary": "She arrives in Amiens and meets celebrated novelist Jules Verne while making good progress.",
+      "title": "Meets Verne in Amiens",
+      "hint": "Good work, kid. She's eastbound — follow the rails south toward the Mediterranean steamer and keep her moving."
+    },
+    {
+      "n": 3,
+      "name": "Brindisi",
+      "place": "Brindisi, Italy",
+      "clue": {
+        "clippingId": "j57emk3ejvy3x0jx7rw974b55s8h7gvv",
+        "pageId": "http://www.loc.gov/resource/sn83045081/1889-12-09/ed-1/?sp=4",
+        "iiifBase": "https://tile.loc.gov/image-services/iiif/service:ndnp:mdu:batch_mdu_dill_ver01:data:sn83045081:00294559310:1889120901:0473",
+        "box": {
+          "h": 4800,
+          "w": 1614,
+          "x": 5556,
+          "y": 1844
+        },
+        "paper": "Der Deutsche correspondent",
+        "date": "1889-12-09",
+        "citationMla": "Der Deutsche correspondent. (Baltimore, MD) 9 Dec. 1889, p. 4. Retrieved from the Library of Congress, www.loc.gov/item/sn83045081/1889-12-09/ed-1/.",
+        "excerpt": "Dezember. — Das Ausbleiben der Nachrichten von den beiden Weltumseglerinnen Nellie Bly und Frl. Bisland erregt große Besorgniß in den Bureaux der „World\" und des „Metropolitan-Magazine,\" in deren Interesse die beiden Damen unterwegs sind. Von Nellie Bly ist seit ihrer Abreise von Brindisi Nichts meh",
+        "focus": {
+          "x": 5556,
+          "y": 5366,
+          "w": 716,
+          "h": 282.33333333333303
+        }
+      },
+      "summary": "No news comes from Nellie Bly since her departure from Brindisi.",
+      "title": "Silent Since Brindisi",
+      "hint": "Listen, kid, she sails east across the Med toward the Canal — find where steamers coal up in Egypt."
+    },
+    {
+      "n": 5,
+      "name": "Aden",
+      "place": "Aden, Arabia",
+      "clue": {
+        "clippingId": "j57emk3ejvy3x0jx7rw974b55s8h7gvv",
+        "pageId": "http://www.loc.gov/resource/sn83045081/1889-12-09/ed-1/?sp=4",
+        "iiifBase": "https://tile.loc.gov/image-services/iiif/service:ndnp:mdu:batch_mdu_dill_ver01:data:sn83045081:00294559310:1889120901:0473",
+        "box": {
+          "h": 4800,
+          "w": 1614,
+          "x": 5556,
+          "y": 1844
+        },
+        "paper": "Der Deutsche correspondent",
+        "date": "1889-12-09",
+        "citationMla": "Der Deutsche correspondent. (Baltimore, MD) 9 Dec. 1889, p. 4. Retrieved from the Library of Congress, www.loc.gov/item/sn83045081/1889-12-09/ed-1/.",
+        "excerpt": "Dezember. — Das Ausbleiben der Nachrichten von den beiden Weltumseglerinnen Nellie Bly und Frl. Bisland erregt große Besorgniß in den Bureaux der „World\" und des „Metropolitan-Magazine,\" in deren Interesse die beiden Damen unterwegs sind. Von Nellie Bly ist seit ihrer Abreise von Brindisi Nichts meh",
+        "focus": {
+          "x": 5556,
+          "y": 5366,
+          "w": 716,
+          "h": 282.33333333333303
+        }
+      },
+      "summary": "The paper worries because no word arrives from Bly, overdue in Aden since December 3 after leaving Brindisi.",
+      "title": "Overdue at Aden",
+      "hint": "Kid, quit fretting — she's bound east across the big water; check the steamer maps, follow the coal stops."
     },
     {
       "n": 6,
@@ -60,6 +176,35 @@
       "hint": "Listen, kid, she's steaming east toward China — find the next British coaling port past the Bay."
     },
     {
+      "n": 9,
+      "name": "Hong Kong",
+      "place": "Hong Kong",
+      "clue": {
+        "clippingId": "j578fx9tgnbgd7mkpvndab1jnn8h52sr",
+        "pageId": "http://www.loc.gov/resource/sn83030193/1889-12-24/ed-1/?sp=1",
+        "iiifBase": "https://tile.loc.gov/image-services/iiif/service:ndnp:nn:batch_nn_hanyu_ver01:data:sn83030193:00206539525:1889122401:1022",
+        "box": {
+          "h": 2227,
+          "w": 631,
+          "x": 4585,
+          "y": 3631
+        },
+        "paper": "The Evening World",
+        "date": "1889-12-24",
+        "citationMla": "The Evening World. (New York, NY) 24 Dec. 1889, p. 1. Retrieved from the Library of Congress, www.loc.gov/item/sn83030193/1889-12-24/ed-1/.",
+        "excerpt": "FROM CHINA NEXT. Nellie Bly Tio Days Abead el IK Itinerary at Hong Eons. Only about ten thousand miles remaia ef Nellie Bly's wonderful flight around thial world or ours. Tho bright little U&j stepped ssboto at Hong Kong yesterdav.two days ahead of hor schednled time. She hag tn remain there, howeve",
+        "focus": {
+          "x": 4585,
+          "y": 3631,
+          "w": 631,
+          "h": 431.5080074487896
+        }
+      },
+      "summary": "Nellie Bly steps ashore at Hong Kong two days ahead and waits till Saturday for the Oceanic to San Francisco.",
+      "title": "Two Days Early, Waiting",
+      "hint": "Kid, she's eastbound across the China Sea — check the next island port before the big Pacific hop."
+    },
+    {
       "n": 10,
       "name": "Yokohama",
       "place": "Yokohama, Japan",
@@ -81,6 +226,34 @@
       "summary": "She sails from Hong Kong aboard Oceanic bound for Yokohama, exactly on schedule.",
       "title": "Bound for Yokohama",
       "hint": "Look alive, kid — she sails east now, across the wide Pacific toward home soil. Check the steamship timetables."
+    },
+    {
+      "n": 11,
+      "name": "San Francisco",
+      "place": "San Francisco",
+      "clue": {
+        "clippingId": "j57aq73dv23hwpgq835vmbda9n8h5k90",
+        "pageId": "http://www.loc.gov/resource/sn84024546/1890-01-22/ed-1/?sp=8",
+        "iiifBase": "https://tile.loc.gov/image-services/iiif/service:ndnp:pst:batch_pst_franco_ver01:data:sn84024546:00237280118:1890012201:0231",
+        "box": {
+          "h": 1258,
+          "w": 691,
+          "x": 286,
+          "y": 3513
+        },
+        "paper": "Pittsburg Dispatch",
+        "date": "1890-01-22",
+        "citationMla": "Pittsburg Dispatch. (Pittsburgh, PA) 22 Jan. 1890, p. 8. Retrieved from the Library of Congress, www.loc.gov/item/sn84024546/1890-01-22/ed-1/.",
+        "excerpt": "NELLIE BLY'S ROUTE CHANGED.\nShe is Traveling in a Special Train on the Southern Pacific Road.\nSAN FRANCISCO, January 21.—The steamer Oceanic, with Miss Nellie Bly among the passengers, arrived here at 9:30 this morning. Miss Bly was taken off the tug as soon as the steamer entered the harbor, and wa",
+        "focus": {
+          "x": 308.1611549437636,
+          "y": 4364.202786637569,
+          "w": 668.8388450562363,
+          "h": 276.1269095182133
+        }
+      },
+      "summary": "Oceanic arrives at 9:30 a.m. with Bly, who boards a special Southern Pacific train.",
+      "title": "Switching South by Special"
     }
   ]
 }

@@ -6,6 +6,7 @@ import Link from "next/link";
 import { useState } from "react";
 import { iiifCropUrl, pageUrl } from "../iiif";
 import { ScanCrop } from "../ScanCrop";
+import { useImageFailed } from "../useImageFailed";
 import { DAYS, dayLabel, weekday } from "../../lib/oneday/days";
 
 type Box = { x: number; y: number; w: number; h: number };
@@ -17,13 +18,14 @@ const pct = (v: number, of: number) => `${(v / of) * 100}%`;
 const shortDate = (iso: string) => new Date(`${iso}T12:00:00Z`).toLocaleDateString("en-US", { timeZone: "UTC", month: "short", day: "numeric" });
 
 function Sheet({ p, onlyOwn }: { p: DayPaper; onlyOwn: boolean }) {
-  const [failed, setFailed] = useState(false);
+  const { failed, bind } = useImageFailed();
   return (
     <div className="od-sheet" style={{ aspectRatio: `${p.width} / ${p.height}` }}>
       {failed ? (
-        <p className="od-fallback">Scan unavailable. <a href={pageUrl(p.pageId)}>Open at loc.gov</a></p>
+        // Already inside the link to the page; a second link here would nest.
+        <p className="od-fallback">Scan unavailable. Tap to open this page at loc.gov.</p>
       ) : (
-        <img src={iiifCropUrl(p.iiifBase, { x: 0, y: 0, w: p.width, h: p.height }, 900)} alt={`Front page of the ${p.paper}, ${shortDate(p.date)}`} onError={() => setFailed(true)} />
+        <img src={iiifCropUrl(p.iiifBase, { x: 0, y: 0, w: p.width, h: p.height }, 900)} alt={`Front page of the ${p.paper}, ${shortDate(p.date)}`} {...bind} />
       )}
       {p.marks.map((m, i) => (
         <span

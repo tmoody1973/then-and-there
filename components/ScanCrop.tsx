@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useImageFailed } from "./useImageFailed";
 import { type Box, iiifCropUrl, pageUrl } from "./iiif";
 import { PencilRing } from "./PencilRing";
 
@@ -17,7 +18,7 @@ type Props = {
 // A real scan laid on the desk. If the Library's image server fails, the citation and a
 // link to the page still stand on their own.
 export function ScanCrop({ iiifBase, box, focus, pageId, alt, citation, ringed = true }: Props) {
-  const [failed, setFailed] = useState(false);
+  const { failed, bind } = useImageFailed();
   const [whole, setWhole] = useState(false);
   // With a focus box, show just the lines that carry the evidence; "whole" shows the full clipping.
   const region = focus && !whole ? focus : box;
@@ -35,12 +36,12 @@ export function ScanCrop({ iiifBase, box, focus, pageId, alt, citation, ringed =
           </p>
         ) : (
           <img
+            {...bind}
             src={iiifCropUrl(iiifBase, region, 1200)}
             srcSet={widths.map((w) => `${iiifCropUrl(iiifBase, region, w)} ${w}w`).join(", ")}
             sizes="(min-width: 960px) 50vw, 100vw"
             alt={alt}
             loading="eager"
-            onError={() => setFailed(true)}
           />
         )}
         {ringed && !failed && !whole ? <PencilRing /> : null}

@@ -11,6 +11,7 @@ import { type CaseStop, optionsFor, STOPS } from "../../lib/detective/case";
 import { advance, answer, askEditor, left } from "../../lib/detective/progress";
 import { useCase } from "../../lib/detective/useCase";
 import { monthDay } from "../../lib/game/format";
+import "../agent.css";
 import "./case.css";
 
 const built = caseData.stops as CaseStop[];
@@ -72,7 +73,8 @@ export default function CasePage() {
 
           {q && next ? (
             <>
-              <h2 className="case-q">{q.prompt}</h2>
+              {/* The mockup's question when we hold the next dispatch; otherwise the question that stays true. */}
+              <h2 className="case-q">{nextBuilt?.n === n + 1 ? q.prompt : "Where does she stop next?"}</h2>
               <ul className="case-options" role="list">
                 {q.options.map((opt, i) => (
                   <li key={opt}>
@@ -90,11 +92,8 @@ export default function CasePage() {
               {result ? (
                 <div className="case-verdict" role="status">
                   <p>
-                    {result.correct ? (
-                      <>Right. The next dispatch came from {next.place}.</>
-                    ) : (
-                      <>Not this time. The next dispatch came from {next.place}. That cost 3 days.</>
-                    )}
+                    {result.correct ? <>Right. Her next stop was {next.place}.</> : <>Not this time. Her next stop was {next.place}. That cost 3 days.</>}
+                    {nextBuilt && nextBuilt.n !== n + 1 ? " No paper in our files reported her there, so the trail picks her up further on." : ""}
                   </p>
                   {nextBuilt ? (
                     <button type="button" className="file-button" onClick={() => update(advance(state, built.length))}>
