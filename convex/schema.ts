@@ -114,7 +114,8 @@ export default defineSchema({
   clippings: defineTable(clippingFields)
     .index("by_pageId", ["pageId"])
     .index("by_type_score", ["type", "humanStoryScore"])
-    .searchIndex("search_text", { searchField: "cleanedText", filterFields: ["pageId", "type"] }),
+    .searchIndex("search_text", { searchField: "cleanedText", filterFields: ["pageId", "type"] })
+    .searchIndex("search_raw", { searchField: "rawText", filterFields: ["type"] }),
   editorRuns: defineTable(editorRunFields),
   gameDays: defineTable(gameDayFields).index("by_day", ["day"]),
   meanwhile: defineTable(meanwhileFields).index("by_date_scope", ["date1889", "scope"]),
