@@ -28,3 +28,17 @@ test("a Forgery round: pick, lock in, see the real ad, and a reload keeps the an
   await expect(page.locator(".fg-result h2")).toBeVisible();
   await expect(page.locator(".fg-pick").first()).toBeDisabled();
 });
+
+test("a Quest source: answer it, read what the guide noticed, and a blank answer can't be sent", async ({ page }) => {
+  await page.goto("/quests");
+  await expect(page.getByRole("button", { name: "Send answer" })).toBeDisabled();
+  await page.locator("#qs-answer").fill("   ");
+  await expect(page.getByRole("button", { name: "Send answer" })).toBeDisabled();
+  await page.locator("#qs-answer").fill("To reach families still in the South.");
+  await page.getByRole("button", { name: "Send answer" }).click();
+  await expect(page.getByText("What the guide noticed")).toBeVisible();
+  await page.getByRole("button", { name: /Next source/ }).click();
+  await expect(page.locator(".qs-slug")).toContainText("Source 2");
+  await page.reload();
+  await expect(page.locator(".qs-slug")).toContainText("Source 2");
+});

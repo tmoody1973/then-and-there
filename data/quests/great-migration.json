@@ -1,0 +1,430 @@
+{
+  "builtAt": "2026-10-29T18:08:48.890Z",
+  "sources": [
+    {
+      "chapter": 1,
+      "key": "j579kw3h15w1tvtmm9jvtpjfed8h6zgs",
+      "clip": {
+        "clippingId": "j579kw3h15w1tvtmm9jvtpjfed8h6zgs",
+        "pageId": "http://www.loc.gov/resource/sn84024055/1916-12-30/ed-1/?sp=4",
+        "iiifBase": "https://tile.loc.gov/image-services/iiif/service:ndnp:iune:batch_iune_charlie_ver01:data:sn84024055:00280761072:1916123001:0547",
+        "box": {
+          "h": 3166,
+          "w": 1132,
+          "x": 159,
+          "y": 4985
+        },
+        "paper": "The Broad Ax",
+        "date": "1916-12-30",
+        "citationMla": "The Broad Ax. (Chicago, IL) 30 Dec. 1916, p. 4. Retrieved from the Library of Congress, www.loc.gov/item/sn84024055/1916-12-30/ed-1/.",
+        "excerpt": "Louis Fearlessly Tells Why Colored Men are Leaving the South. Addressing himself to a part of a report made to the Church Council recently held in St. Louis and of which Bishop Wilbur P. Thirkield, former president of Howard University, was one of the signers, John R. Hawkins, LL.B., financial .secr",
+        "city": "chicago",
+        "state": "illinois"
+      },
+      "caption": "A news report on a church leader's speech explaining why Black men are leaving the South.",
+      "question": "Who might the paper hope to reach by printing this bold speech, and what response might it want?",
+      "notice": "The clipping names a church financial secretary confronting a church council with plain truth about departures. That public moral framing fits how Black churches and press named Jim Crow violence, disfranchisement, and low wages as push factors.",
+      "hardHistory": false
+    },
+    {
+      "chapter": 1,
+      "key": "j57bc5gqkeqx4kqxxdnhy0fcp18h77yf",
+      "clip": {
+        "clippingId": "j57bc5gqkeqx4kqxxdnhy0fcp18h77yf",
+        "pageId": "http://www.loc.gov/resource/sn90061556/1917-06-30/ed-1/?sp=8",
+        "iiifBase": "https://tile.loc.gov/image-services/iiif/service:ndnp:mohi:batch_mohi_eadweard_ver01:data:sn90061556:00200292066:1917063001:0208",
+        "box": {
+          "h": 2359,
+          "w": 647,
+          "x": 1582,
+          "y": 639
+        },
+        "paper": "The Kansas City sun",
+        "date": "1917-06-30",
+        "citationMla": "The Kansas City sun. (Kansas City, MO) 30 Jun. 1917, p. 8. Retrieved from the Library of Congress, www.loc.gov/item/sn90061556/1917-06-30/ed-1/.",
+        "excerpt": "NEGRO EXODUS IS INCREASING. Desire to Earn Higher Wages and for Better Conditions Socially, Presents New Problems to Both South and North. Chicago. 111. The exodus or Negroes from the South to norehern manufacturlnB iiolnts, stronger within the last month or so. Is regarded as likely to Increase con",
+        "city": "kansas city",
+        "state": "missouri"
+      },
+      "caption": "A news article reporting growing Black migration North for higher wages and better social conditions.",
+      "question": "Why would a Midwestern Black paper emphasize both wages and social conditions to its readers?",
+      "notice": "The item says only a quarter of migrants are expected to return and calls the movement unprecedented. Historians describe this one-way flow as driven by escape from segregation and search for industrial work.",
+      "hardHistory": true
+    },
+    {
+      "chapter": 1,
+      "key": "j57129vry8f03h6t87za0y5dws8h7345",
+      "clip": {
+        "clippingId": "j57129vry8f03h6t87za0y5dws8h7345",
+        "pageId": "http://www.loc.gov/resource/sn83025779/1919-03-15/ed-1/?sp=1",
+        "iiifBase": "https://tile.loc.gov/image-services/iiif/service:ndnp:txdn:batch_txdn_audi_ver01:data:sn83025779:00200296977:1919031501:0106",
+        "box": {
+          "h": 4311,
+          "w": 782,
+          "x": 1579,
+          "y": 1877
+        },
+        "paper": "The Dallas express",
+        "date": "1919-03-15",
+        "citationMla": "The Dallas express. (Dallas, TX) 15 Mar. 1919, p. 1. Retrieved from the Library of Congress, www.loc.gov/item/sn83025779/1919-03-15/ed-1/.",
+        "excerpt": "Investigation of Negro 'migration to the north during the war, Just Issued by the Department of Labor, Indicate that the total migration may have been as great as 350,000, ex tending over a period of about 18 months during 1916 and 1917. That figures is fixed as the maximum limit, and 150,00 as the ",
+        "city": "dallas",
+        "state": "texas"
+      },
+      "caption": "A news report summarizing a federal labor investigation into wartime Black migration from the South.",
+      "question": "How might citing a government study help convince skeptical readers about reasons for leaving?",
+      "notice": "The headline blames general dissatisfaction with Southern conditions as principal causes of migration. Scholarship confirms disenfranchisement, labor exploitation, and racial violence pushed hundreds of thousands north during World War I.",
+      "hardHistory": true
+    },
+    {
+      "chapter": 1,
+      "key": "j57c9kcchcme865z894tneydvh8h6syw",
+      "clip": {
+        "clippingId": "j57c9kcchcme865z894tneydvh8h6syw",
+        "pageId": "http://www.loc.gov/resource/sn86056950/1919-10-11/ed-1/?sp=8",
+        "iiifBase": "https://tile.loc.gov/image-services/iiif/service:ndnp:iune:batch_iune_amethyst_ver01:data:sn86056950:00332897834:1919101101:0129",
+        "box": {
+          "h": 345,
+          "w": 1229,
+          "x": 1510,
+          "y": 3797
+        },
+        "paper": "The Chicago whip",
+        "date": "1919-10-11",
+        "citationMla": "The Chicago whip. (Chicago, IL) 11 Oct. 1919, p. 8. Retrieved from the Library of Congress, www.loc.gov/item/sn86056950/1919-10-11/ed-1/.",
+        "excerpt": "not true.\"\n\nNORTH AMERICAN COAL CO.\nGOING OVE RTH ETOP.\n\nThe North American Coal Co. is almost ready to close up the stock sale. This company will be a pioneer in the wholesale and retail coal busi-\n\nof the law.\nThe Grand Jury claimed that men were lynched by unknown parties. Negroes are very much i",
+        "city": "chicago",
+        "state": "illinois"
+      },
+      "caption": "A column of local news briefs noting lynching verdicts and planned mass migration North.",
+      "question": "What feelings might the paper hope to stir in local readers by linking lynching to migration?",
+      "notice": "The brief says a grand jury blamed unknown parties for lynchings and says Negroes plan wholesale migration north. Such impunity for mob violence is widely recognized as a powerful push factor in the Great Migration.",
+      "hardHistory": true
+    },
+    {
+      "chapter": 2,
+      "key": "j571fethmcnardccdazepyq5ss8h7r7d",
+      "clip": {
+        "clippingId": "j571fethmcnardccdazepyq5ss8h7r7d",
+        "pageId": "http://www.loc.gov/resource/sn84024055/1917-06-30/ed-1/?sp=4",
+        "iiifBase": "https://tile.loc.gov/image-services/iiif/service:ndnp:iune:batch_iune_charlie_ver01:data:sn84024055:00280761072:1917063001:0760",
+        "box": {
+          "h": 3542,
+          "w": 854,
+          "x": 1311,
+          "y": 3329
+        },
+        "paper": "The Broad Ax",
+        "date": "1917-06-30",
+        "citationMla": "The Broad Ax. (Chicago, IL) 30 Jun. 1917, p. 4. Retrieved from the Library of Congress, www.loc.gov/item/sn84024055/1917-06-30/ed-1/.",
+        "excerpt": "Conditions Socially, Presents New Problems to Both South and North. Chicago, 111. The exodus of Negroes from the South to northern manufacturing points, stronger within the last month or so, is regarded as likely to increase considerably as 'the season advances, and to continue throughout the summer",
+        "city": "chicago",
+        "state": "illinois"
+      },
+      "caption": "An article on Black Southerners leaving for Northern factory jobs for higher wages.",
+      "question": "Why might a Chicago paper stress new problems for both South and North to its readers?",
+      "notice": "It says only about a quarter of those leaving were expected to return. Historians note most migrants stayed, making a one-way move north.",
+      "hardHistory": true
+    },
+    {
+      "chapter": 2,
+      "key": "j577125nnd7p2k0aez9b08394s8h6j8z",
+      "clip": {
+        "clippingId": "j577125nnd7p2k0aez9b08394s8h6j8z",
+        "pageId": "http://www.loc.gov/resource/sn84025841/1918-02-02/ed-1/?sp=5",
+        "iiifBase": "https://tile.loc.gov/image-services/iiif/service:ndnp:vi:batch_vi_lauren_ver02:data:sn84025841:00271764649:1918020201:0053",
+        "box": {
+          "h": 3181,
+          "w": 1935,
+          "x": 3056,
+          "y": 5603
+        },
+        "paper": "Richmond Planet",
+        "date": "1918-02-02",
+        "citationMla": "Richmond Planet. (Richmond, VA) 2 Feb. 1918, p. 5. Retrieved from the Library of Congress, www.loc.gov/item/sn84025841/1918-02-02/ed-1/.",
+        "excerpt": "It is apparent that since the war has put a stop to the importation of foreign immigrants, the Negroes are so far the only cheap and unorganized labor supply obtainable. Indeed Mexicans were brought to work here in the same way, although the experience with them was not as satisfactory as with the b",
+        "city": "richmond",
+        "state": "virginia"
+      },
+      "caption": "A printed railroad labor contract promising carfare repayment after a year of work.",
+      "question": "Who might the paper hope to warn by printing this railroad contract wording?",
+      "notice": "It states the company would return carfare only after a year and give no free trip back. Railroad agents often recruited Southern workers north with offers tied to labor.",
+      "hardHistory": true
+    },
+    {
+      "chapter": 2,
+      "key": "j574c5sbr2prsffj0w4qz4z6y58h6v57",
+      "clip": {
+        "clippingId": "j574c5sbr2prsffj0w4qz4z6y58h6v57",
+        "pageId": "http://www.loc.gov/resource/sn83016810/1920-06-12/ed-1/?sp=2",
+        "iiifBase": "https://tile.loc.gov/image-services/iiif/service:ndnp:mnhi:batch_mnhi_funkley_ver02:data:sn83016810:00280768066:1920061201:0550",
+        "box": {
+          "h": 1196,
+          "w": 935,
+          "x": 2340,
+          "y": 4087
+        },
+        "paper": "The Appeal",
+        "date": "1920-06-12",
+        "citationMla": "The Appeal. (Saint Paul, MN) 12 Jun. 1920, p. 2. Retrieved from the Library of Congress, www.loc.gov/item/sn83016810/1920-06-12/ed-1/.",
+        "excerpt": "If the advisory body will not hear, the fight must be carried to the Republican national convention at Chicago and an attempt made to get an equal citizenship plank in the platform or know the reason why. \"ONWARD, CHRISTIAN SOLDIER.\" THE APPEAL of May 1, contained",
+        "city": "saint paul",
+        "state": "minnesota"
+      },
+      "caption": "Part of a political platform demanding an end to segregated cars in interstate travel.",
+      "question": "Why would a St. Paul paper press Republicans to promise fair treatment for Black travelers?",
+      "notice": "It lists abolition of the Jim Crow car alongside anti-lynching and desegregation demands. Segregated trains were a familiar hardship for Southern migrants heading north.",
+      "hardHistory": false
+    },
+    {
+      "chapter": 2,
+      "key": "j578rv5s429fbjx8n97xh8bt7x8h6ebf",
+      "clip": {
+        "clippingId": "j578rv5s429fbjx8n97xh8bt7x8h6ebf",
+        "pageId": "http://www.loc.gov/resource/sn83025514/1917-02-03/ed-1/?sp=7",
+        "iiifBase": "https://tile.loc.gov/image-services/iiif/service:ndnp:cohi:batch_cohi_hamilton_ver01:data:sn83025514:00340586372:1917020301:0047",
+        "box": {
+          "h": 4661,
+          "w": 1306,
+          "x": 46,
+          "y": 683
+        },
+        "paper": "The Colorado statesman",
+        "date": "1917-02-03",
+        "citationMla": "The Colorado statesman. (Denver, CO) 3 Feb. 1917, p. 7. Retrieved from the Library of Congress, www.loc.gov/item/sn83025514/1917-02-03/ed-1/.",
+        "excerpt": "The 5,000 colored workmen who have come to Detroit In 1010 from the Southern towns constitute but 5 per cent of the exodus from the South for the year. The phenomenon, we learn from the Crisis, the intelligent organ of the Negro, is much more widespread than we hud reason to suppose. « These colored",
+        "city": "denver",
+        "state": "colorado"
+      },
+      "caption": "An editorial reprinting a report that Detroit arrivals were a small share of the exodus.",
+      "question": "Why share northern job news from another Black paper with readers considering leaving?",
+      "notice": "It reports thousands had already reached Detroit and says more workers would be needed. Factory jobs in cities like Detroit drew many migrants during wartime labor shortages.",
+      "hardHistory": true
+    },
+    {
+      "chapter": 3,
+      "key": "j572s6yb7gc5w25s4v5n34pzs98h7hb2",
+      "clip": {
+        "clippingId": "j572s6yb7gc5w25s4v5n34pzs98h7hb2",
+        "pageId": "http://www.loc.gov/resource/sn90061556/1917-01-27/ed-1/?sp=3",
+        "iiifBase": "https://tile.loc.gov/image-services/iiif/service:ndnp:mohi:batch_mohi_eadweard_ver01:data:sn90061556:00200292066:1917012701:0023",
+        "box": {
+          "h": 5534,
+          "w": 1241,
+          "x": 928,
+          "y": 801
+        },
+        "paper": "The Kansas City sun",
+        "date": "1917-01-27",
+        "citationMla": "The Kansas City sun. (Kansas City, MO) 27 Jan. 1917, p. 3. Retrieved from the Library of Congress, www.loc.gov/item/sn90061556/1917-01-27/ed-1/.",
+        "excerpt": "Tho D.000 colored workmen who havo come to Detroit In 1010 from the Southern towns constitute but 5 per cent of the exodus from the South for tho year. Tho phenomenon, we learn from the Crisis, the intelligent organ of tho Negro, is much more widespread than wo had reason to suppose. These colored w",
+        "city": "kansas city",
+        "state": "missouri"
+      },
+      "caption": "An editorial citing the Crisis about Black workmen reaching Detroit for unskilled jobs.",
+      "question": "How might Southern readers hearing about Detroit factories have imagined a different future for their families?",
+      "notice": "The clipping says thousands reached Detroit in 1916 and northern employers badly needed them as European immigration stopped. This reflects wartime labor shortages that opened industrial jobs to Black migrants.",
+      "hardHistory": true
+    },
+    {
+      "chapter": 3,
+      "key": "j5739nwmjxw7f4qhv0t6zf0e818h6w05",
+      "clip": {
+        "clippingId": "j5739nwmjxw7f4qhv0t6zf0e818h6w05",
+        "pageId": "http://www.loc.gov/resource/sn84025841/1918-02-02/ed-1/?sp=5",
+        "iiifBase": "https://tile.loc.gov/image-services/iiif/service:ndnp:vi:batch_vi_lauren_ver02:data:sn84025841:00271764649:1918020201:0053",
+        "box": {
+          "h": 8362,
+          "w": 1426,
+          "x": 1668,
+          "y": 270
+        },
+        "paper": "Richmond Planet",
+        "date": "1918-02-02",
+        "citationMla": "Richmond Planet. (Richmond, VA) 2 Feb. 1918, p. 5. Retrieved from the Library of Congress, www.loc.gov/item/sn84025841/1918-02-02/ed-1/.",
+        "excerpt": "physician that\nation to apply it.\n\nate of the number\nhave come North\nar is possible. Estithree hundred thous\nred thousand. There\nut two million Nein the North, and\nnt importance that\nconditions of these\nugh in our midst,\nknown to us, and\ne fitted into their\n. Our little study\nortunities availabl",
+        "city": "richmond",
+        "state": "virginia"
+      },
+      "caption": "An editorial discussing migrant numbers and a study of their conditions and opportunities.",
+      "question": "Who might need reassurance that newcomers could fit into northern city life and work?",
+      "notice": "The fragment mentions hundreds of thousands coming North and stresses learning their conditions and fitting them into new life. Such surveys reflected Progressive-era efforts to document migration and guide support for workers.",
+      "hardHistory": true
+    },
+    {
+      "chapter": 3,
+      "key": "j579v42n7shjmf301pdrwqjz958h6t3h",
+      "clip": {
+        "clippingId": "j579v42n7shjmf301pdrwqjz958h6t3h",
+        "pageId": "http://www.loc.gov/resource/sn83025514/1917-06-23/ed-1/?sp=1",
+        "iiifBase": "https://tile.loc.gov/image-services/iiif/service:ndnp:cohi:batch_cohi_hamilton_ver01:data:sn83025514:00340586372:1917062301:0201",
+        "box": {
+          "h": 1050,
+          "w": 607,
+          "x": 1341,
+          "y": 3734
+        },
+        "paper": "The Colorado statesman",
+        "date": "1917-06-23",
+        "citationMla": "The Colorado statesman. (Denver, CO) 23 Jun. 1917, p. 1. Retrieved from the Library of Congress, www.loc.gov/item/sn83025514/1917-06-23/ed-1/.",
+        "excerpt": "coming from. A PROGRESSIVE NORTHERN NEGRO. (Wisconsin Weekly Blade.) In his last speech to the National Negro Business League, which met in Boston in 1915, the late Dr. Booker T. Washington among many other things said:, “There are many white men in the country who have become millionaires in the ju",
+        "city": "denver",
+        "state": "colorado"
+      },
+      "caption": "A reprint from another paper urging young men to start a junk business up North.",
+      "question": "Why would an editor reprint praise for self-starting junk dealers for readers considering leaving the South?",
+      "notice": "The clipping quotes Booker T. Washington saying a sack and determination could launch a profitable junk business. Many migrants indeed sought self-employment because racism limited access to skilled trades and promotions.",
+      "hardHistory": false
+    },
+    {
+      "chapter": 3,
+      "key": "j577ekad5spgds4myd6ccjkhnd8h7p4n",
+      "clip": {
+        "clippingId": "j577ekad5spgds4myd6ccjkhnd8h7p4n",
+        "pageId": "http://www.loc.gov/resource/sn83025514/1917-06-23/ed-1/?sp=1",
+        "iiifBase": "https://tile.loc.gov/image-services/iiif/service:ndnp:cohi:batch_cohi_hamilton_ver01:data:sn83025514:00340586372:1917062301:0201",
+        "box": {
+          "h": 1169,
+          "w": 595,
+          "x": 1948,
+          "y": 2365
+        },
+        "paper": "The Colorado statesman",
+        "date": "1917-06-23",
+        "citationMla": "The Colorado statesman. (Denver, CO) 23 Jun. 1917, p. 1. Retrieved from the Library of Congress, www.loc.gov/item/sn83025514/1917-06-23/ed-1/.",
+        "excerpt": "His name is almost a household word in northern Wisconsin. Mr. Hudson is a hustler and a leading citizen of his adopted city, and a very worthy member of the Negro race. The large, airy three-story brick building in which he does business, which is located in the business center of the city within t",
+        "city": "denver",
+        "state": "colorado"
+      },
+      "caption": "A profile of a successful northern Wisconsin businessman employing several workers and owning property.",
+      "question": "What might readers dreaming of steady pay feel when seeing one Black employer owning buildings and cars?",
+      "notice": "The item says Hudson owned a large brick building and employed eight to a dozen people with autos. His story illustrated the rare but real upward mobility some migrants found outside big industrial centers.",
+      "hardHistory": true
+    },
+    {
+      "chapter": 4,
+      "key": "j57fgrv8d44h8wbsc25nkw7x1s8h7d8b",
+      "clip": {
+        "clippingId": "j57fgrv8d44h8wbsc25nkw7x1s8h7d8b",
+        "pageId": "http://www.loc.gov/resource/sn83025514/1917-06-30/ed-1/?sp=1",
+        "iiifBase": "https://tile.loc.gov/image-services/iiif/service:ndnp:cohi:batch_cohi_hamilton_ver01:data:sn83025514:00340586372:1917063001:0209",
+        "box": {
+          "h": 550,
+          "w": 568,
+          "x": 2028,
+          "y": 1784
+        },
+        "paper": "The Colorado statesman",
+        "date": "1917-06-30",
+        "citationMla": "The Colorado statesman. (Denver, CO) 30 Jun. 1917, p. 1. Retrieved from the Library of Congress, www.loc.gov/item/sn83025514/1917-06-30/ed-1/.",
+        "excerpt": "NEGRO EXODUS IS INCREASING.",
+        "city": "denver",
+        "state": "colorado"
+      },
+      "caption": "A meeting notice calling Colored Battalion members to Shorter A.M.E. Church to organize and elect officers.",
+      "question": "Who might feel welcomed or called to gather when a church hosts both worship and community organizing?",
+      "notice": "The notice names Shorter A.M.E. Church as the meeting place at a set evening hour. Black churches in northern and western cities often served as safe civic centers for newcomers building community.",
+      "hardHistory": false
+    },
+    {
+      "chapter": 4,
+      "key": "j578azpxphs1908k9m1hfzv23h8h7ne8",
+      "clip": {
+        "clippingId": "j578azpxphs1908k9m1hfzv23h8h7ne8",
+        "pageId": "http://www.loc.gov/resource/sn83035387/1916-09-16/ed-1/?sp=2",
+        "iiifBase": "https://tile.loc.gov/image-services/iiif/service:ndnp:dlc:batch_dlc_evans_ver01:data:sn83035387:00211664587:1916091601:0566",
+        "box": {
+          "h": 5277,
+          "w": 852,
+          "x": 1281,
+          "y": 3601
+        },
+        "paper": "The Gazette",
+        "date": "1916-09-16",
+        "citationMla": "The Gazette. (Cleveland, OH) 16 Sep. 1916, p. 2. Retrieved from the Library of Congress, www.loc.gov/item/sn83035387/1916-09-16/ed-1/.",
+        "excerpt": "“Starlight” Willis’ political chances for election, this fall, here in Cleveland where he has insulted the entire Afro-American clergy and others of our good people by consenting to the appointment of the manager of a saloon in Central Av. as a deputy oil inspector for this county to represent all o",
+        "city": "cleveland",
+        "state": "ohio"
+      },
+      "caption": "An editorial criticizing a church advertisement inviting a political candidate to speak at a celebration service.",
+      "question": "What might readers gain when their church brings candidates to speak during a celebration service?",
+      "notice": "The item notes the governor, mayor, and other politicians were advertised as speakers at St. John's. Churches often became political hubs where migrants could meet leaders and claim a public voice.",
+      "hardHistory": true
+    },
+    {
+      "chapter": 4,
+      "key": "j57fhbrx41h2f4pcam1m9gb6558h7yjy",
+      "clip": {
+        "clippingId": "j57fhbrx41h2f4pcam1m9gb6558h7yjy",
+        "pageId": "http://www.loc.gov/resource/sn86056950/1919-10-11/ed-1/?sp=8",
+        "iiifBase": "https://tile.loc.gov/image-services/iiif/service:ndnp:iune:batch_iune_amethyst_ver01:data:sn86056950:00332897834:1919101101:0129",
+        "box": {
+          "h": 1399,
+          "w": 612,
+          "x": 896,
+          "y": 1465
+        },
+        "paper": "The Chicago whip",
+        "date": "1919-10-11",
+        "citationMla": "The Chicago whip. (Chicago, IL) 11 Oct. 1919, p. 8. Retrieved from the Library of Congress, www.loc.gov/item/sn86056950/1919-10-11/ed-1/.",
+        "excerpt": "On last Saturda your choir director and sevral of the choir members who are members of the Chicago Progressive Choral Society",
+        "city": "chicago",
+        "state": "illinois"
+      },
+      "caption": "A column of church news reporting Sunday worship, eight new members, and an upcoming conference.",
+      "question": "How might reading about growing worship and testimonials encourage newcomers seeking a home church?",
+      "notice": "The column reports usual worshipers, rousing preaching, testimonials, and eight people joining in one day. Steady church growth helped migrants recreate family-like support after leaving Southern congregations.",
+      "hardHistory": false
+    },
+    {
+      "chapter": 4,
+      "key": "j577wkg77k9h9ykr4sh4mjh9pn8h79c0",
+      "clip": {
+        "clippingId": "j577wkg77k9h9ykr4sh4mjh9pn8h79c0",
+        "pageId": "http://www.loc.gov/resource/sn90061556/1917-07-07/ed-1/?sp=3",
+        "iiifBase": "https://tile.loc.gov/image-services/iiif/service:ndnp:mohi:batch_mohi_eadweard_ver01:data:sn90061556:00200292066:1917070701:0211",
+        "box": {
+          "h": 2037,
+          "w": 642,
+          "x": 2181,
+          "y": 451
+        },
+        "paper": "The Kansas City sun",
+        "date": "1917-07-07",
+        "citationMla": "The Kansas City sun. (Kansas City, MO) 7 Jul. 1917, p. 3. Retrieved from the Library of Congress, www.loc.gov/item/sn90061556/1917-07-07/ed-1/.",
+        "excerpt": "At tho evening service a prominent social worker made an enlightening talk on \"The Reason Why Negroes Were Leaving the South.\" The i 1 i",
+        "city": "kansas city",
+        "state": "missouri"
+      },
+      "caption": "A column of church news reporting attendance, a new member, illness, and a member's funeral.",
+      "question": "Why might a paper share small updates about illness, funerals, and new members with its readers?",
+      "notice": "The notes record attendance, one addition, hope for Ella Lawson's recovery, and Matilda Derrick's funeral sermon. Such intimate news helped scattered migrants feel known and cared for in a new city.",
+      "hardHistory": false
+    },
+    {
+      "chapter": 4,
+      "key": "j57bcdjq6vq2kg979j5n9fp2ds8h7n10",
+      "clip": {
+        "clippingId": "j57bcdjq6vq2kg979j5n9fp2ds8h7n10",
+        "pageId": "http://www.loc.gov/resource/sn83035387/1916-09-16/ed-1/?sp=2",
+        "iiifBase": "https://tile.loc.gov/image-services/iiif/service:ndnp:dlc:batch_dlc_evans_ver01:data:sn83035387:00211664587:1916091601:0566",
+        "box": {
+          "h": 7981,
+          "w": 1608,
+          "x": 2977,
+          "y": 998
+        },
+        "paper": "The Gazette",
+        "date": "1916-09-16",
+        "citationMla": "The Gazette. (Cleveland, OH) 16 Sep. 1916, p. 2. Retrieved from the Library of Congress, www.loc.gov/item/sn83035387/1916-09-16/ed-1/.",
+        "excerpt": "Edward Carey, of Cleveland, visited her daughter, Mrs. H. Douglass, last week.—Mrs. Anna Shaw and son, Earl, and Miss Martha Williams, of Pittsburg, spent Sunday with Mrs. C. A. Jackson.—Buckeye lodge, Elks, will meet Sept. 21.—Edward J. Williams has been promoted to tar-sampler and tester at the Re",
+        "city": "cleveland",
+        "state": "ohio"
+      },
+      "caption": "A statewide column of local news sharing church, school, social, and lodge notes from Black towns.",
+      "question": "Who might rely on a statewide roundup of church, lodge, and social doings to stay connected?",
+      "notice": "The column gathers short reports on illness, travel, church groves, and visits from many towns. Black papers linked small communities, letting migrants maintain ties while building new homes.",
+      "hardHistory": true
+    }
+  ]
+}

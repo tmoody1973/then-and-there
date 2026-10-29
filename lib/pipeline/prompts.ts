@@ -201,3 +201,17 @@ Return only JSON: {"pass": boolean, "reason": string (one sentence)}.
 
 CLAIM:
 ${claim}`;
+
+// Quests: the guide picks a chapter's sources from the Black press and writes, for each, a caption,
+// an open question and what a careful reader might notice. The Editor checks caption and note.
+export const QUEST_GM_PROMPT = (chapter: string, focus: string, listing: string, count: number) =>
+  `You are the guide for a history quest for students: "The Great Migration through the Black press," 1916-1925. This chapter is "${chapter}": ${focus}. Below are numbered clippings from African American newspapers of the time.
+Pick up to ${count} clippings that best show this chapter, in an order that reads as a story. Skip anything off topic, too damaged to read, or that only mentions the theme in passing.
+For each pick write, in plain modern English for readers on phones:
+- "caption": one sentence, at most 18 words, describing the whole clipping as printed: say what kind of item it is (a letter, an editorial, an ad, a column of local news, a reprint from another paper) and what it is about. Only what it prints.
+- "question": one open question, at most 28 words, that asks the reader to think about why the paper printed this or who it was for. No yes/no questions; never quiz them on a fact.
+- "notice": 2 sentences, at most 50 words, on what a careful reader might notice. The first sentence must rest on what the clipping prints; the second may connect it to well-established history of the Great Migration. Never invent names, numbers or events.
+Return only JSON: {"picks": [{"i": number, "caption": string, "question": string, "notice": string}]}.
+
+CLIPPINGS:
+${listing}`;

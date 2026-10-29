@@ -1,0 +1,62 @@
+[
+  {
+    "qs": "migration north",
+    "ops": "AND",
+    "facets": [
+      "subject:african american newspapers"
+    ],
+    "startDate": "1916-01-01",
+    "endDate": "1925-12-31",
+    "limit": 12
+  },
+  {
+    "qs": "exodus south",
+    "ops": "AND",
+    "facets": [
+      "subject:african american newspapers"
+    ],
+    "startDate": "1916-01-01",
+    "endDate": "1925-12-31",
+    "limit": 12
+  },
+  {
+    "qs": "going north",
+    "ops": "AND",
+    "facets": [
+      "subject:african american newspapers"
+    ],
+    "startDate": "1916-01-01",
+    "endDate": "1925-12-31",
+    "limit": 12
+  },
+  {
+    "qs": "leaving the south",
+    "ops": "AND",
+    "facets": [
+      "subject:african american newspapers"
+    ],
+    "startDate": "1916-01-01",
+    "endDate": "1925-12-31",
+    "limit": 12
+  },
+  {
+    "qs": "north better wages",
+    "ops": "AND",
+    "facets": [
+      "subject:african american newspapers"
+    ],
+    "startDate": "1916-01-01",
+    "endDate": "1925-12-31",
+    "limit": 12
+  },
+  {
+    "qs": "new arrivals north",
+    "ops": "AND",
+    "facets": [
+      "subject:african american newspapers"
+    ],
+    "startDate": "1916-01-01",
+    "endDate": "1925-12-31",
+    "limit": 12
+  }
+]
