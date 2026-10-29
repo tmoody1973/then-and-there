@@ -34,7 +34,7 @@ export default function DispatchPage() {
 
   const dateline = (
     <p className="dateline">
-      <Link href="/play">THEN &amp; THERE</Link>
+      <Link href="/play">← The race</Link>
       <span className="num">Day {day} · {left} days left</span>
     </p>
   );

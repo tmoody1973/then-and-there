@@ -42,7 +42,7 @@ export default function FinalePage() {
   return (
     <main className="column">
       <p className="dateline">
-        <Link href="/play">THEN &amp; THERE</Link>
+        <Link href="/play">← The race</Link>
         <span className="num">The finale</span>
       </p>
       <h1>Guess her exact time.</h1>

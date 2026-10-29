@@ -20,7 +20,7 @@ export default function RaceBoard() {
   return (
     <main className="column">
       <p className="dateline">
-        <span>THEN &amp; THERE</span>
+        <Link href="/">← Today</Link>
         <span className="num">{left} days left · streak {streak(p.progress, p.today)}</span>
       </p>
       <h1>The race</h1>

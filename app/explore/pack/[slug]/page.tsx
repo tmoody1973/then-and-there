@@ -26,7 +26,7 @@ export default function PackPage() {
   return (
     <main className="column pack">
       <p className="dateline no-print">
-        <Link href="/explore">THEN &amp; THERE · Explore</Link>
+        <Link href="/explore">← Search the archive</Link>
         <span>Teacher pack</span>
       </p>
       <h1>{pack.title}</h1>

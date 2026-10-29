@@ -90,7 +90,7 @@ export default function ExplorePage() {
     <main className="wire-page">
       <header className="wire-head">
         <p className="dateline">
-          <Link href="/">THEN &amp; THERE</Link>
+          <Link href="/">← Today</Link>
           <span>
             Explore · <DeskLink />
           </span>
