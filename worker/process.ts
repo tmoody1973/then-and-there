@@ -214,7 +214,13 @@ if (import.meta.main) {
   // Skip pages already processed: reprocessing would replace their clippings with new IDs,
   // breaking game picks that reference them. Pass --reprocess to force it.
   const reprocess = args.includes("--reprocess");
-  const done = new Set(reprocess ? [] : ((await convex.query(anyApi.pages.processedIds, { secret: writeSecret() })) as string[]));
+  const done = new Set<string>();
+  for (let cursor: string | null = null; !reprocess; ) {
+    const res: { page: string[]; isDone: boolean; continueCursor: string } = await convex.query(anyApi.pages.processedIds, { secret: writeSecret(), cursor });
+    res.page.forEach((id) => done.add(id));
+    if (res.isDone) break;
+    cursor = res.continueCursor;
+  }
   const pages = cachedPages(cacheDir)
     .filter((p) => !only || p.pageId.includes(only))
     .filter((p) => !done.has(p.pageId))

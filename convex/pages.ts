@@ -31,12 +31,17 @@ export const byDateRange = query({
 
 // Already-processed pages: the worker skips these so their clipping IDs never change
 // (game picks reference clipping IDs).
+// Paged: page rows carry their text, and reading ~700 at once passes Convex's 1s query limit.
 export const processedIds = query({
-  args: { secret: v.string() },
-  handler: async (ctx, { secret }) => {
+  args: { secret: v.string(), cursor: v.union(v.string(), v.null()) },
+  handler: async (ctx, { secret, cursor }) => {
     requireSecret(secret);
-    const pages = await ctx.db.query("pages").collect();
-    return pages.filter((p) => p.status === "processed").map((p) => p.pageId as string);
+    const res = await ctx.db.query("pages").paginate({ cursor, numItems: 100 });
+    return {
+      page: res.page.filter((p) => p.status === "processed").map((p) => p.pageId as string),
+      isDone: res.isDone,
+      continueCursor: res.continueCursor,
+    };
   },
 });
 

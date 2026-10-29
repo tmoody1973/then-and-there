@@ -23,6 +23,8 @@ const arg = (name: string, fallback: number) => Number(process.argv[process.argv
 const MAX = process.argv.includes("--max") ? arg("max", 12) : 12;
 const BUDGET = process.argv.includes("--budget") ? arg("budget", 4) : 4;
 const DRY = process.argv.includes("--dry");
+// No region fills more than a third of the rotation, or "Midwest" becomes the safe guess.
+const REGION_CAP = Math.ceil(MAX / 3);
 const SPARK = process.env.META_MODEL_SPARK ?? "";
 const CROP_WIDTH = 1000;
 const MAX_SHARE = 0.25;
@@ -99,6 +101,7 @@ for (const { page: p, clips } of ordered) {
   const paper = paperFromCite(p.citeThis.mla, p.title);
   const year = Number(p.date.slice(0, 4));
   const region = regionOf(p.state)!;
+  if (rows.filter((r) => r.region === region).length >= REGION_CAP) continue;
   const answer = `${paper}, ${titleCase(p.city)}, ${titleCase(p.state)} (${region}), ${p.date}`;
   const complete = makeComplete(meta, `frontpage-${p.pageId}`, onUsage);
   const loadImage = async (url: string) => toDataUrl(await bytesOf(url));

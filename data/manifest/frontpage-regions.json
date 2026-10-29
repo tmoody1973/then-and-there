@@ -1,0 +1,359 @@
+[
+  {
+    "startDate": "1900-01-01",
+    "endDate": "1909-12-31",
+    "frontPagesOnly": true,
+    "state": "new york",
+    "limit": 2
+  },
+  {
+    "startDate": "1910-01-01",
+    "endDate": "1919-12-31",
+    "frontPagesOnly": true,
+    "state": "new york",
+    "limit": 2
+  },
+  {
+    "startDate": "1920-01-01",
+    "endDate": "1930-12-31",
+    "frontPagesOnly": true,
+    "state": "new york",
+    "limit": 2
+  },
+  {
+    "startDate": "1900-01-01",
+    "endDate": "1909-12-31",
+    "frontPagesOnly": true,
+    "state": "pennsylvania",
+    "limit": 2
+  },
+  {
+    "startDate": "1910-01-01",
+    "endDate": "1919-12-31",
+    "frontPagesOnly": true,
+    "state": "pennsylvania",
+    "limit": 2
+  },
+  {
+    "startDate": "1920-01-01",
+    "endDate": "1930-12-31",
+    "frontPagesOnly": true,
+    "state": "pennsylvania",
+    "limit": 2
+  },
+  {
+    "startDate": "1900-01-01",
+    "endDate": "1909-12-31",
+    "frontPagesOnly": true,
+    "state": "vermont",
+    "limit": 2
+  },
+  {
+    "startDate": "1910-01-01",
+    "endDate": "1919-12-31",
+    "frontPagesOnly": true,
+    "state": "vermont",
+    "limit": 2
+  },
+  {
+    "startDate": "1920-01-01",
+    "endDate": "1930-12-31",
+    "frontPagesOnly": true,
+    "state": "vermont",
+    "limit": 2
+  },
+  {
+    "startDate": "1900-01-01",
+    "endDate": "1909-12-31",
+    "frontPagesOnly": true,
+    "state": "connecticut",
+    "limit": 2
+  },
+  {
+    "startDate": "1910-01-01",
+    "endDate": "1919-12-31",
+    "frontPagesOnly": true,
+    "state": "connecticut",
+    "limit": 2
+  },
+  {
+    "startDate": "1920-01-01",
+    "endDate": "1930-12-31",
+    "frontPagesOnly": true,
+    "state": "connecticut",
+    "limit": 2
+  },
+  {
+    "startDate": "1900-01-01",
+    "endDate": "1909-12-31",
+    "frontPagesOnly": true,
+    "state": "new jersey",
+    "limit": 2
+  },
+  {
+    "startDate": "1910-01-01",
+    "endDate": "1919-12-31",
+    "frontPagesOnly": true,
+    "state": "new jersey",
+    "limit": 2
+  },
+  {
+    "startDate": "1920-01-01",
+    "endDate": "1930-12-31",
+    "frontPagesOnly": true,
+    "state": "new jersey",
+    "limit": 2
+  },
+  {
+    "startDate": "1900-01-01",
+    "endDate": "1909-12-31",
+    "frontPagesOnly": true,
+    "state": "virginia",
+    "limit": 2
+  },
+  {
+    "startDate": "1910-01-01",
+    "endDate": "1919-12-31",
+    "frontPagesOnly": true,
+    "state": "virginia",
+    "limit": 2
+  },
+  {
+    "startDate": "1920-01-01",
+    "endDate": "1930-12-31",
+    "frontPagesOnly": true,
+    "state": "virginia",
+    "limit": 2
+  },
+  {
+    "startDate": "1900-01-01",
+    "endDate": "1909-12-31",
+    "frontPagesOnly": true,
+    "state": "north carolina",
+    "limit": 2
+  },
+  {
+    "startDate": "1910-01-01",
+    "endDate": "1919-12-31",
+    "frontPagesOnly": true,
+    "state": "north carolina",
+    "limit": 2
+  },
+  {
+    "startDate": "1920-01-01",
+    "endDate": "1930-12-31",
+    "frontPagesOnly": true,
+    "state": "north carolina",
+    "limit": 2
+  },
+  {
+    "startDate": "1900-01-01",
+    "endDate": "1909-12-31",
+    "frontPagesOnly": true,
+    "state": "louisiana",
+    "limit": 2
+  },
+  {
+    "startDate": "1910-01-01",
+    "endDate": "1919-12-31",
+    "frontPagesOnly": true,
+    "state": "louisiana",
+    "limit": 2
+  },
+  {
+    "startDate": "1920-01-01",
+    "endDate": "1930-12-31",
+    "frontPagesOnly": true,
+    "state": "louisiana",
+    "limit": 2
+  },
+  {
+    "startDate": "1900-01-01",
+    "endDate": "1909-12-31",
+    "frontPagesOnly": true,
+    "state": "texas",
+    "limit": 2
+  },
+  {
+    "startDate": "1910-01-01",
+    "endDate": "1919-12-31",
+    "frontPagesOnly": true,
+    "state": "texas",
+    "limit": 2
+  },
+  {
+    "startDate": "1920-01-01",
+    "endDate": "1930-12-31",
+    "frontPagesOnly": true,
+    "state": "texas",
+    "limit": 2
+  },
+  {
+    "startDate": "1900-01-01",
+    "endDate": "1909-12-31",
+    "frontPagesOnly": true,
+    "state": "florida",
+    "limit": 2
+  },
+  {
+    "startDate": "1910-01-01",
+    "endDate": "1919-12-31",
+    "frontPagesOnly": true,
+    "state": "florida",
+    "limit": 2
+  },
+  {
+    "startDate": "1920-01-01",
+    "endDate": "1930-12-31",
+    "frontPagesOnly": true,
+    "state": "florida",
+    "limit": 2
+  },
+  {
+    "startDate": "1900-01-01",
+    "endDate": "1909-12-31",
+    "frontPagesOnly": true,
+    "state": "kentucky",
+    "limit": 2
+  },
+  {
+    "startDate": "1910-01-01",
+    "endDate": "1919-12-31",
+    "frontPagesOnly": true,
+    "state": "kentucky",
+    "limit": 2
+  },
+  {
+    "startDate": "1920-01-01",
+    "endDate": "1930-12-31",
+    "frontPagesOnly": true,
+    "state": "kentucky",
+    "limit": 2
+  },
+  {
+    "startDate": "1900-01-01",
+    "endDate": "1909-12-31",
+    "frontPagesOnly": true,
+    "state": "california",
+    "limit": 2
+  },
+  {
+    "startDate": "1910-01-01",
+    "endDate": "1919-12-31",
+    "frontPagesOnly": true,
+    "state": "california",
+    "limit": 2
+  },
+  {
+    "startDate": "1920-01-01",
+    "endDate": "1930-12-31",
+    "frontPagesOnly": true,
+    "state": "california",
+    "limit": 2
+  },
+  {
+    "startDate": "1900-01-01",
+    "endDate": "1909-12-31",
+    "frontPagesOnly": true,
+    "state": "washington",
+    "limit": 2
+  },
+  {
+    "startDate": "1910-01-01",
+    "endDate": "1919-12-31",
+    "frontPagesOnly": true,
+    "state": "washington",
+    "limit": 2
+  },
+  {
+    "startDate": "1920-01-01",
+    "endDate": "1930-12-31",
+    "frontPagesOnly": true,
+    "state": "washington",
+    "limit": 2
+  },
+  {
+    "startDate": "1900-01-01",
+    "endDate": "1909-12-31",
+    "frontPagesOnly": true,
+    "state": "utah",
+    "limit": 2
+  },
+  {
+    "startDate": "1910-01-01",
+    "endDate": "1919-12-31",
+    "frontPagesOnly": true,
+    "state": "utah",
+    "limit": 2
+  },
+  {
+    "startDate": "1920-01-01",
+    "endDate": "1930-12-31",
+    "frontPagesOnly": true,
+    "state": "utah",
+    "limit": 2
+  },
+  {
+    "startDate": "1900-01-01",
+    "endDate": "1909-12-31",
+    "frontPagesOnly": true,
+    "state": "arizona",
+    "limit": 2
+  },
+  {
+    "startDate": "1910-01-01",
+    "endDate": "1919-12-31",
+    "frontPagesOnly": true,
+    "state": "arizona",
+    "limit": 2
+  },
+  {
+    "startDate": "1920-01-01",
+    "endDate": "1930-12-31",
+    "frontPagesOnly": true,
+    "state": "arizona",
+    "limit": 2
+  },
+  {
+    "startDate": "1900-01-01",
+    "endDate": "1909-12-31",
+    "frontPagesOnly": true,
+    "state": "montana",
+    "limit": 2
+  },
+  {
+    "startDate": "1910-01-01",
+    "endDate": "1919-12-31",
+    "frontPagesOnly": true,
+    "state": "montana",
+    "limit": 2
+  },
+  {
+    "startDate": "1920-01-01",
+    "endDate": "1930-12-31",
+    "frontPagesOnly": true,
+    "state": "montana",
+    "limit": 2
+  },
+  {
+    "startDate": "1900-01-01",
+    "endDate": "1909-12-31",
+    "frontPagesOnly": true,
+    "state": "new mexico",
+    "limit": 2
+  },
+  {
+    "startDate": "1910-01-01",
+    "endDate": "1919-12-31",
+    "frontPagesOnly": true,
+    "state": "new mexico",
+    "limit": 2
+  },
+  {
+    "startDate": "1920-01-01",
+    "endDate": "1930-12-31",
+    "frontPagesOnly": true,
+    "state": "new mexico",
+    "limit": 2
+  }
+]

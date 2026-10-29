@@ -83,7 +83,9 @@ describe("store", () => {
     const t = convexTest(schema, modules);
     await t.mutation(api.pages.upsert, { secret: SECRET, page: { ...PAGE, pageId: "a", status: "processed" } });
     await t.mutation(api.pages.upsert, { secret: SECRET, page: { ...PAGE, pageId: "b", status: "failed" } });
-    expect(await t.query(api.pages.processedIds, { secret: SECRET })).toEqual(["a"]);
+    const res = await t.query(api.pages.processedIds, { secret: SECRET, cursor: null });
+    expect(res.page).toEqual(["a"]);
+    expect(res.isDone).toBe(true);
   });
 
   test("byPageId returns one page or null", async () => {
@@ -98,7 +100,7 @@ describe("store", () => {
     await expect(t.mutation(api.pages.upsert, { secret: "wrong", page: PAGE })).rejects.toThrow(/not allowed/);
     await expect(t.mutation(api.clippings.replaceForPage, { secret: "", pageId: "x", clippings: [] })).rejects.toThrow(/not allowed/);
     await expect(t.mutation(api.editorRuns.log, { secret: "nope", run: { subjectKind: "clue", subjectId: "c", claim: "x", pass: true, reason: "r", model: "m", createdAt: 1 } })).rejects.toThrow(/not allowed/);
-    await expect(t.query(api.pages.processedIds, { secret: "x" })).rejects.toThrow(/not allowed/);
+    await expect(t.query(api.pages.processedIds, { secret: "x", cursor: null })).rejects.toThrow(/not allowed/);
     expect(await t.run((ctx) => ctx.db.query("pages").collect())).toHaveLength(0);
   });
 
