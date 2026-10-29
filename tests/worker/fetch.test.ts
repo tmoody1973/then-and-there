@@ -61,6 +61,15 @@ describe("fetchPage", () => {
     for (const f of ["page.json", "alto.xml", "meta.json"]) expect(existsSync(join(folder, f))).toBe(true);
   });
 
+  test("OCR supplied by the caller (from a batch bundle) is stored, and the storage server isn't asked", async () => {
+    const dir = tmp();
+    const { client, counts } = fakeClient({ getText: async () => { throw new LocNotFoundError("https://tile.loc.gov/storage-services/x.xml"); } });
+    const page = await fetchPage(client, RESULT, dir, { altoXml: "<alto>from the bundle</alto>" });
+    expect(page.status).toBe("fetched");
+    expect(counts.text).toBe(0);
+    expect(readFileSync(join(dir, page.pageId.replace(/[^\w.-]+/g, "_"), "alto.xml"), "utf8")).toBe("<alto>from the bundle</alto>");
+  });
+
   test("second call makes no network calls", async () => {
     const dir = tmp();
     const { client, counts } = fakeClient();

@@ -89,7 +89,7 @@ function tar(args: string[]): Promise<string> {
 
 // Lists the archive, keeps pre-1931 ocr.txt members by path alone, extracts exactly those (portable
 // across GNU and BSD tar: no pattern flags), and yields one page at a time.
-export async function* readBatchPages(archivePath: string): AsyncIterable<{ pageId: string; lccn: string; date: string; text: string }> {
+export async function* readBatchPages(archivePath: string): AsyncIterable<{ pageId: string; lccn: string; date: string; text: string; xmlMember: string }> {
   const names = (await tar(["-tjf", archivePath])).split("\n");
   const texts = names.filter((n) => n.endsWith("/ocr.txt"));
   const known = texts.map((name) => ({ name, m: name.match(MEMBER) })).filter((x): x is { name: string; m: RegExpMatchArray } => x.m !== null);
@@ -106,9 +106,19 @@ export async function* readBatchPages(archivePath: string): AsyncIterable<{ page
     for (const { name, m } of members) {
       const [, lccn, y, mo, d, ed, seq] = m;
       const date = `${y}-${mo}-${d}`;
-      yield { pageId: `http://www.loc.gov/resource/${lccn}/${date}/ed-${ed}/?sp=${seq}`, lccn, date, text: await readFile(join(dir, name), "utf8") };
+      yield {
+        pageId: `http://www.loc.gov/resource/${lccn}/${date}/ed-${ed}/?sp=${seq}`,
+        lccn,
+        date,
+        text: await readFile(join(dir, name), "utf8"),
+        xmlMember: name.replace(/ocr\.txt$/, "ocr.xml"),
+      };
     }
   } finally {
     await rm(dir, { recursive: true, force: true });
   }
 }
+
+// One page's word-position file (ALTO) straight from the bundle. Newly added batches can 404 at
+// the Library's storage server for a while, but the bundle always carries the file.
+export const readPageAlto = (archivePath: string, member: string): Promise<string> => tar(["-xjOf", archivePath, member]);

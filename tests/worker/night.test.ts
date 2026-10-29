@@ -23,8 +23,8 @@ function fake(o: Partial<{ follows: Follow[]; prev: string[] | null; list: Batch
       return `/tmp/${e.batch}.tar.bz2`;
     },
     pages: async function* (archive) {
-      yield { pageId: `${archive}#p1`, lccn: "sn84025861", date: "1898-12-22", text: PAGE_TEXT };
-      yield { pageId: `${archive}#p2`, lccn: "sn84025861", date: "1898-12-23", text: "Nothing of note." };
+      yield { pageId: `${archive}#p1`, lccn: "sn84025861", date: "1898-12-22", text: PAGE_TEXT, xmlMember: "a/ocr.xml" };
+      yield { pageId: `${archive}#p2`, lccn: "sn84025861", date: "1898-12-23", text: "Nothing of note.", xmlMember: "b/ocr.xml" };
     },
     placeOf: async () => ({ state: "wisconsin", city: "milwaukee" }),
     processPage: async () => {

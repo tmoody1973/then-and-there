@@ -17,9 +17,9 @@ type ClipRow = {
   status: string;
 };
 
-// The Library's MLA citation carries the paper's properly cased name: <cite>Homer Guardian</cite>.
-const paperName = (p: PageRow) => p.citeThis.mla.match(/<cite>(.*?)<\/cite>/)?.[1] ?? p.title;
-const plainCitation = (mla: string) => mla.replace(/<\/?cite>/g, "");
+import { paperFromCite, plainCitation } from "../loc/cite";
+
+const paperName = (p: PageRow) => paperFromCite(p.citeThis.mla, p.title);
 
 export async function loadClips(convex: ConvexHttpClient, start: string, end: string): Promise<MeanwhileCandidate[]> {
   const pages = ((await convex.query(anyApi.pages.byDateRange, { secret: writeSecret(), start, end })) as PageRow[]).filter((p) => p.status === "processed");

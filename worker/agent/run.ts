@@ -10,6 +10,7 @@ import type { BatchEntry, Follow } from "../../lib/agent/types";
 import { verifyClaim } from "../../lib/editor/verify";
 import { convexUrl, loadClips, writeSecret } from "../../lib/game/load";
 import { createLocClient } from "../../lib/loc/client";
+import { paperFromCite, plainCitation } from "../../lib/loc/cite";
 import { makeComplete, metaClient } from "../../lib/meta/client";
 import { toDataUrl } from "../../lib/meta/image";
 import { costOf, type Usage } from "../../lib/meta/pricing";
@@ -17,7 +18,7 @@ import { EDITOR_FIND_PROMPT } from "../../lib/pipeline/prompts";
 import { withRetry } from "../../lib/util/retry";
 import { fetchPage } from "../fetch";
 import { makeProcessDeps, processPage } from "../process";
-import { createBulkLimiter, downloadBatch, readBatchPages } from "./batches";
+import { createBulkLimiter, downloadBatch, readBatchPages, readPageAlto } from "./batches";
 import { runNight, type FoundClip } from "./night";
 
 const BATCH_LIST = "https://chroniclingamerica.loc.gov/data/ocr/ocr.json";
@@ -62,19 +63,19 @@ try {
         await m(anyApi.agent.setState, { key: `place:${lccn}`, value: JSON.stringify(place) });
         return place;
       },
-      processPage: async ({ pageId, lccn, date }) => {
+      processPage: async ({ pageId, lccn, date, archive, xmlMember }) => {
         // The fetcher needs the page's search record: one narrow search (this paper, this date).
         const { results } = await loc.searchPages({ facets: [`number_lccn:${lccn}`], startDate: date, endDate: date, count: 100 });
         const record = results.find((r) => String(r.id) === pageId);
         if (!record) throw new Error("page not found in the Library's search");
-        const page = await fetchPage(loc, record, cacheDir);
+        const page = await fetchPage(loc, record, cacheDir, { altoXml: await readPageAlto(archive, xmlMember) });
         if (page.status !== "fetched") throw new Error(page.error ?? "fetch failed");
         const res = await processPage(page, makeProcessDeps(page, { loc, meta, convex, onUsage, cacheDir }));
         if (res.error) throw new Error(res.error);
         const rows = (await withRetry(() => convex.query(anyApi.clippings.byPage, { pageId }))) as ClipRow[];
         return rows.map((c) => ({
           clippingId: c._id, text: c.cleanedText ?? c.rawText, type: c.type, people: c.people, humanStoryScore: c.humanStoryScore, hardHistory: c.hardHistory,
-          box: c.box, iiifBase: page.iiifBase, pageId, paper: page.title, date: page.date, citationMla: page.citeThis.mla,
+          box: c.box, iiifBase: page.iiifBase, pageId, paper: paperFromCite(page.citeThis.mla, page.title), date: page.date, citationMla: plainCitation(page.citeThis.mla),
         }));
       },
       verifyFind: ({ clippingId, text, claim, cropUrl }) =>

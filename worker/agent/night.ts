@@ -30,7 +30,8 @@ export type FoundClip = {
   date: string;
   citationMla: string;
 };
-type BatchPage = { pageId: string; lccn: string; date: string; text: string };
+type BatchPage = { pageId: string; lccn: string; date: string; text: string; xmlMember: string };
+type CandidatePage = { pageId: string; lccn: string; date: string; archive: string; xmlMember: string };
 type Note = { owner: string; clippingId: string; clip: Record<string, unknown>; matched: string; replay: boolean; createdAt: number };
 type Line = { owner?: string; runId: string; line: string; replay: boolean; createdAt: number };
 
@@ -39,7 +40,7 @@ export type NightDeps = {
   download(e: BatchEntry): Promise<string>;
   pages(archive: string): AsyncIterable<BatchPage>;
   placeOf(lccn: string): Promise<{ state: string; city: string }>;
-  processPage(page: { pageId: string; lccn: string; date: string }): Promise<FoundClip[]>;
+  processPage(page: CandidatePage): Promise<FoundClip[]>;
   verifyFind(input: { clippingId: string; text: string; claim: string; cropUrl: string }): Promise<{ pass: boolean; reason: string }>;
   store: {
     follows(): Promise<Follow[]>;
@@ -109,7 +110,7 @@ export async function runNight(deps: NightDeps, opts: { today: string; replay?: 
   // 3. Scan each batch's pages for follows (no follows: nothing to download).
   const scanned: string[] = [];
   const hits: Hit[] = [];
-  const pageInfo = new Map<string, BatchPage>();
+  const pageInfo = new Map<string, CandidatePage>();
   const places = new Map<string, { state: string; city: string }>();
   for (const b of todo) {
     if (!follows.length) {
@@ -126,7 +127,7 @@ export async function runNight(deps: NightDeps, opts: { today: string; replay?: 
         const found = matchPage({ ...p, ...place }, follows);
         if (found.length) {
           hits.push(...found);
-          pageInfo.set(p.pageId, { pageId: p.pageId, lccn: p.lccn, date: p.date, text: "" });
+          pageInfo.set(p.pageId, { pageId: p.pageId, lccn: p.lccn, date: p.date, archive, xmlMember: p.xmlMember });
         }
       }
       s.pages += pages;

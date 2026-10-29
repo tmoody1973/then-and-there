@@ -4,7 +4,7 @@ import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { describe, expect, test } from "vitest";
 import type { BatchEntry } from "../../lib/agent/types";
-import { BatchChecksumError, createBulkLimiter, downloadBatch, newBatches, readBatchPages } from "../../worker/agent/batches";
+import { BatchChecksumError, createBulkLimiter, downloadBatch, newBatches, readBatchPages, readPageAlto } from "../../worker/agent/batches";
 
 const entry = (batch: string, body = "", over: Partial<BatchEntry> = {}): BatchEntry => ({
   batch,
@@ -79,5 +79,13 @@ describe("readBatchPages", () => {
       for await (const _ of readBatchPages("tests/fixtures/batch/unknown-layout.tar.bz2")) void _;
     };
     await expect(read()).rejects.toThrow(/unrecognized batch layout/);
+  });
+
+  test("each page carries where its word-position file sits in the archive, and it can be read back", async () => {
+    const pages = [];
+    for await (const p of readBatchPages("tests/fixtures/batch/mini.tar.bz2")) pages.push(p);
+    const first = pages.find((p) => p.pageId.endsWith("1909-07-01/ed-1/?sp=1"))!;
+    expect(first.xmlMember).toBe("sn95026977/1909/07/01/ed-1/seq-1/ocr.xml");
+    expect(await readPageAlto("tests/fixtures/batch/mini.tar.bz2", first.xmlMember)).toContain("<alto");
   });
 });
