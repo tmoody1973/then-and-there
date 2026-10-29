@@ -12,3 +12,6 @@ test-results/
 playwright-report/
 .impeccable/review/
 .env.convex-prod
+.vercel
+.env*
+!.env.example

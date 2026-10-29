@@ -1,0 +1,12 @@
+# Allowlist: upload only what the website builds from. Secrets (.env*), caches,
+# data snapshots and pipeline code never leave this machine.
+/*
+!app
+!components
+!convex
+!lib
+!package.json
+!bun.lock
+!next.config.ts
+!next-env.d.ts
+!tsconfig.json
