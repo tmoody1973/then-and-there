@@ -10,7 +10,7 @@ type Box = { x: number; y: number; w: number; h: number };
 export type ShelfCard = {
   clippingId: string; pageId: string; iiifBase: string; box: Box; paper: string; city: string; state: string; date: string;
   sequence: number; language: string[]; lccn: string; type?: string; people: string[]; textKind: "repaired" | "archive";
-  text: string; editorStatus: string; hardHistory: boolean; humanStoryScore: number; citeThis: { apa: string; chicago: string; mla: string };
+  text: string; archiveText?: string; editorStatus: string; hardHistory: boolean; humanStoryScore: number; citeThis: { apa: string; chicago: string; mla: string };
 };
 export type Shelf = { slug: string; title: string; blurb: string; order: number; select: (c: ShelfCard) => boolean };
 

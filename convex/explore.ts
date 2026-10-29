@@ -78,6 +78,7 @@ export const search = query({
         people: c.people ?? [],
         textKind: c.cleanedText ? ("repaired" as const) : ("archive" as const),
         text: c.cleanedText ?? c.rawText,
+        ...(c.cleanedText ? { archiveText: c.rawText } : {}),
         editorStatus: c.editorStatus,
         hardHistory: c.hardHistory === true,
         citeThis: p.citeThis,

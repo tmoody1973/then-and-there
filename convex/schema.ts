@@ -125,6 +125,7 @@ export const exploreCardFields = {
   people: v.array(v.string()),
   textKind: v.union(v.literal("repaired"), v.literal("archive")),
   text: v.string(),
+  archiveText: v.optional(v.string()), // the archive's OCR, when the text shown is a repair
   editorStatus: v.string(),
   hardHistory: v.boolean(),
   citeThis: v.object({ apa: v.string(), chicago: v.string(), mla: v.string() }),

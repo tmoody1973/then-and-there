@@ -20,6 +20,7 @@ const pool: ShelfCard[] = (
       clippingId: c._id, pageId: p.pageId, iiifBase: p.iiifBase, box: c.box, paper: p.title, city: p.city, state: p.state, date: p.date,
       sequence: p.sequence, language: p.language, lccn: p.lccn, type: c.type, people: c.people ?? [],
       textKind: c.cleanedText ? ("repaired" as const) : ("archive" as const), text: c.cleanedText ?? c.rawText,
+      ...(c.cleanedText ? { archiveText: c.rawText } : {}),
       editorStatus: c.editorStatus, hardHistory: c.hardHistory === true, humanStoryScore: c.humanStoryScore ?? 0, citeThis: p.citeThis,
     }));
   })

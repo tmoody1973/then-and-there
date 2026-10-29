@@ -74,6 +74,10 @@ describe("explore.search", () => {
     const t = await seed([{ p, clips: [clip(p.pageId, { rawText: "Nellie Bly trip", cleanedText: "Nellie Bly's trip around the world" })] }]);
     const res = await search(t, { q: "Nellie" });
     expect(res[0]).toMatchObject({ textKind: "repaired", text: "Nellie Bly's trip around the world" });
+    // The archive's own OCR rides along so a reader can compare it with the repair.
+    expect(res[0]).toMatchObject({ archiveText: "Nellie Bly trip" });
+    const raw = await seed([{ p: page("9"), clips: [clip(page("9").pageId, { rawText: "only raw words" })] }]);
+    expect((await search(raw, { q: "raw" }))[0]).not.toHaveProperty("archiveText");
   });
 
   test("returns each clipping once when both indexes match it", async () => {
