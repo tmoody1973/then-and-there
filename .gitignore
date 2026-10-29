@@ -11,3 +11,4 @@ next-env.d.ts
 test-results/
 playwright-report/
 .impeccable/review/
+.env.convex-prod
