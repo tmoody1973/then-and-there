@@ -13,6 +13,7 @@ import type * as auth from "../auth.js";
 import type * as clippings from "../clippings.js";
 import type * as editorRuns from "../editorRuns.js";
 import type * as explore from "../explore.js";
+import type * as frontPages from "../frontPages.js";
 import type * as gameDays from "../gameDays.js";
 import type * as meanwhile from "../meanwhile.js";
 import type * as packs from "../packs.js";
@@ -30,6 +31,7 @@ declare const fullApi: ApiFromModules<{
   clippings: typeof clippings;
   editorRuns: typeof editorRuns;
   explore: typeof explore;
+  frontPages: typeof frontPages;
   gameDays: typeof gameDays;
   meanwhile: typeof meanwhile;
   packs: typeof packs;
