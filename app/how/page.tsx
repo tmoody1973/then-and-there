@@ -43,7 +43,7 @@ export default function HowItWorks() {
   return (
     <main className="column how">
       <p className="dateline">
-        <Link href="/">THEN &amp; THERE</Link>
+        <Link href="/">← Today</Link>
         <span>How it works</span>
       </p>
       <h1>How a page from 1889 becomes a clue.</h1>

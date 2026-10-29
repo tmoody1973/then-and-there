@@ -1,0 +1,390 @@
+{
+  "builtAt": "2026-10-29T19:06:58.956Z",
+  "rounds": [
+    {
+      "round": 1,
+      "image": "/forgery/round-1.jpg",
+      "width": 1600,
+      "height": 2512,
+      "pageId": "http://www.loc.gov/resource/sn88064119/1889-11-29/ed-1/?sp=1",
+      "iiifBase": "https://tile.loc.gov/image-services/iiif/service:ndnp:lu:batch_lu_iceman_ver01:data:sn88064119:00280761837:1889112901:0223",
+      "paper": "Homer Guardian",
+      "place": "Homer, Louisiana",
+      "date": "1889-11-29",
+      "citationMla": "Homer Guardian. (Homer, LA) 29 Nov. 1889, p. 1. Retrieved from the Library of Congress, www.loc.gov/item/sn88064119/1889-11-29/ed-1/.",
+      "product": "a radio receiver",
+      "why": "Nobody could buy a radio around 1890. Radio waves had only just been shown in a laboratory, and home radio sets went on sale in the 1920s.",
+      "parts": [
+        {
+          "n": 1,
+          "label": "The nameplate",
+          "forged": false,
+          "box": {
+            "x": 0,
+            "y": 0,
+            "w": 1600,
+            "h": 251
+          }
+        },
+        {
+          "n": 2,
+          "label": "A story",
+          "forged": false,
+          "box": {
+            "x": 906,
+            "y": 295,
+            "w": 218,
+            "h": 1488
+          }
+        },
+        {
+          "n": 3,
+          "label": "A story",
+          "forged": false,
+          "box": {
+            "x": 1334,
+            "y": 300,
+            "w": 208,
+            "h": 999
+          }
+        },
+        {
+          "n": 4,
+          "label": "An advertisement",
+          "forged": false,
+          "box": {
+            "x": 27,
+            "y": 1175,
+            "w": 459,
+            "h": 350
+          }
+        },
+        {
+          "n": 5,
+          "label": "An advertisement",
+          "forged": true,
+          "box": {
+            "x": 13,
+            "y": 1763,
+            "w": 251,
+            "h": 738
+          }
+        }
+      ],
+      "originalBox": {
+        "h": 2746,
+        "w": 935,
+        "x": 48,
+        "y": 6564
+      }
+    },
+    {
+      "round": 2,
+      "image": "/forgery/round-2.jpg",
+      "width": 1600,
+      "height": 2131,
+      "pageId": "http://www.loc.gov/resource/sn98062948/1889-11-28/ed-1/?sp=1",
+      "iiifBase": "https://tile.loc.gov/image-services/iiif/service:ndnp:sdhi:batch_sdhi_imbe_ver01:data:sn98062948:00340581076:1889112801:0430",
+      "paper": "Hand County press",
+      "place": "Miller, South Dakota",
+      "date": "1889-11-28",
+      "citationMla": "Hand County press. (Miller, SD) 28 Nov. 1889, p. 1. Retrieved from the Library of Congress, www.loc.gov/item/sn98062948/1889-11-28/ed-1/.",
+      "product": "a pocket telephone",
+      "why": "Telephones around 1890 were fixed to a wall and wired to an exchange. Nothing you could carry in a pocket would exist for about a hundred years.",
+      "parts": [
+        {
+          "n": 1,
+          "label": "The nameplate",
+          "forged": false,
+          "box": {
+            "x": 0,
+            "y": 0,
+            "w": 1600,
+            "h": 213
+          }
+        },
+        {
+          "n": 2,
+          "label": "A story",
+          "forged": false,
+          "box": {
+            "x": 251,
+            "y": 291,
+            "w": 182,
+            "h": 1723
+          }
+        },
+        {
+          "n": 3,
+          "label": "A story",
+          "forged": false,
+          "box": {
+            "x": 607,
+            "y": 297,
+            "w": 186,
+            "h": 1688
+          }
+        },
+        {
+          "n": 4,
+          "label": "An advertisement",
+          "forged": true,
+          "box": {
+            "x": 1148,
+            "y": 1093,
+            "w": 370,
+            "h": 310
+          }
+        },
+        {
+          "n": 5,
+          "label": "A story",
+          "forged": false,
+          "box": {
+            "x": 793,
+            "y": 1177,
+            "w": 184,
+            "h": 831
+          }
+        }
+      ],
+      "originalBox": {
+        "h": 1275,
+        "w": 1523,
+        "x": 4729,
+        "y": 4502
+      }
+    },
+    {
+      "round": 3,
+      "image": "/forgery/round-3.jpg",
+      "width": 1600,
+      "height": 2396,
+      "pageId": "http://www.loc.gov/resource/2019270503/1890-01-29/ed-1/?sp=1",
+      "iiifBase": "https://tile.loc.gov/image-services/iiif/service:ndnp:nbu:batch_nbu_greatauk_ver01:data:2019270503:00332899417:1890012901:0556",
+      "paper": "Stjernen",
+      "place": "Dannebrog, Nebraska",
+      "date": "1890-01-29",
+      "citationMla": "Stjernen. (Dannebrog, NE) 29 Jan. 1890, p. 1. Retrieved from the Library of Congress, www.loc.gov/item/2019270503/1890-01-29/ed-1/.",
+      "product": "a television set",
+      "why": "Television was first demonstrated in the 1920s. Around 1890 there was no way to send a moving picture anywhere, let alone into a parlor.",
+      "parts": [
+        {
+          "n": 1,
+          "label": "The nameplate",
+          "forged": false,
+          "box": {
+            "x": 0,
+            "y": 0,
+            "w": 1600,
+            "h": 240
+          }
+        },
+        {
+          "n": 2,
+          "label": "An advertisement",
+          "forged": true,
+          "box": {
+            "x": 1253,
+            "y": 128,
+            "w": 270,
+            "h": 433
+          }
+        },
+        {
+          "n": 3,
+          "label": "A story",
+          "forged": false,
+          "box": {
+            "x": 263,
+            "y": 569,
+            "w": 253,
+            "h": 1805
+          }
+        },
+        {
+          "n": 4,
+          "label": "A story",
+          "forged": false,
+          "box": {
+            "x": 516,
+            "y": 575,
+            "w": 246,
+            "h": 1110
+          }
+        },
+        {
+          "n": 5,
+          "label": "A story",
+          "forged": false,
+          "box": {
+            "x": 1010,
+            "y": 832,
+            "w": 248,
+            "h": 1504
+          }
+        }
+      ],
+      "originalBox": {
+        "h": 1291,
+        "w": 803,
+        "x": 3731,
+        "y": 381
+      }
+    },
+    {
+      "round": 4,
+      "image": "/forgery/round-4.jpg",
+      "width": 1600,
+      "height": 2275,
+      "pageId": "http://www.loc.gov/resource/sn90061066/1889-11-19/ed-1/?sp=1",
+      "iiifBase": "https://tile.loc.gov/image-services/iiif/service:ndnp:mohi:batch_mohi_berenice_ver01:data:sn90061066:00200291967:1889111901:0242",
+      "paper": "The Sedalia weekly bazoo",
+      "place": "Sedalia, Missouri",
+      "date": "1889-11-19",
+      "citationMla": "The Sedalia weekly bazoo. (Sedalia, MO) 19 Nov. 1889, p. 1. Retrieved from the Library of Congress, www.loc.gov/item/sn90061066/1889-11-19/ed-1/.",
+      "product": "airplane passage",
+      "why": "The first powered airplane flight was in December 1903. Around 1890 nobody had flown a machine with wings and an engine.",
+      "parts": [
+        {
+          "n": 1,
+          "label": "The nameplate",
+          "forged": false,
+          "box": {
+            "x": 0,
+            "y": 0,
+            "w": 1600,
+            "h": 228
+          }
+        },
+        {
+          "n": 2,
+          "label": "A story",
+          "forged": false,
+          "box": {
+            "x": 857,
+            "y": 232,
+            "w": 192,
+            "h": 894
+          }
+        },
+        {
+          "n": 3,
+          "label": "A story",
+          "forged": false,
+          "box": {
+            "x": 1066,
+            "y": 422,
+            "w": 243,
+            "h": 768
+          }
+        },
+        {
+          "n": 4,
+          "label": "An advertisement",
+          "forged": true,
+          "box": {
+            "x": 84,
+            "y": 1049,
+            "w": 491,
+            "h": 378
+          }
+        },
+        {
+          "n": 5,
+          "label": "An advertisement",
+          "forged": false,
+          "box": {
+            "x": 1292,
+            "y": 1439,
+            "w": 280,
+            "h": 810
+          }
+        }
+      ],
+      "originalBox": {
+        "h": 1734,
+        "w": 2251,
+        "x": 385,
+        "y": 4806
+      }
+    },
+    {
+      "round": 5,
+      "image": "/forgery/round-5.jpg",
+      "width": 1600,
+      "height": 2394,
+      "pageId": "http://www.loc.gov/resource/sn84022060/1890-01-28/ed-1/?sp=1",
+      "iiifBase": "https://tile.loc.gov/image-services/iiif/service:ndnp:nvln:batch_nvln_bullfrog_ver01:data:sn84022060:00332890542:1890012801:0092",
+      "paper": "The Silver state",
+      "place": "Unionville, Nevada",
+      "date": "1890-01-28",
+      "citationMla": "The Silver state. (Unionville, NV) 28 Jan. 1890, p. 1. Retrieved from the Library of Congress, www.loc.gov/item/sn84022060/1890-01-28/ed-1/.",
+      "product": "an electric refrigerator",
+      "why": "Kitchens around 1890 kept food cold with blocks of ice. Electric home refrigerators went on sale in the 1910s, and few homes yet had electricity.",
+      "parts": [
+        {
+          "n": 1,
+          "label": "The nameplate",
+          "forged": false,
+          "box": {
+            "x": 0,
+            "y": 0,
+            "w": 1600,
+            "h": 239
+          }
+        },
+        {
+          "n": 2,
+          "label": "A story",
+          "forged": false,
+          "box": {
+            "x": 334,
+            "y": 302,
+            "w": 286,
+            "h": 752
+          }
+        },
+        {
+          "n": 3,
+          "label": "A story",
+          "forged": false,
+          "box": {
+            "x": 902,
+            "y": 306,
+            "w": 286,
+            "h": 739
+          }
+        },
+        {
+          "n": 4,
+          "label": "An advertisement",
+          "forged": false,
+          "box": {
+            "x": 329,
+            "y": 1498,
+            "w": 289,
+            "h": 821
+          }
+        },
+        {
+          "n": 5,
+          "label": "An advertisement",
+          "forged": true,
+          "box": {
+            "x": 1180,
+            "y": 1590,
+            "w": 307,
+            "h": 564
+          }
+        }
+      ],
+      "originalBox": {
+        "h": 1625,
+        "w": 885,
+        "x": 3400,
+        "y": 4582
+      }
+    }
+  ]
+}

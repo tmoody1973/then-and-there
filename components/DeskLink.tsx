@@ -8,7 +8,7 @@ export function DeskLink() {
   const { unread } = useAgent();
   return (
     <Link href="/desk">
-      Your desk{unread ? <span className="desk-count num"> ({unread}<span className="visually-hidden"> new</span>)</span> : null}
+      My Agent{unread ? <span className="desk-count num"> ({unread}<span className="visually-hidden"> new</span>)</span> : null}
     </Link>
   );
 }

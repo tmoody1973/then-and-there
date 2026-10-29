@@ -1,0 +1,65 @@
+[
+  {
+    "qs": "nellie bly",
+    "ops": "PHRASE",
+    "startDate": "1889-11-21",
+    "endDate": "1889-12-05",
+    "limit": 25
+  },
+  {
+    "qs": "nellie bly",
+    "ops": "PHRASE",
+    "startDate": "1889-11-22",
+    "endDate": "1889-12-06",
+    "limit": 25
+  },
+  {
+    "qs": "nellie bly",
+    "ops": "PHRASE",
+    "startDate": "1889-11-24",
+    "endDate": "1889-12-08",
+    "limit": 25
+  },
+  {
+    "qs": "nellie bly",
+    "ops": "PHRASE",
+    "startDate": "1889-11-27",
+    "endDate": "1889-12-11",
+    "limit": 25
+  },
+  {
+    "qs": "nellie bly",
+    "ops": "PHRASE",
+    "startDate": "1889-12-02",
+    "endDate": "1889-12-16",
+    "limit": 25
+  },
+  {
+    "qs": "nellie bly",
+    "ops": "PHRASE",
+    "startDate": "1889-12-08",
+    "endDate": "1889-12-22",
+    "limit": 25
+  },
+  {
+    "qs": "nellie bly",
+    "ops": "PHRASE",
+    "startDate": "1889-12-14",
+    "endDate": "1889-12-28",
+    "limit": 25
+  },
+  {
+    "qs": "nellie bly",
+    "ops": "PHRASE",
+    "startDate": "1889-12-18",
+    "endDate": "1890-01-01",
+    "limit": 25
+  },
+  {
+    "qs": "nellie bly",
+    "ops": "PHRASE",
+    "startDate": "1889-12-23",
+    "endDate": "1890-01-06",
+    "limit": 25
+  }
+]

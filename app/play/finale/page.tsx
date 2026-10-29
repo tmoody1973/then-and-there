@@ -9,6 +9,8 @@ import { FINALE_DAY, finaleResult } from "../../../lib/game/finale";
 import { longDate } from "../../../lib/game/format";
 import { anniversaryForDay, isUnlocked } from "../../../lib/game/schedule";
 import { usePlayer } from "../../../lib/game/usePlayer";
+import { readCase } from "../../../lib/detective/useCase";
+import caseData from "../../../data/detective/case01.json";
 
 // The World's own contest, Nov 29, 1889 (verified on the scan): the reason this ballot exists.
 const CONTEST = {
@@ -30,7 +32,8 @@ const UNITS = [
 
 export default function FinalePage() {
   const p = usePlayer();
-  const unlocked = p.ready && isUnlocked(FINALE_DAY, p.today, p.demo);
+  // Opens on the anniversary, in preview, or once your Case 01 trail reaches its last leg.
+  const unlocked = p.ready && (isUnlocked(FINALE_DAY, p.today, p.demo) || readCase().at >= caseData.stops.length - 1);
   const row = useQuery(api.gameDays.getPublished, unlocked ? { day: FINALE_DAY } : "skip") as
     | { finaleSeconds?: number; reveal: Reveal }
     | null
@@ -42,7 +45,7 @@ export default function FinalePage() {
   return (
     <main className="column">
       <p className="dateline">
-        <Link href="/play">THEN &amp; THERE</Link>
+        <Link href="/play">← The case</Link>
         <span className="num">The finale</span>
       </p>
       <h1>Guess her exact time.</h1>
@@ -55,12 +58,12 @@ export default function FinalePage() {
       {!p.ready ? null : !unlocked ? (
         <p className="ballot-closed">
           The ballot box opens <time dateTime={anniversaryForDay(FINALE_DAY)}>{longDate(anniversaryForDay(FINALE_DAY))}</time>.{" "}
-          <Link href="/play">Back to the race</Link>
+          <Link href="/play">Back to the case</Link>
         </p>
       ) : row === undefined ? (
         <p className="caption">Opening the ballot box…</p>
       ) : !row?.finaleSeconds ? (
-        <p>No finale has been filed yet. <Link href="/play">Back to the race</Link></p>
+        <p>No finale has been filed yet. <Link href="/play">Back to the case</Link></p>
       ) : filed ? (
         <section className="reveal" aria-labelledby="finale-result">
           <h2 id="finale-result">{finaleResult(filed.guessSeconds, row.finaleSeconds).label}.</h2>

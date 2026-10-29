@@ -151,6 +151,7 @@ export const noteFields = {
   replay: v.boolean(),
   createdAt: v.number(),
   readAt: v.optional(v.number()),
+  dismissed: v.optional(v.boolean()), // "Not my family": hidden, still blocks a resend
 };
 
 // owner absent = a shared nightly line every reader sees.
@@ -160,6 +161,33 @@ export const activityFields = {
   line: v.string(),
   replay: v.boolean(),
   createdAt: v.number(),
+};
+
+// The daily front page (decision 010). Clue images live in Convex storage so no URL the
+// browser sees carries the page's date or paper; the answer leaves only through reveal.
+const region = v.union(v.literal("Northeast"), v.literal("South"), v.literal("Midwest"), v.literal("West"));
+export const frontPageClue = v.object({
+  kind: v.union(...(["ad", "weather", "prices", "item", "notice", "headline", "photo", "masthead"] as const).map((k) => v.literal(k))),
+  label: v.string(),
+  box,
+  image: v.id("_storage"),
+  prints: v.string(),
+  why: v.string(),
+});
+export const frontPageFields = {
+  no: v.number(),
+  pageId: v.string(),
+  paper: v.string(),
+  city: v.string(),
+  state: v.string(),
+  region,
+  date: v.string(),
+  year: v.number(),
+  citeThis: v.object({ apa: v.string(), chicago: v.string(), mla: v.string() }),
+  iiifBase: v.string(),
+  imageWidth: v.number(),
+  imageHeight: v.number(),
+  clues: v.array(frontPageClue),
 };
 
 export default defineSchema({
@@ -177,5 +205,6 @@ export default defineSchema({
   activity: defineTable(activityFields).index("by_owner", ["owner"]),
   shelves: defineTable(shelfFields),
   packs: defineTable(packFields),
+  frontPages: defineTable(frontPageFields).index("by_no", ["no"]),
   agentState: defineTable({ key: v.string(), value: v.string() }).index("by_key", ["key"]),
 });

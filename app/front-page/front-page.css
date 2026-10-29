@@ -1,0 +1,126 @@
+/* Front Page: the daily game. Laptop: the page board left, clues and the guess right.
+   Phone: the board, the clue being read, one reveal button, then the guess. */
+
+.fp { width: min(100% - 2 * var(--s4), var(--wide)); margin: 0 auto; }
+.fp-pts { color: var(--red); }
+.fp-head { display: flex; justify-content: space-between; align-items: baseline; gap: var(--s4); flex-wrap: wrap; margin: var(--s6) 0 var(--s4); }
+.fp-head h1 { margin: 0; font-size: var(--step-3); }
+.fp-head-meta { margin: 0; font-family: var(--font-head); font-size: var(--step--2); color: var(--ink-2); }
+.fp-grid { display: grid; gap: var(--s5); margin-top: var(--s4); }
+@media (min-width: 960px) {
+  .fp { width: min(100% - 2 * var(--s7), var(--wide)); }
+  .fp-grid { grid-template-columns: minmax(0, 1fr) 22rem; gap: var(--s6); align-items: start; margin-top: 0; }
+  .fp-side { position: sticky; top: var(--s4); }
+}
+
+/* ---------- The board ---------- */
+.fp-board { position: relative; width: 100%; margin-inline: auto; background: var(--paper-bright); box-shadow: inset 0 0 0 1.5px var(--ink); overflow: hidden; }
+.fp-type { position: absolute; inset: 2.5%; width: 95%; height: 95%; }
+.fp-slot { position: absolute; margin: 0; padding: 0; border: 0; container-type: size; }
+.fp-slot.is-hidden {
+  background: var(--paper-bright) repeating-linear-gradient(135deg, var(--rule-strong) 0 1px, transparent 1px 7px);
+  outline: 1px dashed var(--ink-2); outline-offset: -1px; display: grid; place-items: center;
+}
+.fp-q {
+  padding: 2px 6px; background: var(--paper-raised);
+  font-family: var(--font-head); font-size: 0.625rem; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; white-space: nowrap; color: var(--ink);
+}
+@container (max-width: 64px) { .fp-q { display: none; } }
+@container (max-height: 18px) { .fp-q { display: none; } }
+.fp-slot.is-shown { background: var(--paper-bright); box-shadow: 0 0 0 1.5px var(--ink); cursor: zoom-in; animation: fp-in 260ms var(--ease-out) both; }
+.fp-slot.is-shown img { display: block; width: 100%; height: 100%; object-fit: fill; }
+.fp-slot.is-selected { box-shadow: 0 0 0 1.5px var(--ink), 0 0 0 4px var(--red); z-index: 2; }
+.fp-tag {
+  position: absolute; top: 0; left: 0; padding: 1px 5px; background: var(--red); color: var(--paper-bright);
+  font-family: var(--font-head); font-size: 0.5625rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; white-space: nowrap;
+}
+@container (max-width: 48px) { .fp-tag { display: none; } }
+@keyframes fp-in { from { clip-path: inset(0 100% 0 0); } to { clip-path: inset(0 0 0 0); } }
+
+/* ---------- The clue being read ---------- */
+.fp-reader { margin: var(--s4) 0 0; padding: var(--s4); background: var(--paper-raised); border-top: 3px solid var(--red); }
+.fp-reader img { display: block; max-width: 100%; max-height: 70vh; margin: 0 auto; background: var(--paper-bright); box-shadow: 0 0 0 1px var(--rule-strong); }
+
+/* ---------- Clues and the guess ---------- */
+.fp-clues { list-style: none; margin: 0 0 var(--s4); padding: 0; }
+.fp-clues li { display: grid; grid-template-columns: 1.75rem minmax(0, 1fr) auto; align-items: center; gap: var(--s3); padding: var(--s2) 0; border-bottom: 1px solid var(--rule); }
+.fp-clue-no { display: grid; place-items: center; width: 1.75rem; height: 1.75rem; box-shadow: inset 0 0 0 1px var(--ink); font-family: var(--font-head); font-size: var(--step--2); font-weight: 700; }
+.fp-clues li.is-shown .fp-clue-no { background: var(--ink); color: var(--paper-bright); }
+.fp-clue-name { font-family: var(--font-body); font-size: var(--step-0); color: var(--ink-2); text-align: left; background: none; border: 0; padding: 0; min-height: 32px; }
+.fp-clues li.is-shown .fp-clue-name { color: var(--ink); }
+button.fp-clue-name:hover, button.fp-clue-name[aria-current] { text-decoration: underline; text-decoration-color: var(--red); text-underline-offset: 0.2em; }
+.fp-clue-state { font-family: var(--font-head); font-size: 0.6875rem; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink-3); }
+.fp-clues li.is-shown .fp-clue-state { color: var(--red); }
+.fp-next-clue { width: 100%; }
+@media (max-width: 959px) {
+  .fp-side > .agent-label, .fp-clues { display: none; }
+}
+
+.fp-guess-wrap { margin-top: var(--s5); padding: var(--s4); background: var(--paper-raised); border-top: 3px solid var(--ink); }
+@media (max-width: 959px) { .fp-guess-wrap { margin-inline: calc(-1 * var(--s4)); padding: var(--s5) var(--s4); } }
+.fp-pool { margin: 0 0 var(--s2); font-family: var(--font-head); font-size: var(--step--2); color: var(--ink-2); }
+.fp-pool .num { color: var(--red); font-weight: 700; }
+.fp-guess { display: grid; gap: var(--s3); }
+.fp-when { display: flex; justify-content: space-between; align-items: baseline; }
+.fp-ask { font-family: var(--font-head); font-size: var(--step--2); font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; padding: 0; }
+.fp-year { font-family: var(--font-display); font-weight: 700; font-size: 2.75rem; line-height: 1; letter-spacing: -0.02em; }
+.fp-guess input[type="range"] {
+  -webkit-appearance: none; appearance: none; width: 100%; height: 28px; margin: 0; background: transparent; cursor: pointer;
+}
+.fp-guess input[type="range"]::-webkit-slider-runnable-track { height: 5px; border-radius: 3px; background: linear-gradient(to right, var(--red) var(--fill), var(--rule) var(--fill)); }
+.fp-guess input[type="range"]::-moz-range-track { height: 5px; border-radius: 3px; background: linear-gradient(to right, var(--red) var(--fill), var(--rule) var(--fill)); }
+.fp-guess input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; width: 20px; height: 20px; margin-top: -7.5px; border-radius: 50%; background: var(--red); border: 2px solid var(--paper-bright); box-shadow: 0 0 0 1px var(--red); }
+.fp-guess input[type="range"]::-moz-range-thumb { width: 18px; height: 18px; border-radius: 50%; background: var(--red); border: 2px solid var(--paper-bright); }
+.fp-range { display: flex; justify-content: space-between; margin: -6px 0 0; font-family: var(--font-head); font-size: 0.6875rem; color: var(--ink-3); max-width: none; }
+.fp-where { border: 0; margin: 0; padding: 0; }
+.fp-where legend { margin-bottom: var(--s2); }
+.fp-regions { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--s2); }
+@media (min-width: 960px) { .fp-regions { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+.fp-region { position: relative; }
+.fp-region input { position: absolute; opacity: 0; inset: 0; margin: 0; cursor: pointer; }
+.fp-region span {
+  display: grid; place-items: center; min-height: 48px; padding: 0 var(--s1); box-shadow: inset 0 0 0 1.5px var(--ink);
+  font-family: var(--font-head); font-size: var(--step--1); font-weight: 600; background: var(--paper-bright);
+}
+.fp-region input:checked + span { background: var(--ink); color: var(--paper-bright); }
+.fp-region input:focus-visible + span { outline: var(--pencil-stroke) solid var(--red); outline-offset: 2px; }
+.fp-lock { width: 100%; margin-top: var(--s2); }
+
+/* ---------- The answer ---------- */
+.fp-result { margin-top: var(--s7); padding-top: var(--s5); border-top: 3px solid var(--ink); box-shadow: 0 -4px 0 -3px var(--ink); }
+.fp-answer { margin: 0 0 var(--s1); font-size: var(--step-3); }
+.fp-answer-date { margin: 0 0 var(--s5); font-family: var(--font-head); font-size: var(--step--1); color: var(--ink-2); }
+.fp-score { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); margin: 0 0 var(--s4); border-block: 1px solid var(--ink); }
+.fp-score > div { padding: var(--s3) var(--s3) var(--s3) 0; }
+.fp-score > div + div { border-left: 1px solid var(--rule); padding-left: var(--s3); }
+@media (max-width: 959px) { .fp-score > div:nth-child(3) { border-left: 0; padding-left: 0; } .fp-score > div:nth-child(n+3) { border-top: 1px solid var(--rule); } }
+@media (min-width: 960px) { .fp-score { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+.fp-score dt { font-family: var(--font-head); font-size: 0.6875rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-2); }
+.fp-score dd { margin: var(--s1) 0 0; font-family: var(--font-display); font-weight: 700; font-size: var(--step-2); line-height: 1.1; }
+.fp-score > div:first-child dd { color: var(--red); }
+.fp-off { display: block; font-family: var(--font-head); font-size: var(--step--2); font-weight: 600; color: var(--ink-2); }
+.fp-off.is-right { color: var(--ink); }
+.fp-share-row { display: flex; flex-wrap: wrap; align-items: center; gap: var(--s3); margin-bottom: var(--s6); }
+
+.fp-result-grid { display: grid; gap: var(--s6); }
+@media (min-width: 960px) { .fp-result-grid { grid-template-columns: minmax(0, 5fr) minmax(0, 6fr); gap: var(--s7); align-items: start; } }
+.fp-page { margin: 0; }
+.fp-page-sheet { position: relative; width: 100%; background: var(--paper-bright); box-shadow: var(--lift); }
+.fp-page-sheet img { display: block; width: 100%; height: 100%; }
+.fp-ring { position: absolute; outline: 2.5px solid var(--red); outline-offset: 1px; }
+.fp-ring-no {
+  position: absolute; top: -2px; left: -2px; display: grid; place-items: center; min-width: 1.25rem; height: 1.25rem; padding: 0 3px;
+  background: var(--red); color: var(--paper-bright); font-family: var(--font-head); font-size: 0.6875rem; font-weight: 700;
+}
+.fp-page figcaption { margin-top: var(--s2); }
+.fp-known { list-style: none; margin: 0 0 var(--s4); padding: 0; }
+.fp-known li { display: grid; grid-template-columns: 1.75rem minmax(0, 1fr); gap: var(--s3); padding: var(--s3) 0; border-bottom: 1px solid var(--rule); }
+.fp-known-no { display: grid; place-items: center; width: 1.5rem; height: 1.5rem; background: var(--red); color: var(--paper-bright); font-family: var(--font-head); font-size: 0.75rem; font-weight: 700; }
+.fp-known-label { margin: 0 0 2px; font-family: var(--font-head); font-size: var(--step--2); font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; }
+.fp-unseen { font-weight: 400; color: var(--ink-3); text-transform: none; letter-spacing: 0; }
+.fp-known p:last-child { margin: 0; line-height: 1.45; }
+.fp-next { margin-top: var(--s4); font-family: var(--font-head); font-size: var(--step--1); }
+
+@media (prefers-reduced-motion: reduce) { .fp-slot.is-shown { animation: none; } }
+/* On a laptop the whole page fits the window, so the clue reader stays in reach. */
+@media (min-width: 960px) { .fp-board { width: min(100%, calc(80vh * var(--aspect))); } }

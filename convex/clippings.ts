@@ -16,6 +16,15 @@ export const replaceForPage = mutation({
   },
 });
 
+// A whole page shown as a scan gets the content note when any clipping on it carries one.
+export const pageFlagged = query({
+  args: { pageId: v.string() },
+  handler: async (ctx, { pageId }) => {
+    for await (const c of ctx.db.query("clippings").withIndex("by_pageId", (q) => q.eq("pageId", pageId))) if (c.hardHistory === true) return true;
+    return false;
+  },
+});
+
 export const byPage = query({
   args: { pageId: v.string() },
   handler: (ctx, { pageId }) =>

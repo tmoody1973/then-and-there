@@ -115,3 +115,103 @@ ${clueTexts.join("\n---\n")}
 
 REVEAL:
 ${revealText}`;
+
+// The daily front page's Game Master: picks four clue clippings and says how each could tip a
+// player off. It knows the answer; players see its lines only after they guess.
+export const FRONT_PAGE_GM_PROMPT = (answer: string, listing: string) =>
+  `You are the Game Master for a daily guessing game. Players see one clue at a time from a real American newspaper front page and guess the YEAR and the U.S. REGION (Northeast, South, Midwest, West) it was printed in. The answer is: ${answer}.
+From the numbered clippings below (OCR text; it may contain misspellings; each is tagged with what the page layout tool thought it was), choose exactly 4 clues and give each a kind:
+- "ad": a real paid advertisement (a product, a seller, a price); only clippings tagged advertisement
+- "weather": a weather report or forecast (not a story that merely mentions weather)
+- "prices": market prices, quotations, or a price list
+- "item": a short news item or dispatch, local or from elsewhere
+- "notice": a legal or official notice, or a schedule
+- "headline": the page's lead headline; only clippings tagged headline
+Order the 4 from least to most revealing: the first should be a fair puzzle, the last should narrow it down. Prefer a mix of kinds, and clippings with a readable, telling detail: a price, a product, a technology, a named place, a style of language. Never pick a clipping you cannot read.
+For each, write:
+- "prints": one sentence on a detail the clipping actually prints, quoting a few words exactly when you can.
+- "why": one sentence on how that detail points toward the year or the region, using only well-established general history. Do not invent specifics.
+Return only JSON: {"clues": [{"i": number, "kind": string, "prints": string, "why": string}, ... 4 items]}.
+
+CLIPPINGS:
+${listing}`;
+
+// The same Game Master on the page's one picture (the vision call sees the crop).
+export const FRONT_PAGE_PHOTO_PROMPT = (answer: string, caption: string) =>
+  `You are the Game Master for a daily guessing game about real American newspaper front pages. The answer is: ${answer}. Attached is the page's picture${caption ? `; its caption reads: "${caption}"` : ""}.
+Write "prints": one sentence on what the picture shows (and its caption, if any). Write "why": one sentence on how it points toward the year or region, using only well-established general history (printing technique, clothing, technology). Do not invent specifics.
+Return only JSON: {"prints": string, "why": string}.`;
+
+// The Editor on a front-page clue: is it the kind of clipping it claims, does it print what
+// "prints" says, and does "why" hold without invented specifics?
+export const EDITOR_CLUE_PROMPT = (claim: string, sourceText: string) =>
+  `You are a strict fact-checker for a history game. The clipping (an image, when one is attached) is from a historic American newspaper; its transcription is below and may contain OCR misspellings. The image is the authority. The CLAIM has three parts:
+KIND: the clipping must really be this kind of item.
+PRINTS: must be supported by what the clipping prints or shows. Outside knowledge does not count here.
+WHY: may rely on well-established general history, but must not contradict the clipping or assert invented specifics.
+Fail the claim if any part fails.
+Return only JSON: {"pass": boolean, "reason": string (one sentence)}.
+
+CLAIM:
+${claim}
+
+CLIPPING TRANSCRIPTION:
+${sourceText}`;
+
+// Detective's Game Master: picks the clipping that reports Bly at one stop of her route and
+// writes the clue card. It knows the next stop; players must work it out, so it never names it.
+export const DETECTIVE_GM_PROMPT = (place: string, next: string | null, listing: string) =>
+  `You run a history detective game. Players follow Nellie Bly's 1889-90 race around the world using only what newspapers printed. This stop: ${place}.${next ? ` Her NEXT stop is ${next}; players must work it out, so never name it or spell it out.` : ""}
+Below are numbered clippings that mention her and ${place}. Pick the ONE that best reports her at ${place} (arriving, waiting or leaving) as news. Prefer a clipping that says something specific: a delay, a ship, a meeting, time gained or lost.
+Then write, in plain modern English for readers on phones:
+- "summary": one sentence, at most 22 words, present tense, saying only what that clipping prints about her at ${place}.
+- "title": a notebook headline, at most 5 words (e.g. "Stuck in Colombo").${next ? `
+- "hint": the city editor's nudge, at most 22 words, in the voice of a gruff-but-kind 1889 city editor. Point at direction of travel or geography so a player can reason toward the next stop. Never name it.` : ""}
+Return only JSON: {"i": number, "summary": string, "title": string${next ? ', "hint": string' : ""}}.
+
+CLIPPINGS:
+${listing}`;
+
+// One Day, Many Papers: the Comparer reads computed facts about how three papers ran one story
+// and says what a reader should notice. The Editor checks the note against the same facts.
+export const COMPARER_PROMPT = (event: string, facts: string) =>
+  `You help readers compare how three American newspapers covered one story: ${event}. Below are FACTS computed from their real front pages: how much of each front page the story took, how many of its pieces were shared wire copy (the same text another paper ran) and how many the paper wrote or chose for itself, with excerpts of its own pieces.
+Write, in plain modern English for readers on phones:
+- "noticed": 2 sentences, at most 45 words in all, saying what stands out in the comparison. Use only the FACTS; never invent a number, a ranking or a reason.
+- "question": one open question, at most 20 words, that sends the reader to look at the pages (e.g. "Which paper gave the news the most room, and why might that be?").
+Return only JSON: {"noticed": string, "question": string}.
+
+FACTS:
+${facts}`;
+
+export const EDITOR_COMPARE_PROMPT = (claim: string, facts: string) =>
+  `You are a strict fact-checker. Decide whether the NOTE is supported by the FACTS, which were computed from three newspapers' front pages. Fail it if it states any number, ranking, comparison or event the FACTS do not support. A question is not a claim.
+Return only JSON: {"pass": boolean, "reason": string (one sentence)}.
+
+NOTE:
+${claim}
+
+FACTS:
+${facts}`;
+
+// Spot the Forgery: the Editor looks at Muse Image's redrawn ad before a round ships.
+export const EDITOR_FORGERY_PROMPT = (claim: string, _sourceText: string) =>
+  `You check images for a history game. The image is an advertisement redrawn to look like it was printed in an 1889 newspaper. Pass only if the CLAIM is plainly true from the image alone: a player looking at it would clearly recognize the product named, from the picture or the large lettering. Fail if the product is unclear, the main lettering is garbled nonsense, or the image is not an advertisement.
+Return only JSON: {"pass": boolean, "reason": string (one sentence)}.
+
+CLAIM:
+${claim}`;
+
+// Quests: the guide picks a chapter's sources from the Black press and writes, for each, a caption,
+// an open question and what a careful reader might notice. The Editor checks caption and note.
+export const QUEST_GM_PROMPT = (chapter: string, focus: string, listing: string, count: number) =>
+  `You are the guide for a history quest for students: "The Great Migration through the Black press," 1916-1925. This chapter is "${chapter}": ${focus}. Below are numbered clippings from African American newspapers of the time.
+Pick up to ${count} clippings that best show this chapter, in an order that reads as a story. Skip anything off topic, too damaged to read, or that only mentions the theme in passing.
+For each pick write, in plain modern English for readers on phones:
+- "caption": one sentence, at most 18 words, describing the whole clipping as printed: say what kind of item it is (a letter, an editorial, an ad, a column of local news, a reprint from another paper) and what it is about. Only what it prints.
+- "question": one open question, at most 28 words, that asks the reader to think about why the paper printed this or who it was for. No yes/no questions; never quiz them on a fact.
+- "notice": 2 sentences, at most 50 words, on what a careful reader might notice. The first sentence must rest on what the clipping prints; the second may connect it to well-established history of the Great Migration. Never invent names, numbers or events.
+Return only JSON: {"picks": [{"i": number, "caption": string, "question": string, "notice": string}]}.
+
+CLIPPINGS:
+${listing}`;

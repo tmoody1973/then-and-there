@@ -20,6 +20,7 @@ export type Card = {
 const TYPE: Record<string, string> = { person: "person story", event: "event", business: "business story", ad: "advertisement", notice: "notice", other: "clipping" };
 // Fixed copy, never model-written (decision 009): calm, and it explains why the item is shown.
 export const HARD_HISTORY_NOTE = "This item reflects attitudes or language of its time. It is shown as printed, as a historical record.";
+export const HARD_HISTORY_PAGE_NOTE = "Something on this page reflects attitudes or language of its time. It is shown as printed, as a historical record.";
 
 export const paperName = (title: string, mla = "") => paperFromCite(mla, titleCase(title.replace(/\s*\(.*$/, "")));
 export const longDay = (date: string) =>

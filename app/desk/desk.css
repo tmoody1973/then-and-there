@@ -1,24 +1,32 @@
-/* Your Desk: read mode. One column, Copy Desk tokens; the agent's notes come first. */
-.desk-page { padding-bottom: var(--s8); }
-.desk-page .dateline a { color: inherit; text-decoration: none; }
-.desk-page .dateline a:hover { text-decoration: underline; }
-.desk-lede { color: var(--ink-2); }
-.desk-page section { margin-top: var(--s7); }
-.desk-page h2 { margin: 0 0 var(--s3); padding-top: var(--s3); border-top: 2px solid var(--ink); }
-.desk-empty { color: var(--ink-2); }
-.desk-list { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--s6); }
-.desk-clip .slug { margin: 0 0 var(--s2); font-family: var(--font-head); font-weight: 600; font-size: 0.75rem; letter-spacing: 0.04em; text-transform: uppercase; color: var(--ink-2); }
-.desk-find { display: flex; flex-wrap: wrap; align-items: baseline; gap: var(--s2); font-family: var(--font-head); font-weight: 700; margin-bottom: var(--s2); }
-.replay { font-size: 0.75rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink); border: 1px solid var(--ink); border-radius: var(--radius); padding: 1px var(--s1); }
-.follow-list { list-style: none; margin: 0 0 var(--s4); padding: 0; border-top: 1px solid var(--rule); }
-.follow-list li { display: flex; justify-content: space-between; align-items: center; gap: var(--s3); min-height: 48px; border-bottom: 1px solid var(--rule); }
-.follow-form { display: flex; flex-wrap: wrap; gap: var(--s3); align-items: end; }
-.follow-form .grow { flex: 1 1 12rem; }
-.follow-form select, .follow-form input {
-  width: 100%; min-height: 48px; font: inherit; color: var(--ink); background: var(--paper-raised);
-  border: 1px solid var(--rule-strong); border-radius: var(--radius); padding: 0 var(--s3);
+/* My Agent: the report on the left, what it watches and remembers on the right. */
+.agent-page { width: min(100% - 2 * var(--s4), 44rem); margin: var(--s5) auto 0; }
+.agent-head { padding-bottom: var(--s4); margin-bottom: var(--s5); }
+.agent-head h1 { margin: 0 0 var(--s2); font-size: var(--step-3); }
+.agent-head .agent-sub { margin: 0; }
+.agent-columns { display: grid; gap: var(--s6); }
+.agent-section + .agent-section { margin-top: var(--s6); }
+/* Phone: one column in the mockup's order (finds, watching, log); laptop: report left, memory right. */
+@media (max-width: 959px) {
+  .agent-columns { display: flex; flex-direction: column; gap: var(--s6); }
+  .agent-columns > div { display: contents; }
+  .agent-columns .agent-section { margin: 0; }
+  #finds-sec { order: 1; } #watch-sec { order: 2; } #log-sec { order: 3; } #remembers-sec { order: 4; } #saved-sec { order: 5; }
 }
-.log { list-style: none; margin: 0; padding: 0; }
-.log li { padding: var(--s2) 0; border-bottom: 1px solid var(--rule); }
-.log time { display: block; }
-.forget { padding-top: var(--s4); border-top: 1px solid var(--rule); }
+.find-stack { display: grid; gap: var(--s4); }
+.find-none { padding: var(--s4); background: var(--paper-raised); border-top: 3px solid var(--red); margin: 0; }
+.agent-privacy { font-size: var(--step--1); color: var(--ink-2); }
+
+.follow-form { display: flex; flex-wrap: wrap; gap: var(--s2); align-items: end; }
+.follow-form .grow { flex: 1 1 11rem; }
+.follow-form select, .follow-form input {
+  width: 100%; min-height: 48px; font: inherit; font-size: var(--step--1); color: var(--ink); background: var(--paper-raised);
+  border: 0; box-shadow: inset 0 0 0 1px var(--ink); border-radius: 0; padding: 0 var(--s3);
+}
+.follow-form input::placeholder { color: var(--ink-3); }
+.saved-list { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--s5); }
+
+@media (min-width: 960px) {
+  .agent-page { width: min(100% - 2 * var(--s7), var(--wide)); margin-top: var(--s6); }
+  .agent-head h1 { font-size: var(--step-4); }
+  .agent-columns { grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: var(--s7); align-items: start; }
+}

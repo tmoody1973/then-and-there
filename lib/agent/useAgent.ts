@@ -23,6 +23,7 @@ type Mine = { follows: Array<{ id: string; kind: "name" | "place"; value: string
 const SAVED_KEY = "tt.saved.v1";
 const SEEN_KEY = "tt.seen.v1";
 const DESK_READ_KEY = "tt.desk.readAt.v1";
+const DESK_READ_EVENT = "tt:desk-read";
 const MAX_SAVED = 100;
 const MAX_SEEN = 200;
 
@@ -60,10 +61,24 @@ export function useAgent() {
     setReadAt(readJson<number>(DESK_READ_KEY, 0, (v) => typeof v === "number"));
   }, []);
 
+  // The header badge has its own copy of this hook and stays mounted across pages, so a read on
+  // My Agent (this tab, or another) has to reach it.
+  useEffect(() => {
+    const sync = () => setReadAt(readJson<number>(DESK_READ_KEY, 0, (v) => typeof v === "number"));
+    const onStorage = (e: StorageEvent) => e.key === DESK_READ_KEY && sync();
+    window.addEventListener(DESK_READ_EVENT, sync);
+    window.addEventListener("storage", onStorage);
+    return () => {
+      window.removeEventListener(DESK_READ_EVENT, sync);
+      window.removeEventListener("storage", onStorage);
+    };
+  }, []);
+
   const mine = useQuery(api.agent.mine, key ? { key } : "skip") as Mine | undefined;
   const followM = useMutation(api.agent.follow);
   const unfollowM = useMutation(api.agent.unfollow);
   const forgetM = useMutation(api.agent.forgetMe);
+  const dismissM = useMutation(api.agent.dismissNote);
 
   const follow = useCallback(async (kind: "name" | "place", value: string) => {
     if (!key) throw new Error("This browser can't keep follows (storage is off).");
@@ -72,6 +87,11 @@ export function useAgent() {
   const unfollow = useCallback(async (id: string) => {
     if (key) await unfollowM({ key, id: id as never });
   }, [key, unfollowM]);
+
+  // "Not my family": hides the note here; the server keeps it so the agent never resends it.
+  const dismiss = useCallback(async (clippingId: string) => {
+    if (key) await dismissM({ key, clippingId });
+  }, [key, dismissM]);
 
   const save = useCallback((clip: ClipRef) => {
     setSaved((prev) => {
@@ -99,10 +119,11 @@ export function useAgent() {
     const now = Date.now();
     writeJson(DESK_READ_KEY, now);
     setReadAt(now);
+    window.dispatchEvent(new Event(DESK_READ_EVENT));
   }, []);
 
   const unread = (mine?.notes ?? []).filter((n) => n.createdAt > readAt).length;
-  return { ready: key !== null || mine !== undefined, key, mine, follow, unfollow, saved, save, unsave, forgetEverything, unread, markDeskRead };
+  return { ready: key !== null || mine !== undefined, key, mine, follow, unfollow, dismiss, saved, save, unsave, forgetEverything, unread, markDeskRead };
 }
 
 // Stories a reader has already seen (Meanwhile, notes), so the agent never repeats one.

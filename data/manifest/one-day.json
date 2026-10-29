@@ -1,0 +1,8 @@
+[
+  { "startDate": "1920-08-26", "endDate": "1920-08-27", "frontPagesOnly": true, "limit": 40 },
+  { "facets": ["partof_title:evening star (washington, d.c.) 1854-1972"], "startDate": "1920-08-26", "endDate": "1920-08-27", "frontPagesOnly": true, "limit": 2 },
+  { "facets": ["partof_title:new-york tribune (new york [n.y.]) 1866-1924"], "startDate": "1920-08-26", "endDate": "1920-08-27", "frontPagesOnly": true, "limit": 2 },
+  { "facets": ["partof_title:bisbee daily review (bisbee, ariz.) 1901-1922"], "startDate": "1920-08-26", "endDate": "1920-08-27", "frontPagesOnly": true, "limit": 2 },
+  { "startDate": "1906-04-18", "endDate": "1906-04-19", "frontPagesOnly": true, "limit": 30 },
+  { "startDate": "1918-11-11", "endDate": "1918-11-12", "frontPagesOnly": true, "limit": 30 }
+]

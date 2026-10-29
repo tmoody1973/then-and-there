@@ -4,12 +4,9 @@ import { readFileSync, writeFileSync } from "node:fs";
 import { ConvexHttpClient } from "convex/browser";
 import { anyApi } from "convex/server";
 import { verifyClaim, verifyHint, verifyRelevant, verifySolvable } from "../../lib/editor/verify";
-import { readFileSync as read } from "node:fs";
-import { altoScale, parseAlto } from "../../lib/alto/parse";
 import { draftDay, MENTION, ref, type Pick } from "../../lib/game/draftDay";
 import { pickMorgue } from "../../lib/game/pickMorgue";
-import { focusBox } from "../../lib/game/focus";
-import { safeId } from "../../worker/fetch";
+import { framed } from "./framed";
 import { convexUrl, loadClips, writeSecret } from "../../lib/game/load";
 import { createLocClient } from "../../lib/loc/client";
 import { makeComplete, metaClient } from "../../lib/meta/client";
@@ -19,15 +16,7 @@ const convex = new ConvexHttpClient(convexUrl());
 const picks = JSON.parse(readFileSync("data/game/picks.json", "utf8")) as Pick[];
 // From Jan 1889: the morgue may hold anything printed before a game day.
 const loaded = await loadClips(convex, "1889-01-01", "1890-01-31");
-// Frame the evidence lines for every picked clipping, from its page's cached OCR file.
 const picked = new Set(picks.flatMap((p) => [...p.clueClippingIds, p.revealClippingId]));
-function framed<T extends { pageId: string; box: { x: number; y: number; w: number; h: number } }>(c: T, mention: RegExp): T {
-  const dir = `cache/pages/${safeId(c.pageId)}`;
-  const page = parseAlto(read(`${dir}/alto.xml`, "utf8"));
-  const meta = JSON.parse(read(`${dir}/meta.json`, "utf8")) as { imageWidth: number };
-  const focus = focusBox(page, altoScale(page.width, meta.imageWidth), c.box, mention);
-  return focus ? { ...c, focus } : c;
-}
 const clips = loaded.map((c) => (picked.has(c.clippingId) ? framed(c, MENTION) : c));
 const meta = metaClient();
 const loc = createLocClient({ servicesPerMinute: 60 });

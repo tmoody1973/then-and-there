@@ -2,6 +2,7 @@
 
 **Date:** 2026-10-28 · **Builder:** Tarik Moody (solo) · **Event:** Meta Global AI Developer Hackathon, indie track
 **Deadline:** Wed Nov 4, 2026, 9:00 PM ET (8:00 PM Central). Tarik is accepted.
+**Superseded in part (Oct 29):** decision 010 restores the full scope from Tarik's mockup; the non-goals in section 2 for the front-page game, One Day, Spot the Forgery and Quests no longer hold.
 **Supersedes:** the feature list in `docs/then-and-there.md`. That file stays as background; where they disagree, this file wins.
 
 ---

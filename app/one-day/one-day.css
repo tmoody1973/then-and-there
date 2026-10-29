@@ -1,0 +1,77 @@
+/* One Day, Many Papers. Phone: three narrow pages side by side, the legend, the Comparer, then
+   the side-by-side list. Laptop: three pages | the Comparer, legend and other days. */
+
+.od { width: min(100% - 2 * var(--s4), var(--wide)); margin: 0 auto; padding-bottom: var(--s8); }
+.od .dateline { margin-inline: calc(-1 * var(--s4)); padding-inline: var(--s4); font-family: var(--font-head); font-size: var(--step--1); font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; }
+.od .dateline a { text-transform: none; letter-spacing: 0; }
+.od-count { color: var(--red); }
+.od-head { display: grid; gap: var(--s4); margin: var(--s5) 0 var(--s5); }
+.od-head h1 { margin: 0 0 var(--s2); font-size: var(--step-4); line-height: 1; letter-spacing: -0.02em; }
+.od-dek { margin: 0; font-size: var(--step-1); line-height: 1.35; max-width: 62ch; }
+
+.od-toggle { display: grid; grid-template-columns: 1fr 1fr; box-shadow: inset 0 0 0 1.5px var(--ink); align-self: end; }
+.od-toggle button {
+  min-height: 48px; padding: 0 var(--s4); border: 0; background: transparent; color: var(--ink); cursor: pointer;
+  font-family: var(--font-head); font-size: var(--step--1); font-weight: 600;
+}
+.od-toggle button[aria-pressed="true"] { background: var(--ink); color: var(--paper-bright); }
+.od-toggle button:focus-visible { outline: var(--pencil-stroke) solid var(--red); outline-offset: 2px; }
+
+.od-grid { display: grid; gap: var(--s5); }
+.od-papers { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--s3); align-items: start; }
+.od-paper { margin: 0; }
+.od-paper figcaption { min-height: 3.6em; margin-bottom: var(--s2); }
+.od-name { display: block; font-family: var(--font-display); font-weight: 700; font-size: var(--step-0); line-height: 1.15; }
+.od-place { display: block; margin-top: 2px; font-family: var(--font-head); font-size: 0.6875rem; color: var(--ink-2); }
+.od-paper > a { display: block; }
+.od-paper > a:focus-visible { outline: var(--pencil-stroke) solid var(--red); outline-offset: 3px; }
+.od-sheet { position: relative; width: 100%; background: var(--paper-bright); box-shadow: 0 0 0 1.5px var(--ink); overflow: hidden; }
+.od-sheet img { display: block; width: 100%; height: 100%; }
+.od-mark { position: absolute; mix-blend-mode: multiply; transition: opacity 220ms var(--ease-out); }
+.od-mark.is-wire { background: var(--wire); opacity: 0.75; }
+.od-mark.is-own { background: var(--red); opacity: 0.7; }
+.od-mark.is-quiet { opacity: 0; }
+.od-fallback { padding: var(--s4); margin: 0; font-size: var(--step--2); }
+.od-only { margin: var(--s3) 0 0; font-size: var(--step--1); color: var(--ink-2); line-height: 1.4; }
+
+.od-legend { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: var(--s2) var(--s5); font-family: var(--font-head); font-size: var(--step--2); }
+.od-legend li { display: flex; align-items: center; gap: var(--s2); }
+.od-key { width: 14px; height: 14px; }
+.od-key.is-wire { background: var(--wire); }
+.od-key.is-own { background: var(--red); }
+
+.od-notice { margin-top: var(--s5); padding: var(--s4); background: var(--paper-raised); border-top: 3px solid var(--ink); }
+.od-notice .agent-label { margin-bottom: var(--s2); }
+.od-notice p:not(.agent-label) { margin: 0 0 var(--s3); font-size: var(--step-1); line-height: 1.35; }
+.od-notice .od-question { font-style: italic; }
+.od-jump { display: inline-block; margin-top: var(--s2); font-family: var(--font-head); font-size: var(--step--1); font-weight: 600; color: var(--ink); }
+.od-jump:hover { color: var(--red); }
+
+.od-more { margin-top: var(--s6); }
+.od-more ul { list-style: none; margin: var(--s2) 0 0; padding: 0; display: grid; gap: var(--s2); }
+.od-more a {
+  display: block; padding: var(--s3); box-shadow: inset 0 0 0 1.5px var(--ink); color: var(--ink); text-decoration: none;
+  font-family: var(--font-head); font-size: var(--step--1); line-height: 1.35;
+}
+.od-more a:hover { background: var(--paper-raised); color: var(--red); }
+.od-more a.is-any { box-shadow: none; outline: 1.5px dashed var(--ink-2); outline-offset: -1.5px; color: var(--red); font-weight: 600; }
+
+.od-changes { margin-top: var(--s8); padding-top: var(--s5); border-top: 3px solid var(--ink); }
+.od-changes h2 { margin: 0 0 var(--s5); font-size: var(--step-2); }
+.od-columns { display: grid; gap: var(--s6); }
+.od-columns h3 { margin: 0 0 var(--s1); font-size: var(--step-1); }
+.od-tally { margin: 0 0 var(--s4); font-family: var(--font-head); font-size: var(--step--2); color: var(--ink-2); }
+.od-columns .scan { margin-bottom: var(--s4); }
+
+@media (min-width: 960px) {
+  .od { width: min(100% - 2 * var(--s7), var(--wide)); }
+  .od-head { grid-template-columns: minmax(0, 1fr) 24rem; align-items: end; margin-top: var(--s6); }
+  .od-grid { grid-template-columns: minmax(0, 1fr) 20rem; gap: var(--s6); align-items: start; }
+  .od-papers { gap: var(--s5); }
+  .od-name { font-size: var(--step-1); }
+  .od-side { display: flex; flex-direction: column; }
+  .od-side .od-notice { order: -1; margin: 0 0 var(--s5); }
+  .od-columns { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
+@media (prefers-reduced-motion: reduce) { .od-mark { transition: none; } }
+.od-paper .content-note { margin: var(--s2) 0 0; font-size: var(--step--2); }

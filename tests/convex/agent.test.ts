@@ -90,6 +90,17 @@ describe("agent memory", () => {
     expect((await mine(t)).notes).toHaveLength(1);
   });
 
+  test("dismissing a note hides it from that reader only, and the agent can't resend it", async () => {
+    const t = convexTest(schema, modules);
+    await t.mutation(api.agent.addNote, { secret: SECRET, note: note(KEY) });
+    await t.mutation(api.agent.addNote, { secret: SECRET, note: note(KEY, "c2") });
+    await t.mutation(api.agent.dismissNote, { key: OTHER, clippingId: "c1" });
+    expect((await mine(t)).notes.map((n) => n.clippingId).sort()).toEqual(["c1", "c2"]);
+    await t.mutation(api.agent.dismissNote, { key: KEY, clippingId: "c1" });
+    expect((await mine(t)).notes.map((n) => n.clippingId)).toEqual(["c2"]);
+    expect(await t.mutation(api.agent.addNote, { secret: SECRET, note: note(KEY) })).toBe(false);
+  });
+
   test("secret-gated agent functions refuse without the secret", async () => {
     const t = convexTest(schema, modules);
     await expect(t.query(api.agent.allFollows, { secret: "x", cursor: null })).rejects.toThrow(/not allowed/);
