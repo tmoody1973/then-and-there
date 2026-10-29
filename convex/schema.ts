@@ -109,6 +109,32 @@ export const meanwhileFields = {
   humanStoryScore: v.number(),
 };
 
+export const followFields = {
+  owner: v.string(),
+  kind: v.union(v.literal("name"), v.literal("place")),
+  value: v.string(),
+  createdAt: v.number(),
+};
+
+export const noteFields = {
+  owner: v.string(),
+  clippingId: v.string(),
+  clip: clipRef,
+  matched: v.string(),
+  replay: v.boolean(),
+  createdAt: v.number(),
+  readAt: v.optional(v.number()),
+};
+
+// owner absent = a shared nightly line every reader sees.
+export const activityFields = {
+  owner: v.optional(v.string()),
+  runId: v.string(),
+  line: v.string(),
+  replay: v.boolean(),
+  createdAt: v.number(),
+};
+
 export default defineSchema({
   pages: defineTable(pageFields).index("by_pageId", ["pageId"]).index("by_state_date", ["state", "date"]),
   clippings: defineTable(clippingFields)
@@ -119,4 +145,8 @@ export default defineSchema({
   editorRuns: defineTable(editorRunFields),
   gameDays: defineTable(gameDayFields).index("by_day", ["day"]),
   meanwhile: defineTable(meanwhileFields).index("by_date_scope", ["date1889", "scope"]),
+  follows: defineTable(followFields).index("by_owner", ["owner"]),
+  notes: defineTable(noteFields).index("by_owner", ["owner"]),
+  activity: defineTable(activityFields).index("by_owner", ["owner"]),
+  agentState: defineTable({ key: v.string(), value: v.string() }).index("by_key", ["key"]),
 });
