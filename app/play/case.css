@@ -1,0 +1,90 @@
+/* Detective, Case 01. Phone: the trail as a line of dots, the clue, four ports, the City Editor,
+   then the notebook behind a button. Laptop: trail | clue and call | notebook. */
+
+.case { width: min(100% - 2 * var(--s4), var(--wide)); margin: 0 auto; padding-bottom: var(--s8); }
+.case .dateline { margin-inline: calc(-1 * var(--s4)); padding-inline: var(--s4); font-family: var(--font-head); font-size: var(--step--1); font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; }
+.case .dateline a { text-transform: none; letter-spacing: 0; }
+.case-left { color: var(--red); }
+.case-head { margin: var(--s5) 0 var(--s5); }
+.case-head .slugline { display: flex; justify-content: space-between; gap: var(--s3); }
+.case-head h1 { margin: 0 0 var(--s2); font-size: var(--step-3); line-height: 1.05; text-wrap: balance; }
+.case-dek { margin: 0; font-size: var(--step-1); line-height: 1.35; max-width: 62ch; }
+
+.case-grid { display: grid; gap: var(--s5); }
+@media (min-width: 960px) {
+  .case { width: min(100% - 2 * var(--s7), var(--wide)); }
+  .case-head { margin-top: var(--s6); }
+  .case-grid { grid-template-columns: 15rem minmax(0, 1fr) 19rem; gap: var(--s7); align-items: start; }
+}
+
+/* ---------- The trail ---------- */
+.trail-dots ol { position: relative; display: flex; justify-content: space-between; align-items: center; list-style: none; margin: 0; padding: 0; }
+.trail-dots ol::before { content: ""; position: absolute; inset: 50% 0 auto; height: 1.5px; background: var(--ink); }
+.trail-dots li { position: relative; width: 12px; height: 12px; border-radius: 50%; background: var(--ink); }
+.trail-dots li.is-here { width: 18px; height: 18px; background: var(--red); }
+.trail-dots li.is-ahead { background: var(--paper); box-shadow: inset 0 0 0 1.5px var(--ink); }
+.trail-dots p { display: flex; justify-content: space-between; gap: var(--s3); margin: var(--s2) 0 0; font-family: var(--font-head); font-size: var(--step--2); color: var(--ink-2); max-width: none; }
+.trail-now { color: var(--red); font-weight: 600; text-align: right; }
+
+.trail-list ol { list-style: none; margin: var(--s3) 0 0; padding: 0; }
+.trail-list li { position: relative; display: grid; padding: 0 0 var(--s4) var(--s6); min-height: 46px; }
+.trail-list li::before { /* the stop */
+  content: ""; position: absolute; left: 3px; top: 0.45em; width: 12px; height: 12px; border-radius: 50%; background: var(--ink); z-index: 1;
+}
+.trail-list li::after { /* the road to the next stop */
+  content: ""; position: absolute; left: 8.25px; top: 0.9em; bottom: -0.45em; border-left: 1.5px solid var(--ink);
+}
+.trail-list li:last-child::after { display: none; }
+.trail-list li.is-here::before { left: 0; top: 0.3em; width: 18px; height: 18px; background: var(--red); }
+.trail-list li.is-here::after, .trail-list li.is-ahead::after { border-left-style: dotted; border-left-width: 2px; }
+.trail-list li.is-ahead::before { background: var(--paper); box-shadow: inset 0 0 0 1.5px var(--ink); }
+.trail-name { font-family: var(--font-display); font-size: var(--step-1); line-height: 1.2; }
+.trail-list .is-here .trail-name { color: var(--red); font-weight: 700; }
+.trail-list .is-ahead .trail-name { color: var(--ink-2); }
+.trail-note { font-family: var(--font-head); font-size: var(--step--2); color: var(--ink-2); }
+
+/* ---------- The clue ---------- */
+.clue-card { padding: var(--s4); background: var(--paper-bright); box-shadow: inset 0 0 0 1.5px var(--ink); }
+@media (min-width: 960px) { .clue-card { padding: var(--s5); } }
+.clue-slug { display: flex; justify-content: space-between; align-items: baseline; gap: var(--s3); margin: 0 0 var(--s3); font-family: var(--font-head); font-size: var(--step--2); max-width: none; }
+.clue-slug > :first-child { color: var(--red); font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; }
+.clue-real { color: var(--ink-2); }
+.clue-card .scan figcaption { font-family: var(--font-head); font-size: var(--step--2); color: var(--ink-2); }
+.clue-summary { margin: var(--s4) 0 0; font-style: italic; font-size: var(--step-1); line-height: 1.35; }
+
+/* ---------- The call ---------- */
+.case-q { margin: var(--s5) 0 var(--s3); font-size: var(--step-2); line-height: 1.15; text-wrap: balance; }
+.case-options { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--s2); }
+@media (min-width: 960px) { .case-options { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--s3); } }
+.case-option {
+  width: 100%; min-height: 52px; padding: var(--s2); border: 0; background: var(--paper); color: var(--ink); cursor: pointer;
+  box-shadow: inset 0 0 0 1.5px var(--ink); font-family: var(--font-head); font-size: var(--step--1); font-weight: 600;
+  transition: background 160ms var(--ease-out), color 160ms var(--ease-out);
+}
+.case-option:hover:not(:disabled) { background: var(--paper-raised); color: var(--red); }
+.case-option:focus-visible { outline: var(--pencil-stroke) solid var(--red); outline-offset: 2px; }
+.case-option:disabled { cursor: default; color: var(--ink-3); }
+.case-option.is-answer { background: var(--ink); color: var(--paper-bright); }
+.case-verdict { display: grid; gap: var(--s3); justify-items: start; margin-top: var(--s4); }
+.case-verdict p { margin: 0; font-size: var(--step-0); }
+
+.editor-box { margin-top: var(--s5); padding: var(--s4); background: var(--paper-raised); border-top: 3px solid var(--ink); }
+.editor-box .agent-label { margin-bottom: var(--s2); }
+.editor-text { margin: 0; font-size: var(--step-1); line-height: 1.35; }
+
+.case-finish p { max-width: 60ch; }
+.case-finish-actions { display: flex; flex-wrap: wrap; align-items: center; gap: var(--s4); }
+
+/* ---------- The notebook ---------- */
+.notebook { margin-top: var(--s6); }
+.notebook summary { width: 100%; list-style: none; cursor: pointer; }
+.notebook summary::-webkit-details-marker { display: none; }
+.notebook[open] summary { margin-bottom: var(--s4); }
+.nb-list { list-style: none; margin: var(--s3) 0 0; padding: 0; display: grid; gap: var(--s3); }
+.nb-card { display: grid; grid-template-columns: 3rem minmax(0, 1fr); gap: var(--s3); align-items: start; padding: var(--s3); background: var(--paper-raised); box-shadow: inset 0 0 0 1.5px var(--ink); color: var(--ink); text-decoration: none; }
+.nb-card:hover { color: var(--red); }
+.nb-card:focus-visible { outline: var(--pencil-stroke) solid var(--red); outline-offset: 2px; }
+.nb-thumb { display: block; width: 3rem; height: 3.75rem; object-fit: cover; object-position: top; background: var(--paper-bright); box-shadow: 0 0 0 1px var(--ink); }
+.nb-title { display: block; font-family: var(--font-display); font-weight: 700; font-size: var(--step-0); line-height: 1.2; }
+.nb-cite { display: block; margin-top: var(--s1); font-family: var(--font-head); font-size: 0.6875rem; color: var(--ink-2); }
+.nb-note { margin: var(--s3) 0 0; font-family: var(--font-head); font-size: var(--step--2); color: var(--ink-2); }

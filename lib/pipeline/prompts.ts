@@ -157,3 +157,47 @@ ${claim}
 
 CLIPPING TRANSCRIPTION:
 ${sourceText}`;
+
+// Detective's Game Master: picks the clipping that reports Bly at one stop of her route and
+// writes the clue card. It knows the next stop; players must work it out, so it never names it.
+export const DETECTIVE_GM_PROMPT = (place: string, next: string | null, listing: string) =>
+  `You run a history detective game. Players follow Nellie Bly's 1889-90 race around the world using only what newspapers printed. This stop: ${place}.${next ? ` Her NEXT stop is ${next}; players must work it out, so never name it or spell it out.` : ""}
+Below are numbered clippings that mention her and ${place}. Pick the ONE that best reports her at ${place} (arriving, waiting or leaving) as news. Prefer a clipping that says something specific: a delay, a ship, a meeting, time gained or lost.
+Then write, in plain modern English for readers on phones:
+- "summary": one sentence, at most 22 words, present tense, saying only what that clipping prints about her at ${place}.
+- "title": a notebook headline, at most 5 words (e.g. "Stuck in Colombo").${next ? `
+- "hint": the city editor's nudge, at most 22 words, in the voice of a gruff-but-kind 1889 city editor. Point at direction of travel or geography so a player can reason toward the next stop. Never name it.` : ""}
+Return only JSON: {"i": number, "summary": string, "title": string${next ? ', "hint": string' : ""}}.
+
+CLIPPINGS:
+${listing}`;
+
+// One Day, Many Papers: the Comparer reads computed facts about how three papers ran one story
+// and says what a reader should notice. The Editor checks the note against the same facts.
+export const COMPARER_PROMPT = (event: string, facts: string) =>
+  `You help readers compare how three American newspapers covered one story: ${event}. Below are FACTS computed from their real front pages: how much of each front page the story took, how many of its pieces were shared wire copy (the same text another paper ran) and how many the paper wrote or chose for itself, with excerpts of its own pieces.
+Write, in plain modern English for readers on phones:
+- "noticed": 2 sentences, at most 45 words in all, saying what stands out in the comparison. Use only the FACTS; never invent a number, a ranking or a reason.
+- "question": one open question, at most 20 words, that sends the reader to look at the pages (e.g. "Which paper gave the news the most room, and why might that be?").
+Return only JSON: {"noticed": string, "question": string}.
+
+FACTS:
+${facts}`;
+
+export const EDITOR_COMPARE_PROMPT = (claim: string, facts: string) =>
+  `You are a strict fact-checker. Decide whether the NOTE is supported by the FACTS, which were computed from three newspapers' front pages. Fail it if it states any number, ranking, comparison or event the FACTS do not support. A question is not a claim.
+Return only JSON: {"pass": boolean, "reason": string (one sentence)}.
+
+NOTE:
+${claim}
+
+FACTS:
+${facts}`;
+
+// Spot the Forgery: the Editor looks at Muse Image's redrawn ad before a round ships.
+export const EDITOR_FORGERY_PROMPT = (claim: string, _sourceText: string) =>
+  `You check images for a history game. The image is an advertisement redrawn to look like it was printed in an 1889 newspaper. Pass only if the CLAIM is plainly true from the image alone: a player looking at it would clearly recognize the product named, from the picture or the large lettering. Fail if the product is unclear, the main lettering is garbled nonsense, or the image is not an advertisement.
+Return only JSON: {"pass": boolean, "reason": string (one sentence)}.
+
+CLAIM:
+${claim}`;

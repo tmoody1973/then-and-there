@@ -1,0 +1,86 @@
+{
+  "builtAt": "2026-10-29T16:41:01.887Z",
+  "stops": [
+    {
+      "n": 1,
+      "name": "Southampton",
+      "place": "Southampton, England",
+      "clue": {
+        "clippingId": "j57by1v6jg30hf38k9w1tq24mn8h7adq",
+        "pageId": "http://www.loc.gov/resource/sn84038125/1889-11-29/ed-1/?sp=1",
+        "iiifBase": "https://tile.loc.gov/image-services/iiif/service:ndnp:mthi:batch_mthi_lynx_ver01:data:sn84038125:00212477084:1889112901:0212",
+        "box": {
+          "h": 3322,
+          "w": 1807,
+          "x": 3045,
+          "y": 3001
+        },
+        "paper": "The new North-west",
+        "date": "1889-11-29",
+        "citationMla": "The new North-west. (Deer Lodge, MT) 29 Nov. 1889, p. 1. Retrieved from the Library of Congress, www.loc.gov/item/sn84038125/1889-11-29/ed-1/.",
+        "excerpt": "\"NELLIE BLY'S\" ROUTE.\nNov. 22. Leave Victoria station, London, 8 p. m., on India mail.\nNov. 23. Calais, Paris and Turin.\nNov. 24. Brindisi at 10:14 p. m.\nNov. 25. Leave Brindisi, steamship Cathay, 2 a. m.\nNov. 27. Ismailia\nDec. 3. Aden.\nDec. 10. Colombo (Ceylon).\nDec. 16. Penang.\nDec. 18. Singapore.",
+        "focus": {
+          "x": 3045,
+          "y": 3702,
+          "w": 516,
+          "h": 162
+        }
+      },
+      "summary": "She is due in Southampton and rides by rail to London in three hours.",
+      "title": "Due in Southampton",
+      "hint": "Listen, kid, she hops rails to London then dashes across to France — follow south."
+    },
+    {
+      "n": 6,
+      "name": "Colombo",
+      "place": "Colombo, Ceylon",
+      "clue": {
+        "clippingId": "j572bcnrm186m0j1wk2hd9nq018h72yf",
+        "pageId": "http://www.loc.gov/resource/sn83030193/1889-12-13/ed-2/?sp=7",
+        "iiifBase": "https://tile.loc.gov/image-services/iiif/service:ndnp:nn:batch_nn_hanyu_ver01:data:sn83030193:00206539525:1889121302:0904",
+        "box": {
+          "h": 797,
+          "w": 845,
+          "x": 4369,
+          "y": 5442
+        },
+        "paper": "The Evening World",
+        "date": "1889-12-13",
+        "citationMla": "The Evening World. (New York, NY) 13 Dec. 1889, p. 7. Retrieved from the Library of Congress, www.loc.gov/item/sn83030193/1889-12-13/ed-2/.",
+        "excerpt": "If no untoward incident prevents Nellie Bly will sail from Colombo, Ceylon, to-day. She has been delayed there five days waiting for a connecting steamship. Should no more unexpected delays intervene she will yet reach Hong Kong in time to embark on the Oceanic, as scheduled before she left New York",
+        "focus": {
+          "x": 4378,
+          "y": 5442,
+          "w": 836,
+          "h": 196
+        }
+      },
+      "summary": "She sails from Colombo today after five days waiting for a connecting steamship.",
+      "title": "Five-Day Wait Ends",
+      "hint": "Listen, kid, she's steaming east toward China — find the next British coaling port past the Bay."
+    },
+    {
+      "n": 10,
+      "name": "Yokohama",
+      "place": "Yokohama, Japan",
+      "clue": {
+        "clippingId": "j57d1e2cz8h082s9q87xzx87s18h5ng9",
+        "pageId": "http://www.loc.gov/resource/sn83030193/1890-01-25/ed-3/?sp=1",
+        "iiifBase": "https://tile.loc.gov/image-services/iiif/service:ndnp:nn:batch_nn_hanyu_ver01:data:sn83030193:00206539537:1890012503:0281",
+        "box": {
+          "h": 246,
+          "w": 1050,
+          "x": 3296,
+          "y": 4127
+        },
+        "paper": "The Evening World",
+        "date": "1890-01-25",
+        "citationMla": "The Evening World. (New York, NY) 25 Jan. 1890, p. 1. Retrieved from the Library of Congress, www.loc.gov/item/sn83030193/1890-01-25/ed-3/.",
+        "excerpt": "Hanlon of the\n' League saying that they should\njoin the Nelly Bly party this\nnd be a part of the escort to the\navigator on the homestretch.\n\nITINERARY BEATEN.\n\nHong Kong was next. She was due here\nDec. 25, but her good luck was with her,\nand she was in the Chinese metropolis on\nChristmas Eve. Here s"
+      },
+      "summary": "She sails from Hong Kong aboard Oceanic bound for Yokohama, exactly on schedule.",
+      "title": "Bound for Yokohama",
+      "hint": "Look alive, kid — she sails east now, across the wide Pacific toward home soil. Check the steamship timetables."
+    }
+  ]
+}

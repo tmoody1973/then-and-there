@@ -6,16 +6,23 @@ const days = JSON.parse(readFileSync("data/game/days.json", "utf8")) as Day[];
 const published = days.filter((d) => d.status === "published");
 const first = published[0];
 
-test("plays a demo day, and a reload can't re-answer", async ({ page }) => {
-  await page.goto("/play?demo=1");
-  await page.locator(".board-row a").first().click();
-  await page.locator(".choice").first().click();
-  await page.getByRole("button", { name: "File it" }).click();
-  await expect(page.locator(".verdict")).toBeVisible();
+test("plays the first stop of the case, and a reload can't re-answer", async ({ page }) => {
+  await page.goto("/play");
+  await expect(page.locator(".clue-summary")).toBeVisible();
+  await page.locator(".case-option").first().click();
+  await expect(page.locator(".case-verdict")).toBeVisible();
   await expect(page.locator(".dateline")).toContainText(/(80|77) days left/);
   await page.reload();
-  await expect(page.locator(".verdict")).toBeVisible();
-  await expect(page.locator(".choice input").first()).toBeDisabled();
+  await expect(page.locator(".case-verdict")).toBeVisible();
+  await expect(page.locator(".case-option").first()).toBeDisabled();
+  await page.getByRole("button", { name: /Follow her to/ }).click();
+  await expect(page.locator(".trail-dots .is-here")).toHaveCount(1);
+});
+
+test("asking the City Editor costs a day and shows the nudge", async ({ page }) => {
+  await page.goto("/play");
+  await page.getByRole("button", { name: /Ask the City Editor/ }).click();
+  await expect(page.locator(".editor-text")).toBeVisible();
 });
 
 test("a locked day never sends its answer to the browser", async ({ page }) => {
@@ -32,7 +39,7 @@ test("a locked day never sends its answer to the browser", async ({ page }) => {
 
 test("when the Library's image server is down, the clue still reads", async ({ page }) => {
   await page.route("https://tile.loc.gov/**", (route) => route.abort());
-  await page.goto(`/play/${first.day}?demo=1`);
-  await expect(page.locator(".transcript")).toBeVisible();
+  await page.goto("/play");
+  await expect(page.locator(".clue-summary")).toBeVisible();
   await expect(page.getByRole("link", { name: "Open this page at loc.gov" }).first()).toBeVisible();
 });
