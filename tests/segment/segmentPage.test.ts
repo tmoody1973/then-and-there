@@ -68,6 +68,22 @@ describe("segmentPage", () => {
     expect(await segmentPage(PAGE, deps({ spark }).d)).toEqual([]);
   });
 
+  test("never sends SAM an unordered box when two headlines share a height (live 400: 'box is not ordered')", async () => {
+    const spark = JSON.stringify([
+      { object_name: "article", bbox: [{ x_min: 200, y_min: 0, x_max: 300, y_max: 500 }] },
+      { object_name: "headline", bbox: [{ x_min: 205, y_min: 250, x_max: 295, y_max: 270 }] },
+      { object_name: "headline", bbox: [{ x_min: 210, y_min: 250, x_max: 290, y_max: 268 }] },
+    ]);
+    const { d, samTexts } = deps({ spark });
+    await segmentPage(PAGE, d);
+    const sent = [...samTexts.slice(1).join("").matchAll(/x1=(\d+);y1=(\d+);x2=(\d+);y2=(\d+)/g)].map((m) => m.slice(1).map(Number));
+    expect(sent.length).toBe(2);
+    for (const [x1, y1, x2, y2] of sent) {
+      expect(x2).toBeGreaterThan(x1);
+      expect(y2).toBeGreaterThan(y1);
+    }
+  });
+
   test("asks SAM for illustrations and refines non-headline boxes", async () => {
     const spark = JSON.stringify([
       { object_name: "advertisement", bbox: [{ x_min: 0, y_min: 0, x_max: 100, y_max: 100 }] },

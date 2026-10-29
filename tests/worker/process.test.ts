@@ -123,7 +123,9 @@ describe("processPage", () => {
 
   test("segmentation failure marks the page failed and stores no clippings", async () => {
     const { d, stored } = deps(new Error("layout model returned no JSON array"));
-    await processPage(PAGE, d);
+    const res = await processPage(PAGE, d);
+    // The run log must say the page failed, not "0 clippings, 0 failed".
+    expect(res.error).toBe("layout model returned no JSON array");
     expect(stored.page).toMatchObject({ status: "failed", error: "layout model returned no JSON array" });
     expect(stored.rows).toBeUndefined();
   });

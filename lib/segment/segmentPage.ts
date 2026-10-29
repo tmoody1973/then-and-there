@@ -25,6 +25,7 @@ export type SegmentDeps = {
 
 const SEG_WIDTH = 2000;
 const SAM_MAX_OBJECTS = 16;
+const MIN_SIDE = 2; // px at SEG_WIDTH (~6 px on a full page): smaller is never a real story
 const LABELS = new Set<Box["label"]>(["article", "advertisement", "headline", "photograph"]);
 
 export function parseSamOutput(text: string): SamRecord[] {
@@ -118,8 +119,10 @@ export async function segmentPage(
   deps: SegmentDeps,
 ): Promise<Box[]> {
   const img = await deps.image(page.iiifBase, SEG_WIDTH);
-  const layout = splitColumnsAtHeadlines(
-    parseLayout(await deps.spark(img.dataUrl, LAYOUT_PROMPT), img.w, img.h).filter((b) => b.w > 0 && b.h > 0),
+  // Filter after splitting: two headlines at one height leave a sliver that rounds to an
+  // unordered box, and SAM rejects the whole page for it.
+  const layout = splitColumnsAtHeadlines(parseLayout(await deps.spark(img.dataUrl, LAYOUT_PROMPT), img.w, img.h)).filter(
+    (b) => b.w >= MIN_SIDE && b.h >= MIN_SIDE,
   );
   const illustrations = parseSamOutput(await deps.sam(img.dataUrl, "illustration")).map((r) => fromSam(r, "photograph"));
   const kept = layout.filter((b) => !(b.label === "photograph" && illustrations.some((s) => iou(s, b) > 0.5)));
