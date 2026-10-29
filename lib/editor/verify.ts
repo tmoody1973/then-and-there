@@ -8,7 +8,14 @@ import { EDITOR_HINT_PROMPT, EDITOR_PROMPT, EDITOR_RELEVANT_PROMPT, EDITOR_SOLVA
 const VerdictSchema = z.object({ pass: z.boolean(), reason: z.string() });
 
 export async function verifyClaim(
-  input: { subjectKind: EditorRun["subjectKind"]; subjectId: string; claim: string; sourceText: string; cropUrl?: string },
+  input: {
+    subjectKind: EditorRun["subjectKind"];
+    subjectId: string;
+    claim: string;
+    sourceText: string;
+    cropUrl?: string;
+    prompt?: (claim: string, sourceText: string) => string; // default: the 1889-90 game prompt
+  },
   deps: { complete: Complete; loadImage: (url: string) => Promise<string>; log: (run: EditorRun) => Promise<void> },
 ): Promise<{ pass: boolean; reason: string }> {
   const model = process.env.META_MODEL_EDITOR ?? "";
@@ -26,7 +33,7 @@ export async function verifyClaim(
     const res = await askJson(VerdictSchema, guarded, {
       model,
       effort: "low",
-      prompt: EDITOR_PROMPT(input.claim, input.sourceText),
+      prompt: (input.prompt ?? EDITOR_PROMPT)(input.claim, input.sourceText),
       // No crop = the claim spans clippings; check against the transcriptions only.
       ...(input.cropUrl ? { imageDataUrl: await deps.loadImage(input.cropUrl) } : {}),
     });

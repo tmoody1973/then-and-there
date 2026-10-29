@@ -81,6 +81,22 @@ describe("meanwhile", () => {
     expect(got?.fellBackFrom).toBeUndefined();
   });
 
+  test("forDay skips excluded ids and falls back city → state → Midwest → national", async () => {
+    const t = convexTest(schema, modules);
+    const r = (scope: string, id: string, score: number) => ({ date1889: "1889-11-29", scope, clip: { ...clip, clippingId: id }, humanStoryScore: score });
+    await t.mutation(api.meanwhile.replaceForDate, {
+      secret: SECRET,
+      date1889: "1889-11-29",
+      rows: [r("milwaukee", "m1", 0.9), r("wisconsin", "w1", 0.8), r("wisconsin", "w2", 0.7), r("midwest", "mw", 0.6), r("national", "n1", 0.95)],
+    });
+    const get = (args: Record<string, unknown>) => t.query(api.meanwhile.forDay, { date1889: "1889-11-29", state: "wisconsin", ...args }) as Promise<{ clip: { clippingId: string }; scope: string; fellBackFrom?: string } | null>;
+    expect(await get({ city: "milwaukee" })).toMatchObject({ scope: "milwaukee", clip: { clippingId: "m1" } });
+    expect(await get({ city: "milwaukee", exclude: ["m1"] })).toMatchObject({ scope: "wisconsin", clip: { clippingId: "w1" }, fellBackFrom: "milwaukee" });
+    expect(await get({ exclude: ["w1"] })).toMatchObject({ clip: { clippingId: "w2" } });
+    expect(await get({ exclude: ["w1", "w2", "mw"] })).toMatchObject({ scope: "national", fellBackFrom: "wisconsin" });
+    expect(await get({ exclude: ["w1", "w2", "mw", "n1"] })).toBeNull();
+  });
+
   test("returns null when nothing exists for the date", async () => {
     const t = convexTest(schema, modules);
     expect(await t.query(api.meanwhile.forDay, { date1889: "1889-12-01", state: "ohio" })).toBeNull();

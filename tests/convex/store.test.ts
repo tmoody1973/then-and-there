@@ -101,4 +101,17 @@ describe("store", () => {
     await expect(t.query(api.pages.processedIds, { secret: "x" })).rejects.toThrow(/not allowed/);
     expect(await t.run((ctx) => ctx.db.query("pages").collect())).toHaveLength(0);
   });
+
+  test("topForVerify returns unchecked classified clippings, strongest first; setEditorStatus needs the secret", async () => {
+    const t = convexTest(schema, modules);
+    await t.mutation(api.pages.upsert, { secret: SECRET, page: PAGE });
+    const story = (score: number, editorStatus: "unchecked" | "pass") => ({ ...clip(score), type: "person" as const, humanStoryScore: score, status: "classified" as const, editorStatus });
+    await t.mutation(api.clippings.replaceForPage, { secret: SECRET, pageId: PAGE.pageId, clippings: [story(0.4, "unchecked"), story(0.9, "unchecked"), story(0.95, "pass")] });
+    const top = (await t.query(api.clippings.topForVerify, { secret: SECRET, limit: 5 })) as Array<{ clippingId: string; humanStoryScore: number; iiifBase: string }>;
+    expect(top.map((r) => r.humanStoryScore)).toEqual([0.9, 0.4]);
+    expect(top[0].iiifBase).toBe(PAGE.iiifBase);
+    await expect(t.mutation(api.clippings.setEditorStatus, { secret: "wrong", clippingId: top[0].clippingId, editorStatus: "pass" })).rejects.toThrow(/not allowed/);
+    await t.mutation(api.clippings.setEditorStatus, { secret: SECRET, clippingId: top[0].clippingId, editorStatus: "pass" });
+    expect(((await t.query(api.clippings.topForVerify, { secret: SECRET, limit: 5 })) as unknown[]).length).toBe(1);
+  });
 });

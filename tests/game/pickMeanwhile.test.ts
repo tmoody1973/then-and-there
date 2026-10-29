@@ -37,4 +37,22 @@ describe("pickMeanwhile", () => {
     const rows = pickMeanwhile([c("a", "iowa", "1889-11-29", 0.6), c("b", "ohio", "1889-11-29", 0.8)], "1889-11-29");
     expect(rows.find((r) => r.scope === "midwest")?.clip.clippingId).toBe("b");
   });
+
+  test("pickMeanwhile adds city scopes for the three anchor cities and a national scope, top 3 each", () => {
+    const rows = pickMeanwhile(
+      [
+        c("m1", "wisconsin", "1889-11-29", 0.9, { city: "milwaukee" }),
+        c("m2", "wisconsin", "1889-11-29", 0.8, { city: "milwaukee" }),
+        c("m3", "wisconsin", "1889-11-29", 0.7, { city: "milwaukee" }),
+        c("m4", "wisconsin", "1889-11-29", 0.6, { city: "milwaukee" }),
+        c("ny", "new york", "1889-11-29", 0.95, { city: "new york" }),
+      ],
+      "1889-11-29",
+    );
+    expect(rows.filter((r) => r.scope === "milwaukee").map((r) => r.clip.clippingId)).toEqual(["m1", "m2", "m3"]);
+    expect(rows.filter((r) => r.scope === "wisconsin")).toHaveLength(3);
+    expect(rows.find((r) => r.scope === "new york")).toBeUndefined();
+    expect(rows.filter((r) => r.scope === "national")[0].clip.clippingId).toBe("ny");
+    expect(rows.filter((r) => r.scope === "midwest")[0].clip.clippingId).toBe("m1");
+  });
 });

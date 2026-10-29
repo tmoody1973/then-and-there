@@ -1,0 +1,107 @@
+/* Explore: the wire desk. Copy comes in as a tight list of wire slugs; the story you pull lands on
+   the desk as a proof. Copy Desk tokens only; blue pencil marks the pulled row, Verified, and focus. */
+
+.wire-page { padding-bottom: var(--s8); }
+.wire-head, .wire { width: min(100% - 2 * var(--s4), 76rem); margin-inline: auto; }
+.wire-head h1 { max-width: 22ch; }
+.wire-page .dateline a { color: inherit; text-decoration: none; }
+.wire-page .dateline a:hover { text-decoration: underline; }
+.desk-count { color: var(--pencil); }
+
+/* ---------- Search ---------- */
+.wire-search { display: flex; gap: var(--s3); align-items: end; margin: var(--s4) 0 var(--s2); max-width: 44rem; }
+.wire-search input {
+  flex: 1; min-width: 0; min-height: 48px;
+  font: inherit; font-size: var(--step-1); color: var(--ink);
+  border: 0; border-bottom: 2px solid var(--ink); border-radius: 0; background: transparent; padding: var(--s2) 0;
+}
+.wire-search input::placeholder { color: var(--ink-3); }
+.wire-search input::-webkit-search-cancel-button { filter: grayscale(1); }
+
+/* ---------- Filters ---------- */
+.filters { margin-top: var(--s2); border-top: 1px solid var(--rule); }
+.filters summary {
+  display: inline-flex; align-items: center; gap: var(--s2); min-height: 44px; cursor: pointer; list-style: none;
+  font-family: var(--font-head); font-weight: 600; font-size: var(--step--1); color: var(--ink-2);
+}
+.filters summary::-webkit-details-marker { display: none; }
+.filters summary::before { content: "+"; font-weight: 700; color: var(--pencil); width: 1ch; }
+.filters[open] summary::before { content: "−"; }
+.filter-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--s3) var(--s4); padding: var(--s2) 0 var(--s4); }
+.filter-grid label { display: grid; gap: var(--s1); font-family: var(--font-head); font-weight: 600; font-size: var(--step--1); color: var(--ink-2); }
+.filter-grid select, .filter-grid input:not([type="checkbox"]) {
+  font: inherit; font-family: var(--font-body); font-weight: 400; font-size: var(--step-0); color: var(--ink);
+  min-height: 44px; padding: 0 var(--s2); background: var(--paper-raised);
+  border: 1px solid var(--rule-strong); border-radius: var(--radius);
+}
+.filter-grid .filter-check { display: flex; align-items: center; gap: var(--s2); min-height: 44px; color: var(--ink); }
+.filter-check input { width: 1.1rem; height: 1.1rem; margin: 0; }
+@media (min-width: 960px) {
+  .wire-head, .wire { width: min(100% - 2 * var(--s6), 76rem); }
+  .filter-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+}
+
+/* ---------- The wire: list + desk ---------- */
+.wire { display: grid; gap: var(--s6); margin-top: var(--s4); padding-top: var(--s4); border-top: 2px solid var(--ink); }
+@media (min-width: 960px) {
+  .wire { grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: var(--s7); align-items: start; }
+  .wire-proof { position: sticky; top: var(--s5); }
+  .wire-back { display: none; }
+}
+/* On a phone the list and the proof take turns. */
+@media (max-width: 959px) {
+  .wire:not([data-pulled]) .wire-proof { display: none; }
+  .wire[data-pulled] .wire-list { display: none; }
+}
+
+.shelf + .shelf { margin-top: var(--s6); }
+.shelf h2 { margin: 0 0 var(--s1); font-size: var(--step-1); }
+.shelf-blurb { margin-bottom: var(--s2); font-size: var(--step--1); color: var(--ink-2); }
+.wire-count { font-family: var(--font-head); font-weight: 700; margin-bottom: var(--s2); }
+.wire-empty { color: var(--ink-2); }
+
+.wire-rows { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--rule); }
+.wire-row {
+  appearance: none; width: 100%; min-height: 48px; margin: 0; cursor: pointer; text-align: left;
+  display: grid; grid-template-columns: 1.25rem minmax(0, 1fr); grid-template-areas: "mark slug" "mark lede"; column-gap: var(--s2); row-gap: 2px;
+  padding: var(--s3) var(--s2) var(--s3) 0; border: 0; border-bottom: 1px solid var(--rule); background: none;
+  font: inherit; color: var(--ink);
+}
+.wire-row:hover { background: var(--pencil-wash); }
+.wire-row:focus-visible { outline-offset: -2px; }
+.wire-mark { grid-area: mark; color: var(--pencil); font-size: 1.1rem; padding-top: 1px; }
+.wire-mark svg { transform: rotate(90deg); }
+.slug {
+  grid-area: slug; margin: 0;
+  font-family: var(--font-head); font-weight: 600; font-size: 0.75rem; letter-spacing: 0.04em; text-transform: uppercase; color: var(--ink-2);
+}
+.wire-verified { display: inline-flex; vertical-align: -0.15em; margin-left: var(--s2); color: var(--pencil); font-size: 1rem; }
+.wire-lede {
+  grid-area: lede; font-size: var(--step-0); line-height: 1.45;
+  display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; line-clamp: 2; overflow: hidden;
+}
+.wire-row[aria-current] .wire-lede { font-weight: 600; }
+
+/* ---------- The pulled proof ---------- */
+.proof-slide { animation: pull-in 180ms var(--ease-out) both; }
+@keyframes pull-in { from { transform: translateX(16px); } to { transform: none; } }
+@media (prefers-reduced-motion: reduce) { .proof-slide { animation: none; } }
+
+.wire-back { margin-bottom: var(--s2); }
+.pulled .slug { margin-bottom: var(--s3); font-size: var(--step--1); }
+.labels { display: flex; flex-wrap: wrap; gap: var(--s1) var(--s4); margin: var(--s3) 0 var(--s2); max-width: none; font-family: var(--font-head); font-weight: 600; font-size: var(--step--1); color: var(--ink-2); }
+.label.is-verified { display: inline-flex; align-items: center; gap: var(--s1); color: var(--pencil); }
+.content-note { margin: var(--s2) 0; padding: var(--s2) 0; border-block: 1px solid var(--rule); font-size: var(--step--1); font-style: italic; color: var(--ink-2); }
+.pulled .transcript { max-height: 26rem; overflow: auto; margin-bottom: var(--s2); }
+.wire-page mark { background: var(--pencil-wash); color: var(--ink); box-shadow: inset 0 -2px 0 var(--pencil); padding: 0 1px; }
+
+.pulled-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 0 var(--s5); margin-top: var(--s4); padding-top: var(--s1); border-top: 1px solid var(--rule); }
+a.text-button { display: inline-flex; align-items: center; }
+.follow-done { display: inline-flex; align-items: center; min-height: 44px; font-family: var(--font-head); font-weight: 600; font-size: var(--step--1); color: var(--ink-2); }
+.cite { flex-basis: 100%; }
+.cite-list { margin: 0 0 var(--s3); }
+.cite-row { display: grid; grid-template-columns: 4.5rem minmax(0, 1fr); gap: var(--s3); padding: var(--s2) 0; border-top: 1px solid var(--rule); }
+.cite-row dt { font-family: var(--font-head); font-weight: 700; font-size: var(--step--1); }
+.cite-row dd { margin: 0; display: grid; justify-items: start; gap: 0; font-size: var(--step--1); color: var(--ink-2); }
+.pack-links { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--rule); }
+.pack-links li { padding: var(--s3) 0; border-bottom: 1px solid var(--rule); font-family: var(--font-head); font-weight: 600; }

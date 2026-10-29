@@ -1,0 +1,20 @@
+/* Teacher pack: one column on screen, clean black-on-white pages in print. */
+.pack { padding-bottom: var(--s8); }
+.pack .dateline a { color: inherit; text-decoration: none; }
+.pack-theme { color: var(--ink-2); }
+.pack-tools { display: flex; flex-wrap: wrap; align-items: center; gap: var(--s3) var(--s5); margin: var(--s4) 0 var(--s6); }
+.pack .filter-check { display: flex; align-items: center; gap: var(--s2); font-size: var(--step--1); }
+.pack-items { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--s7); }
+.pack-items h2 { font-size: var(--step-1); margin: 0 0 var(--s3); padding-top: var(--s3); border-top: 2px solid var(--ink); }
+.pack .content-note { margin: var(--s2) 0; padding: var(--s2) 0; border-block: 1px solid var(--rule); font-size: var(--step--1); font-style: italic; color: var(--ink-2); }
+.pack-questions { margin-top: var(--s7); padding-top: var(--s3); border-top: 2px solid var(--ink); }
+.pack-questions li { margin-bottom: var(--s3); }
+@media print {
+  .no-print, .scan .text-button, .scan figcaption a { display: none !important; }
+  :root { --paper: #fff; --paper-raised: #fff; }
+  body { font-size: 11pt; }
+  .pack-items li { break-inside: avoid; }
+  .proof { box-shadow: none; border: 1px solid #999; }
+  .scan-proof.is-capped, .scan-proof.is-capped img { max-height: 5in; }
+  .pencil-ring { display: none; }
+}

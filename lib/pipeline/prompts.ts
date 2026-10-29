@@ -36,6 +36,37 @@ ${claim}
 CLIPPING TRANSCRIPTION:
 ${sourceText}`;
 
+// Explore's "Verified" badge: is the machine label right for this clipping (any year, 1887–1930)?
+export const EDITOR_LABEL_PROMPT = (claim: string, sourceText: string) =>
+  `You are a strict fact-checker for a history archive. The clipping (an image, when one is attached) is from a historic American newspaper; its transcription is below and may contain OCR misspellings. Judge meaning, not spelling: the image is the authority. Story types: "person" = about named individuals; "event" = something that happened; "business" = a business or tradesperson described as news; an advertisement is paid promotion. Decide whether the CLAIM describes this clipping correctly: the type must fit, and every person it names must be printed in the clipping.
+Return only JSON: {"pass": boolean, "reason": string (one sentence; quote the supporting words when it passes)}.
+
+CLAIM:
+${claim}
+
+CLIPPING TRANSCRIPTION:
+${sourceText}`;
+
+// The agent's finds: does this clipping (any year before 1931) print what the claim says?
+export const EDITOR_FIND_PROMPT = (claim: string, sourceText: string) =>
+  `You are a strict fact-checker for a history archive. The clipping (an image, when one is attached) is from a historic American newspaper; its transcription is below and may contain OCR misspellings. Judge meaning, not spelling: the image is the authority. Decide whether the CLAIM is supported by what this clipping prints. Outside knowledge does not count. If the claim names a person, story type, or fact the clipping does not print, it fails.
+Return only JSON: {"pass": boolean, "reason": string (one sentence; quote the supporting words when it passes)}.
+
+CLAIM:
+${claim}
+
+CLIPPING TRANSCRIPTION:
+${sourceText}`;
+
+// Teacher packs: discussion questions a class can answer from these clippings alone.
+export const PACK_QUESTIONS_PROMPT = (theme: string, excerpts: string[], count: number, avoid: string[] = []) =>
+  `You are helping a history teacher. Below are ${excerpts.length} transcribed clippings from historic American newspapers on the theme: ${theme}. The transcriptions may contain OCR misspellings.
+Write ${count} open discussion question${count === 1 ? "" : "s"} for students aged 13 to 18. Each question must be answerable or discussable from what these clippings print, not outside knowledge. Ask students to compare, notice language and point of view, or reason from evidence. Plain modern English, one sentence each, no answers.${avoid.length ? `\nDo not repeat these questions: ${avoid.join(" | ")}` : ""}
+Return only JSON: {"questions": string[]}.
+
+CLIPPINGS:
+${excerpts.map((e, i) => `[${i + 1}] ${e}`).join("\n\n")}`;
+
 // Solvability: could a reader of the clue reason toward an answer? Future events are fine.
 export const EDITOR_SOLVABLE_PROMPT = (question: string, clueText: string) =>
   `A history game shows players this newspaper clue, then asks a question about what happens next. The question may mention places or events the clue doesn't print yet; that's expected. Decide whether the clue gives a careful reader relevant evidence (schedules, positions, pace, plans, delays) to reason toward an answer, rather than making it a blind guess.

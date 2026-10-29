@@ -3,7 +3,7 @@ import type { ConvexHttpClient } from "convex/browser";
 import { anyApi } from "convex/server";
 import type { MeanwhileCandidate } from "./pickMeanwhile";
 
-type PageRow = { pageId: string; title: string; state: string; date: string; iiifBase: string; citeThis: { mla: string }; status: string };
+type PageRow = { pageId: string; title: string; state: string; city: string; date: string; iiifBase: string; citeThis: { mla: string }; status: string };
 type ClipRow = {
   _id: string;
   box: { x: number; y: number; w: number; h: number };
@@ -17,9 +17,9 @@ type ClipRow = {
   status: string;
 };
 
-// The Library's MLA citation carries the paper's properly cased name: <cite>Homer Guardian</cite>.
-const paperName = (p: PageRow) => p.citeThis.mla.match(/<cite>(.*?)<\/cite>/)?.[1] ?? p.title;
-const plainCitation = (mla: string) => mla.replace(/<\/?cite>/g, "");
+import { paperFromCite, plainCitation } from "../loc/cite";
+
+const paperName = (p: PageRow) => paperFromCite(p.citeThis.mla, p.title);
 
 export async function loadClips(convex: ConvexHttpClient, start: string, end: string): Promise<MeanwhileCandidate[]> {
   const pages = ((await convex.query(anyApi.pages.byDateRange, { secret: writeSecret(), start, end })) as PageRow[]).filter((p) => p.status === "processed");
@@ -39,6 +39,7 @@ export async function loadClips(convex: ConvexHttpClient, start: string, end: st
         translation: r.translation,
         language: r.language,
         state: p.state,
+        city: p.city,
         type: r.type,
         humanStoryScore: r.humanStoryScore,
         hardHistory: r.hardHistory,

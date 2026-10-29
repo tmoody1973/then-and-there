@@ -56,7 +56,8 @@ function pageJsonUrl(pageId: string): string {
   return u.toString();
 }
 
-export async function fetchPage(client: LocClient, r: Result, cacheDir: string): Promise<CachedPage> {
+// opts.altoXml: OCR the caller already has (the nightly agent takes it from a batch bundle).
+export async function fetchPage(client: LocClient, r: Result, cacheDir: string, opts: { altoXml?: string } = {}): Promise<CachedPage> {
   const base = baseFields(r);
   const folder = join(cacheDir, safeId(base.pageId));
   const metaPath = join(folder, "meta.json");
@@ -72,7 +73,7 @@ export async function fetchPage(client: LocClient, r: Result, cacheDir: string):
   try {
     const { altoUrl, iiifBase } = pathsFromImageUrls((r.image_url as string[]) ?? []);
     const pageJson = (await client.getPageJson(pageJsonUrl(base.pageId))) as { cite_this?: CachedPage["citeThis"] };
-    const alto = await client.getText(altoUrl);
+    const alto = opts.altoXml ?? (await client.getText(altoUrl));
     const info = (await client.getJson(`${iiifBase}/info.json`)) as { width: number; height: number };
     writeFileSync(join(folder, "page.json"), JSON.stringify(pageJson));
     writeFileSync(join(folder, "alto.xml"), alto);

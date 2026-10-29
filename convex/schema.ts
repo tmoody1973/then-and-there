@@ -109,13 +109,73 @@ export const meanwhileFields = {
   humanStoryScore: v.number(),
 };
 
+// A story as Explore shows it (search results and shelves share this shape).
+export const exploreCardFields = {
+  clippingId: v.string(),
+  pageId: v.string(),
+  iiifBase: v.string(),
+  box,
+  paper: v.string(),
+  city: v.string(),
+  state: v.string(),
+  date: v.string(),
+  sequence: v.number(),
+  language: v.array(v.string()),
+  type: v.optional(v.string()),
+  people: v.array(v.string()),
+  textKind: v.union(v.literal("repaired"), v.literal("archive")),
+  text: v.string(),
+  archiveText: v.optional(v.string()), // the archive's OCR, when the text shown is a repair
+  editorStatus: v.string(),
+  hardHistory: v.boolean(),
+  citeThis: v.object({ apa: v.string(), chicago: v.string(), mla: v.string() }),
+};
+
+export const shelfFields = { slug: v.string(), title: v.string(), blurb: v.string(), order: v.number(), cards: v.array(v.object(exploreCardFields)) };
+
+const packItem = v.object({ clippingId: v.string(), pageId: v.string(), iiifBase: v.string(), box, paper: v.string(), date: v.string(), citationMla: v.string(), excerpt: v.string() });
+export const packFields = { slug: v.string(), title: v.string(), theme: v.string(), items: v.array(packItem), hardItems: v.array(packItem), questions: v.array(v.string()) };
+
+export const followFields = {
+  owner: v.string(),
+  kind: v.union(v.literal("name"), v.literal("place")),
+  value: v.string(),
+  createdAt: v.number(),
+};
+
+export const noteFields = {
+  owner: v.string(),
+  clippingId: v.string(),
+  clip: clipRef,
+  matched: v.string(),
+  replay: v.boolean(),
+  createdAt: v.number(),
+  readAt: v.optional(v.number()),
+};
+
+// owner absent = a shared nightly line every reader sees.
+export const activityFields = {
+  owner: v.optional(v.string()),
+  runId: v.string(),
+  line: v.string(),
+  replay: v.boolean(),
+  createdAt: v.number(),
+};
+
 export default defineSchema({
   pages: defineTable(pageFields).index("by_pageId", ["pageId"]).index("by_state_date", ["state", "date"]),
   clippings: defineTable(clippingFields)
     .index("by_pageId", ["pageId"])
     .index("by_type_score", ["type", "humanStoryScore"])
-    .searchIndex("search_text", { searchField: "cleanedText", filterFields: ["pageId", "type"] }),
+    .searchIndex("search_text", { searchField: "cleanedText", filterFields: ["pageId", "type"] })
+    .searchIndex("search_raw", { searchField: "rawText", filterFields: ["type"] }),
   editorRuns: defineTable(editorRunFields),
   gameDays: defineTable(gameDayFields).index("by_day", ["day"]),
   meanwhile: defineTable(meanwhileFields).index("by_date_scope", ["date1889", "scope"]),
+  follows: defineTable(followFields).index("by_owner", ["owner"]),
+  notes: defineTable(noteFields).index("by_owner", ["owner"]),
+  activity: defineTable(activityFields).index("by_owner", ["owner"]),
+  shelves: defineTable(shelfFields),
+  packs: defineTable(packFields),
+  agentState: defineTable({ key: v.string(), value: v.string() }).index("by_key", ["key"]),
 });
