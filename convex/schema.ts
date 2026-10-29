@@ -109,6 +109,29 @@ export const meanwhileFields = {
   humanStoryScore: v.number(),
 };
 
+// A story as Explore shows it (search results and shelves share this shape).
+export const exploreCardFields = {
+  clippingId: v.string(),
+  pageId: v.string(),
+  iiifBase: v.string(),
+  box,
+  paper: v.string(),
+  city: v.string(),
+  state: v.string(),
+  date: v.string(),
+  sequence: v.number(),
+  language: v.array(v.string()),
+  type: v.optional(v.string()),
+  people: v.array(v.string()),
+  textKind: v.union(v.literal("repaired"), v.literal("archive")),
+  text: v.string(),
+  editorStatus: v.string(),
+  hardHistory: v.boolean(),
+  citeThis: v.object({ apa: v.string(), chicago: v.string(), mla: v.string() }),
+};
+
+export const shelfFields = { slug: v.string(), title: v.string(), blurb: v.string(), order: v.number(), cards: v.array(v.object(exploreCardFields)) };
+
 export const followFields = {
   owner: v.string(),
   kind: v.union(v.literal("name"), v.literal("place")),
@@ -148,5 +171,6 @@ export default defineSchema({
   follows: defineTable(followFields).index("by_owner", ["owner"]),
   notes: defineTable(noteFields).index("by_owner", ["owner"]),
   activity: defineTable(activityFields).index("by_owner", ["owner"]),
+  shelves: defineTable(shelfFields),
   agentState: defineTable({ key: v.string(), value: v.string() }).index("by_key", ["key"]),
 });

@@ -1,13 +1,15 @@
-import { queryGeneric as query } from "convex/server";
+import { mutationGeneric as mutation, queryGeneric as query } from "convex/server";
 import { v } from "convex/values";
 import { BLACK_PRESS_LCCNS } from "../lib/explore/communities";
+import { requireSecret } from "./auth";
+import { shelfFields } from "./schema";
 
 const MAX_Q = 200;
 const PER_INDEX = 256; // filters apply after the window, so keep it wide (Convex allows up to 1024)
 const LIMIT = 30;
 const CUTOFF = "1931-01-01"; // public domain: everything shown is pre-1931
 
-type Clip = Record<string, unknown> & { _id: string; pageId: string; rawText: string; cleanedText?: string; type?: string; editorStatus: string; hardHistory?: boolean };
+type Clip = Record<string, unknown> & { _id: string; pageId: string; rawText: string; cleanedText?: string; type?: string; people?: string[]; editorStatus: string; hardHistory?: boolean };
 type Page = Record<string, unknown> & { pageId: string; lccn: string; title: string; city: string; state: string; date: string; sequence: number; language: string[]; status: string };
 
 // Story Finder: searches repaired text and the archive's own OCR (unrepaired clippings too).
@@ -73,6 +75,7 @@ export const search = query({
         sequence: p.sequence,
         language: p.language,
         type: c.type,
+        people: c.people ?? [],
         textKind: c.cleanedText ? ("repaired" as const) : ("archive" as const),
         text: c.cleanedText ?? c.rawText,
         editorStatus: c.editorStatus,
@@ -88,7 +91,29 @@ export const search = query({
 export const stats = query({
   args: {},
   handler: async (ctx) => {
-    const pages = (await ctx.db.query("pages").collect()) as Page[];
-    return { pages: pages.filter((p) => p.status === "processed").length };
+    const pages = ((await ctx.db.query("pages").collect()) as Page[]).filter((p) => p.status === "processed" && p.date < CUTOFF);
+    return {
+      pages: pages.length,
+      states: [...new Set(pages.map((p) => p.state))].sort(),
+      languages: [...new Set(pages.flatMap((p) => p.language))].sort(),
+    };
+  },
+});
+
+// The opening shelves, pre-built by scripts/explore/shelves.ts.
+export const shelves = query({
+  args: {},
+  handler: async (ctx) => {
+    const rows = await ctx.db.query("shelves").collect();
+    return rows.sort((a, b) => a.order - b.order).map(({ _id: _i, _creationTime: _c, ...s }) => s);
+  },
+});
+
+export const replaceShelves = mutation({
+  args: { secret: v.string(), shelves: v.array(v.object(shelfFields)) },
+  handler: async (ctx, { secret, shelves }) => {
+    requireSecret(secret);
+    for (const old of await ctx.db.query("shelves").collect()) await ctx.db.delete(old._id);
+    for (const s of shelves) await ctx.db.insert("shelves", s);
   },
 });

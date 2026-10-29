@@ -28,7 +28,7 @@ const page = (id: string, o: PageOver = {}) => ({
   status: o.status ?? ("processed" as const),
 });
 
-type ClipOver = Partial<{ rawText: string; cleanedText: string; type: "person" | "event" | "ad"; editorStatus: "unchecked" | "pass" | "fail"; hardHistory: boolean }>;
+type ClipOver = Partial<{ rawText: string; cleanedText: string; type: "person" | "event" | "ad"; editorStatus: "unchecked" | "pass" | "fail"; hardHistory: boolean; people: string[] }>;
 const clip = (pageId: string, o: ClipOver = {}) => ({
   pageId,
   box: { x: 10, y: 20, w: 300, h: 400 },
@@ -40,6 +40,7 @@ const clip = (pageId: string, o: ClipOver = {}) => ({
   ...(o.cleanedText ? { cleanedText: o.cleanedText } : {}),
   ...(o.type ? { type: o.type } : {}),
   ...(o.hardHistory !== undefined ? { hardHistory: o.hardHistory } : {}),
+  ...(o.people ? { people: o.people } : {}),
   status: "classified" as const,
   editorStatus: o.editorStatus ?? ("unchecked" as const),
   promptVersion: "2026-10-28.1",
@@ -162,10 +163,30 @@ describe("explore.search", () => {
 });
 
 describe("explore.stats", () => {
-  test("stats counts processed pages only", async () => {
-    const a = page("1");
-    const b = page("2", { status: "fetched" });
-    const t = await seed([{ p: a, clips: [] }, { p: b, clips: [] }]);
-    expect(await t.query(api.explore.stats, {})).toEqual({ pages: 1 });
+  test("stats counts processed pages only, with the states and languages present", async () => {
+    const a = page("1", { state: "wisconsin", language: ["german"] });
+    const c = page("3", { state: "michigan", language: ["english"] });
+    const b = page("2", { status: "fetched", state: "ohio" });
+    const t = await seed([{ p: a, clips: [] }, { p: b, clips: [] }, { p: c, clips: [] }]);
+    expect(await t.query(api.explore.stats, {})).toEqual({ pages: 2, states: ["michigan", "wisconsin"], languages: ["english", "german"] });
   });
 });
+
+describe("explore cards and shelves", () => {
+  test("a card carries the people named in the clipping", async () => {
+    const p = page("1");
+    const t = await seed([{ p, clips: [clip(p.pageId, { rawText: "Ellmore wed", type: "person", editorStatus: "pass", people: ["J. E. Ellmore"] })] }]);
+    expect((await t.query(api.explore.search, { q: "Ellmore" }))[0]).toMatchObject({ people: ["J. E. Ellmore"] });
+  });
+
+  test("shelves are served in order and replaced whole; writing them needs the secret", async () => {
+    const t = convexTest(schema, modules);
+    process.env.CONVEX_WRITE_SECRET = "s";
+    const shelf = (slug: string, order: number) => ({ slug, title: slug, blurb: "b", order, cards: [] });
+    await t.mutation(api.explore.replaceShelves, { secret: "s", shelves: [shelf("b", 2), shelf("a", 1)] });
+    await t.mutation(api.explore.replaceShelves, { secret: "s", shelves: [shelf("c", 1)] });
+    expect(((await t.query(api.explore.shelves, {})) as Array<{ slug: string }>).map((x) => x.slug)).toEqual(["c"]);
+    await expect(t.mutation(api.explore.replaceShelves, { secret: "nope", shelves: [] })).rejects.toThrow(/not allowed/);
+  });
+});
+
