@@ -4,9 +4,10 @@
 import { readdirSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 import { ConvexHttpClient } from "convex/browser";
+import type OpenAI from "openai";
 import { anyApi } from "convex/server";
 import { altoScale, parseAlto } from "../lib/alto/parse";
-import { createLocClient } from "../lib/loc/client";
+import { createLocClient, type LocClient } from "../lib/loc/client";
 import { writeSecret } from "../lib/game/load";
 import { makeComplete, makeImageLoader, makeSam, makeSpark, metaClient } from "../lib/meta/client";
 import { toDataUrl } from "../lib/meta/image";
@@ -140,6 +141,36 @@ export async function processPage(
   };
 }
 
+// The real model + storage wiring for one page (shared by this CLI and the nightly agent).
+export function makeProcessDeps(
+  page: CachedPage,
+  ctx: { loc: LocClient; meta: OpenAI; convex: ConvexHttpClient; onUsage: (model: string, u: Usage) => void; count?: (k: string) => void; cacheDir: string },
+): ProcessDeps {
+  const { loc, meta, convex, onUsage, cacheDir } = ctx;
+  const count = ctx.count ?? (() => undefined);
+  const id = safeId(page.pageId);
+  const spark = makeSpark(meta, id, onUsage);
+  const sam = makeSam(meta, id, onUsage);
+  const complete = makeComplete(meta, id, onUsage);
+  const loadImage = async (url: string) => toDataUrl(await loc.getBytes(url));
+  return {
+    altoXml: readFileSync(join(cacheDir, id, "alto.xml"), "utf8"),
+    segment: (p) =>
+      segmentPage(p, {
+        image: makeImageLoader(loc),
+        spark: (img, prompt) => (count("spark-layout"), spark(img, prompt)),
+        sam: (img, text) => (count("sam"), sam(img, text)),
+      }),
+    clean: (c) => (count("clean"), cleanClipping(c, { complete, loadImage })),
+    classify: (c) => (count("classify"), classifyClipping(c, { complete })),
+    store: {
+      upsertPage: async (p) => void (await withRetry(() => convex.mutation(anyApi.pages.upsert, { secret: writeSecret(), page: p }))),
+      replaceClippings: async (pageId, rows) =>
+        void (await withRetry(() => convex.mutation(anyApi.clippings.replaceForPage, { secret: writeSecret(), pageId, clippings: rows }))),
+    },
+  };
+}
+
 function cachedPages(cacheDir: string): CachedPage[] {
   return readdirSync(cacheDir)
     .map((d) => {
@@ -169,7 +200,6 @@ if (import.meta.main) {
   const loc = createLocClient({ servicesPerMinute: 100 });
   const meta = metaClient();
   const convex = new ConvexHttpClient(process.env.CONVEX_URL);
-  const loadImage = async (url: string) => toDataUrl(await loc.getBytes(url));
   const calls: Record<string, number> = {};
   const count = (k: string) => (calls[k] = (calls[k] ?? 0) + 1);
   // Live (uncached) calls only: what this run actually spent.
@@ -196,28 +226,9 @@ if (import.meta.main) {
       stopped += 1;
       return;
     }
-    const id = safeId(page.pageId);
-    const spark = makeSpark(meta, id, onUsage);
-    const sam = makeSam(meta, id, onUsage);
-    const complete = makeComplete(meta, id, onUsage);
     let res: Awaited<ReturnType<typeof processPage>>;
     try {
-      res = await processPage(page, {
-      altoXml: readFileSync(join(cacheDir, id, "alto.xml"), "utf8"),
-      segment: (p) =>
-        segmentPage(p, {
-          image: makeImageLoader(loc),
-          spark: (img, prompt) => (count("spark-layout"), spark(img, prompt)),
-          sam: (img, text) => (count("sam"), sam(img, text)),
-        }),
-      clean: (c) => (count("clean"), cleanClipping(c, { complete, loadImage })),
-      classify: (c) => (count("classify"), classifyClipping(c, { complete })),
-      store: {
-        upsertPage: async (p) => void (await withRetry(() => convex.mutation(anyApi.pages.upsert, { secret: writeSecret(), page: p }))),
-        replaceClippings: async (pageId, rows) =>
-          void (await withRetry(() => convex.mutation(anyApi.clippings.replaceForPage, { secret: writeSecret(), pageId, clippings: rows }))),
-      },
-    });
+      res = await processPage(page, makeProcessDeps(page, { loc, meta, convex, onUsage, count, cacheDir }));
     } catch (e) {
       // Not marked processed, so the next run retries this page.
       process.stdout.write(`FAILED ${page.pageId}: ${e instanceof Error ? e.message.split("\n")[0] : String(e)}\n`);

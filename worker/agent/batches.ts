@@ -90,10 +90,13 @@ function tar(args: string[]): Promise<string> {
 // Lists the archive, keeps pre-1931 ocr.txt members by path alone, extracts exactly those (portable
 // across GNU and BSD tar: no pattern flags), and yields one page at a time.
 export async function* readBatchPages(archivePath: string): AsyncIterable<{ pageId: string; lccn: string; date: string; text: string }> {
-  const members = (await tar(["-tjf", archivePath]))
-    .split("\n")
-    .map((name) => ({ name, m: name.match(MEMBER) }))
-    .filter((x): x is { name: string; m: RegExpMatchArray } => x.m !== null && Number(x.m[2]) < CUTOFF_YEAR);
+  const names = (await tar(["-tjf", archivePath])).split("\n");
+  const texts = names.filter((n) => n.endsWith("/ocr.txt"));
+  const known = texts.map((name) => ({ name, m: name.match(MEMBER) })).filter((x): x is { name: string; m: RegExpMatchArray } => x.m !== null);
+  // A layout we don't recognize must fail loudly (the batch is retried, and the log says so),
+  // never pass as a batch with no pages.
+  if (texts.length && !known.length) throw new Error(`unrecognized batch layout: ${texts.length} ocr.txt files, none matched`);
+  const members = known.filter((x) => Number(x.m[2]) < CUTOFF_YEAR);
   if (!members.length) return;
   const dir = await mkdtemp(join(tmpdir(), "tt-pages-"));
   try {

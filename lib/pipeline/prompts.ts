@@ -47,6 +47,17 @@ ${claim}
 CLIPPING TRANSCRIPTION:
 ${sourceText}`;
 
+// The agent's finds: does this clipping (any year before 1931) print what the claim says?
+export const EDITOR_FIND_PROMPT = (claim: string, sourceText: string) =>
+  `You are a strict fact-checker for a history archive. The clipping (an image, when one is attached) is from a historic American newspaper; its transcription is below and may contain OCR misspellings. Judge meaning, not spelling: the image is the authority. Decide whether the CLAIM is supported by what this clipping prints. Outside knowledge does not count. If the claim names a person, story type, or fact the clipping does not print, it fails.
+Return only JSON: {"pass": boolean, "reason": string (one sentence; quote the supporting words when it passes)}.
+
+CLAIM:
+${claim}
+
+CLIPPING TRANSCRIPTION:
+${sourceText}`;
+
 // Solvability: could a reader of the clue reason toward an answer? Future events are fine.
 export const EDITOR_SOLVABLE_PROMPT = (question: string, clueText: string) =>
   `A history game shows players this newspaper clue, then asks a question about what happens next. The question may mention places or events the clue doesn't print yet; that's expected. Decide whether the clue gives a careful reader relevant evidence (schedules, positions, pace, plans, delays) to reason toward an answer, rather than making it a blind guess.

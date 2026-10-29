@@ -73,4 +73,11 @@ describe("readBatchPages", () => {
     expect(first).toMatchObject({ lccn: "sn95026977", date: "1909-07-01" });
     expect(first.text).toContain("Senator Cum");
   });
+
+  test("an archive whose text files don't follow the known layout is an error, not an empty batch", async () => {
+    const read = async () => {
+      for await (const _ of readBatchPages("tests/fixtures/batch/unknown-layout.tar.bz2")) void _;
+    };
+    await expect(read()).rejects.toThrow(/unrecognized batch layout/);
+  });
 });
