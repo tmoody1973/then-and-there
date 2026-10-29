@@ -1,0 +1,22 @@
+/* How it works: a recorded run, laid out like a proof sheet with the editor's marks. */
+.how-page { margin: var(--s5) 0; }
+.how-scan { position: relative; width: 100%; background: var(--paper-raised); box-shadow: var(--lift); }
+.how-scan img { display: block; width: 100%; height: 100%; }
+.how-box { position: absolute; border: 2px solid var(--pencil); border-radius: 2px; pointer-events: auto; }
+.how-box.is-spark { border-style: dashed; border-color: var(--ink-2); }
+.how-key { display: inline-block; width: 1.1em; height: 0.8em; margin: 0 var(--s1) 0 var(--s3); vertical-align: -0.05em; border: 2px solid var(--pencil); }
+.how-key.is-spark { border-style: dashed; border-color: var(--ink-2); }
+.how-steps { list-style: none; padding: 0; margin: var(--s6) 0; counter-reset: step; display: grid; gap: var(--s4); }
+.how-steps li { counter-increment: step; display: grid; grid-template-columns: 2.2rem 1fr; column-gap: var(--s3); padding-top: var(--s3); border-top: 1px solid var(--rule); }
+.how-steps li::before { content: counter(step); font-family: var(--font-head); font-weight: 800; font-size: var(--step-1); color: var(--pencil); grid-row: span 2; }
+.how-steps h2 { font-size: var(--step-0); margin: 0 0 var(--s1); }
+.how-steps p { margin: 0; color: var(--ink-2); }
+.how-crop { display: block; width: 100%; height: auto; box-shadow: var(--lift); margin: var(--s4) 0; }
+.how-compare { display: grid; gap: var(--s4); }
+@media (min-width: 720px) { .how-compare { grid-template-columns: 1fr 1fr; } }
+.label-line { font-family: var(--font-head); font-weight: 700; font-size: var(--step--1); margin-bottom: var(--s1); }
+.ocr { font-size: var(--step-1); }
+mark { padding: 0 0.15em; border-radius: 2px; color: var(--ink); }
+mark.is-bad { background: transparent; text-decoration: line-through; text-decoration-color: var(--ink); text-decoration-thickness: 2px; }
+mark.is-good { background: var(--pencil-wash); box-shadow: inset 0 -2px 0 var(--pencil); }
+.how-stats { margin-top: var(--s6); padding-top: var(--s4); border-top: 1px solid var(--ink); }

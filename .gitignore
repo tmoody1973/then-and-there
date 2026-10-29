@@ -5,3 +5,13 @@ cache/
 .superpowers/
 spikes/*/out/
 .DS_Store
+.next/
+next-env.d.ts
+*.tsbuildinfo
+test-results/
+playwright-report/
+.impeccable/review/
+.env.convex-prod
+.vercel
+.env*
+!.env.example

@@ -1,0 +1,80 @@
+import { describe, expect, test } from "vitest";
+import { loadProgress, parseHints, PROGRESS_KEY, recordAnswer, recordFinale, saveProgress, storageKeys, streak } from "../../lib/game/progress";
+import { anniversaryForDay } from "../../lib/game/schedule";
+
+const mem = (raw: string) => ({ getItem: () => raw });
+const r = (day: number, onTime = true) => ({ correct: true, hintsUsed: 0, answeredOn: onTime ? anniversaryForDay(day) : "2027-03-01" });
+
+describe("progress", () => {
+  test("recordAnswer returns a new object and leaves the input alone", () => {
+    const p = { days: {} };
+    const next = recordAnswer(p, 3, r(3));
+    expect(next).not.toBe(p);
+    expect(p.days).toEqual({});
+    expect(next.days[3]).toEqual(r(3));
+  });
+  test("a day can only be answered once", () => {
+    const first = recordAnswer({ days: {} }, 3, { correct: false, hintsUsed: 0, answeredOn: "2026-11-16" });
+    const again = recordAnswer(first, 3, { correct: true, hintsUsed: 0, answeredOn: "2026-11-16" });
+    expect(again.days[3].correct).toBe(false);
+  });
+  test("loadProgress survives a throwing store", () => {
+    expect(loadProgress({ getItem: () => { throw new Error("SecurityError"); } })).toEqual({ days: {} });
+  });
+  test("loadProgress survives corrupt JSON", () => {
+    expect(loadProgress({ getItem: () => "{not json" })).toEqual({ days: {} });
+  });
+  test("loadProgress drops a days map that is null or an array", () => {
+    expect(loadProgress(mem('{"days":null}'))).toEqual({ days: {} });
+    expect(loadProgress(mem('{"days":[1,2]}'))).toEqual({ days: {} });
+    expect(loadProgress(mem("null"))).toEqual({ days: {} });
+  });
+
+  test("loadProgress keeps only well-formed day results and finale", () => {
+    const good = { correct: true, hintsUsed: 1, answeredOn: "2026-11-29" };
+    const raw = JSON.stringify({ days: { "16": 5, "30": good, "71": { correct: "yes" } }, finale: { guessSeconds: "soon" } });
+    expect(loadProgress(mem(raw))).toEqual({ days: { "30": good } });
+  });
+
+  test("parseHints accepts only a map of counts", () => {
+    expect(parseHints(null)).toEqual({});
+    expect(parseHints("null")).toEqual({});
+    expect(parseHints("[3]")).toEqual({});
+    expect(parseHints("{nope")).toEqual({});
+    expect(parseHints('{"16":2,"30":"x","71":-1}')).toEqual({ "16": 2 });
+  });
+
+  test("loadProgress round-trips through saveProgress", () => {
+    const store = new Map<string, string>();
+    const p = recordAnswer({ days: {} }, 1, r(1));
+    saveProgress({ setItem: (k, v) => void store.set(k, v) }, p);
+    expect(loadProgress({ getItem: (k) => store.get(k) ?? null })).toEqual(p);
+    expect(store.has(PROGRESS_KEY)).toBe(true);
+  });
+  test("demo answers are kept apart from live progress", () => {
+    const store = new Map<string, string>();
+    const io = { setItem: (k: string, v: string) => void store.set(k, v), getItem: (k: string) => store.get(k) ?? null };
+    const demo = storageKeys(true);
+    const live = storageKeys(false);
+    saveProgress(io, recordAnswer({ days: {} }, 16, r(16)), demo.progress);
+    expect(loadProgress(io, live.progress)).toEqual({ days: {} });
+    expect(loadProgress(io, demo.progress).days[16]).toBeDefined();
+    expect(demo.hints).not.toBe(live.hints);
+    expect(live.progress).toBe(PROGRESS_KEY);
+  });
+  test("saveProgress swallows storage errors", () => {
+    expect(() => saveProgress({ setItem: () => { throw new Error("QuotaExceeded"); } }, { days: {} })).not.toThrow();
+  });
+  test("streak counts consecutive on-time days ending today", () => {
+    const p = { days: { 1: r(1), 2: r(2), 3: r(3) } };
+    expect(streak(p, anniversaryForDay(3))).toBe(3);
+    expect(streak({ days: { 1: r(1), 2: r(2, false), 3: r(3) } }, anniversaryForDay(3))).toBe(1);
+  });
+
+  test("the finale guess is recorded once; the first guess wins", () => {
+    const first = recordFinale({ days: {} }, 6_243_000, "2027-01-25");
+    const again = recordFinale(first, 100, "2027-01-25");
+    expect(first.finale).toEqual({ guessSeconds: 6_243_000, answeredOn: "2027-01-25" });
+    expect(again.finale?.guessSeconds).toBe(6_243_000);
+  });
+});

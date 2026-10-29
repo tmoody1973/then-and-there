@@ -1,0 +1,123 @@
+/* Copy Desk — the 1889 city desk. Cool newsprint white, true ink, and one color:
+   the editor's blue pencil, used only for marks that mean something. Light by use scene:
+   players read real, light newsprint scans; a dark UI would put the page in a costume box. */
+
+:root {
+  --paper: #f3f4f1;          /* cool newsprint white, never cream */
+  --paper-raised: #fbfbf9;   /* a proof laid on the desk */
+  --ink: #15171a;
+  --ink-2: #474c53;          /* secondary text: 7.6:1 on paper */
+  --ink-3: #61666d;          /* captions, citations: 5.5:1 on paper */
+  --rule: #cfd3d6;           /* column rules */
+  --rule-strong: #8a9097;
+  --pencil: #1d4ec4;         /* copy-desk blue pencil: text-safe, 6.8:1 on paper */
+  --pencil-wash: rgb(29 78 196 / 0.09);
+  --pencil-stroke: 2.5px;
+
+  --font-head: var(--font-franklin), "Franklin Gothic Medium", "Arial Narrow", sans-serif;
+  --font-body: var(--font-serif), Charter, Georgia, serif;
+
+  --step--1: 0.8125rem;
+  --step-0: 1.0625rem;
+  --step-1: 1.25rem;
+  --step-2: 1.5rem;
+  --step-3: clamp(1.75rem, 1.4rem + 1.6vw, 2.5rem);
+
+  --s1: 4px; --s2: 8px; --s3: 12px; --s4: 16px; --s5: 24px; --s6: 32px; --s7: 48px; --s8: 64px;
+  --column: 40rem;
+  --radius: 2px;              /* paper has square corners; a hair of softening only */
+  --lift: 0 1px 2px rgb(21 23 26 / 0.06), 0 6px 18px -8px rgb(21 23 26 / 0.18);
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
+
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: var(--step-0);
+  line-height: 1.55;
+  font-variant-numeric: oldstyle-nums proportional-nums;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3 {
+  font-family: var(--font-head);
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  text-wrap: balance;
+  margin: var(--s6) 0 var(--s3);
+}
+h1 { font-size: var(--step-3); font-weight: 800; }
+h2 { font-size: var(--step-2); font-weight: 700; }
+h3 { font-size: var(--step-1); font-weight: 700; }
+
+p { margin: 0 0 var(--s4); max-width: 65ch; text-wrap: pretty; }
+
+a {
+  color: var(--pencil);
+  text-decoration-line: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.18em;
+}
+a:hover { text-decoration-thickness: 2px; }
+
+::selection { background: var(--pencil-wash); color: var(--ink); }
+:root { caret-color: var(--pencil); accent-color: var(--pencil); }
+
+:focus-visible {
+  outline: var(--pencil-stroke) solid var(--pencil);
+  outline-offset: 3px;
+  border-radius: var(--radius);
+}
+
+/* Data that gets compared (days left, streaks, dates) lines up. */
+.num, time, data { font-variant-numeric: lining-nums tabular-nums; }
+
+html { scrollbar-color: var(--rule-strong) var(--paper); }
+
+hr { border: 0; border-top: 1px solid var(--rule); margin: var(--s5) 0; }
+
+/* Page column: one reading measure on every screen. */
+.column { width: min(100% - 2 * var(--s4), var(--column)); margin-inline: auto; }
+
+/* Masthead line: the paper's dateline, not a decorative label. */
+.dateline {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--s3);
+  padding-block: var(--s3);
+  border-bottom: 1px solid var(--ink);
+  font-family: var(--font-head);
+  font-size: var(--step--1);
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  max-width: none;
+}
+
+.caption { font-size: var(--step--1); color: var(--ink-3); line-height: 1.4; }
+
+/* The proof on the desk: a real scan, flat and unfiltered. */
+.proof {
+  background: var(--paper-raised);
+  box-shadow: var(--lift);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+.proof img { display: block; width: 100%; height: auto; }
+
+button {
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
+}
+button:disabled { cursor: default; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+}

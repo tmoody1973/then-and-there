@@ -74,6 +74,7 @@ Each game day maps to one calendar date in 1889–90. Players see only what pape
 ### 4.3 The daily loop (2–3 minutes)
 1. **Dispatch:** one clue card, a clipping from a real page, shown highlighted on the scan, with clean text and the citation.
 2. **The call: "Will she make it?"** (Tarik's call, 2026-10-28). Her planned route was public, so the drama for 1889 readers was **timing and obstacles**, not destination. Each day asks a question readers actually faced, drawn from that day's coverage. Will she catch the connecting steamer? How many days to the next port? Does a delay sink the schedule? Will the rival beat her? Answers are multiple choice or a number of days. A "where next?" route guess is used **only** where her plans actually changed or were uncertain in print.
+2b. **Check the morgue (free; decision 008):** a drawer of 2–3 real clippings printed on or before that day (no hindsight) about the next place, her connections, or her published plans, each Editor-checked as relevant. Like an almanac in a detective game, it makes looking things up part of the call. Flagged hard-history clippings are excluded in v1.
 3. **Ask the City Editor (optional):** a question-only hint ("Which steamer lines ran east from Brindisi that week?"). It never gives the answer. Each hint costs days.
 4. **Reveal:** the clipping that confirmed it, plus a short "how you could have known," cited.
 5. **Meanwhile, back home:** one human-interest story printed the same day in the player's followed place (section 6.2).
@@ -245,7 +246,7 @@ From Tarik's original plan, kept: **Next.js on Vercel** (web app), **Convex** (d
 - Exact day-budget numbers and hint costs
 - Clipping thresholds for "needs cleanup" and the "human story" score
 - Notification channel
-- Visual design. Must work on a phone; should feel like newsprint, not a SaaS dashboard
+- Visual design, **using the `/impeccable` skill for all UX and design work** (Tarik's call, 2026-10-28). Must work on a phone; should feel like newsprint, not a SaaS dashboard
 - Exact Explore corpus size within the budget
 - Prompt wording, provided the Editor gate and question-only hints hold
 - Data model details, so long as every claim links to a stored clipping

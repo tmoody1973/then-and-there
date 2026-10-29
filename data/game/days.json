@@ -1,0 +1,492 @@
+[
+  {
+    "day": 16,
+    "date1889": "1889-11-29",
+    "title": "Rival Races West to Japan",
+    "clue": {
+      "clippingId": "j5766b28n787km203w4qz21y7h8h5h1n",
+      "pageId": "http://www.loc.gov/resource/sn88064119/1889-11-29/ed-1/?sp=1",
+      "iiifBase": "https://tile.loc.gov/image-services/iiif/service:ndnp:lu:batch_lu_iceman_ver01:data:sn88064119:00280761837:1889112901:0223",
+      "box": {
+        "h": 2513,
+        "w": 786,
+        "x": 4178,
+        "y": 1084
+      },
+      "paper": "Homer Guardian",
+      "date": "1889-11-29",
+      "citationMla": "Homer Guardian. (Homer, LA) 29 Nov. 1889, p. 1. Retrieved from the Library of Congress, www.loc.gov/item/sn88064119/1889-11-29/ed-1/.",
+      "excerpt": "Her name\nis Miss Elizabeth Bisland. She\nis only 22 years old, and is possessed of much beauty and much\nintrepidity. John Brisbon Walker, editor of the Cosmopolitan,\nasked her if she could start on\nfifteen minutes’ notice, and she\npromptly replied that she could.\nShe just caught the 6 p. m. train",
+      "focus": {
+        "x": 4178,
+        "y": 1440,
+        "w": 781,
+        "h": 488
+      }
+    },
+    "question": {
+      "kind": "choice",
+      "prompt": "Will Bisland make it to Yokohama?",
+      "options": [
+        "Yes, she gets there",
+        "No, she turns back",
+        "No, she stops early"
+      ],
+      "answerIndex": 0
+    },
+    "hints": [
+      "She's booked for Yokohama by December 11. Think steam can keep that promise, kid?",
+      "Oceanic sails Thursday from Frisco, son. Will she catch it in time?"
+    ],
+    "reveal": {
+      "clippingId": "j576d3c473n0d8fenmw9sk1rkx8h557t",
+      "pageId": "http://www.loc.gov/resource/sn86090439/1889-12-16/ed-1/?sp=1",
+      "iiifBase": "https://tile.loc.gov/image-services/iiif/service:ndnp:txdn:batch_txdn_corinth_ver01:data:sn86090439:00517176618:1889121601:1136",
+      "box": {
+        "h": 5842,
+        "w": 807,
+        "x": 1694,
+        "y": 885
+      },
+      "paper": "San Antonio daily light",
+      "date": "1889-12-16",
+      "citationMla": "San Antonio daily light. (San Antonio, TX) 16 Dec. 1889, p. 1. Retrieved from the Library of Congress, www.loc.gov/item/sn86090439/1889-12-16/ed-1/.",
+      "excerpt": "Miss Elizabeth Bisland in her race round the world with Nellie Bly, has made fast time so far. She reached Yokohoma and is now hurrying down to Hong Kong.\nSiberian Exiles Massacred.\nLONDON, December 16. — Reports have been received here of the massacre of Siberian exiles. It is alleged that a party ",
+      "focus": {
+        "x": 1730.25,
+        "y": 2862.75,
+        "w": 770.75,
+        "h": 341.75
+      },
+      "explanation": "The clue said Bisland 'expects to reach Yokohama on Dec. 11.' The later report said she 'has made fast time so far' and 'reached Yokohoma.' So she got there."
+    },
+    "status": "published",
+    "rejectReasons": [],
+    "morgue": [
+      {
+        "clippingId": "j575zbds8ctrw6w4bgeynvarns8h40h6",
+        "pageId": "http://www.loc.gov/resource/sn96061150/1889-11-17/ed-1/?sp=1",
+        "iiifBase": "https://tile.loc.gov/image-services/iiif/service:ndnp:oru:batch_oru_hufnagel_ver03:data:sn96061150:00200298111:1889111701:0460",
+        "box": {
+          "h": 2095,
+          "w": 821,
+          "x": 2762,
+          "y": 3944
+        },
+        "paper": "The daily morning Astorian",
+        "date": "1889-11-17",
+        "citationMla": "The daily morning Astorian. (Astoria, OR) 17 Nov. 1889, p. 1. Retrieved from the Library of Congress, www.loc.gov/item/sn96061150/1889-11-17/ed-1/.",
+        "excerpt": "NEW YORK, Nov. 15.— While Nellie Bly announces her intention of making the tour of the world in seventy-five days, the proprietors of the Cosmopolitan magazine employed Miss Elizabeth Bisland, a newspaper woman, to go the opposite way around and beat Nellie's record. Miss Bisland is now on her way t",
+        "focus": {
+          "x": 2762,
+          "y": 4148.900533130236,
+          "w": 812.6272658035032,
+          "h": 334.1416603198777
+        }
+      },
+      {
+        "clippingId": "j574scbev7dectw1yjg4xmmdwx8h4pq4",
+        "pageId": "http://www.loc.gov/resource/sn98062948/1889-11-28/ed-1/?sp=1",
+        "iiifBase": "https://tile.loc.gov/image-services/iiif/service:ndnp:sdhi:batch_sdhi_imbe_ver01:data:sn98062948:00340581076:1889112801:0430",
+        "box": {
+          "h": 6954,
+          "w": 765,
+          "x": 2501,
+          "y": 1223
+        },
+        "paper": "Hand County press",
+        "date": "1889-11-28",
+        "citationMla": "Hand County press. (Miller, SD) 28 Nov. 1889, p. 1. Retrieved from the Library of Congress, www.loc.gov/item/sn98062948/1889-11-28/ed-1/.",
+        "excerpt": "Walker, proprietor of the Cosmopolitan Magazine, despatched a messenger for one of its contributors, and in less than an hour had Miss Elizabeth Bisland, ready to set out for San Francisco, in an attempt to belt the globe in a shorter time than Nellie Bly would require.\n\nLand Office at Huron, South ",
+        "focus": {
+          "x": 2513.25,
+          "y": 5338.5,
+          "w": 737.5,
+          "h": 320.25
+        }
+      },
+      {
+        "clippingId": "j574ag36ge276bnnf786r7pkk98h5jjs",
+        "pageId": "http://www.loc.gov/resource/sn84024546/1889-11-16/ed-1/?sp=4",
+        "iiifBase": "https://tile.loc.gov/image-services/iiif/service:ndnp:pst:batch_pst_franco_ver01:data:sn84024546:00237280106:1889111601:0161",
+        "box": {
+          "h": 2263,
+          "w": 680,
+          "x": 2398,
+          "y": 3472
+        },
+        "paper": "Pittsburg Dispatch",
+        "date": "1889-11-16",
+        "citationMla": "Pittsburg Dispatch. (Pittsburgh, PA) 16 Nov. 1889, p. 4. Retrieved from the Library of Congress, www.loc.gov/item/sn84024546/1889-11-16/ed-1/.",
+        "excerpt": "John Brisbaen Walker, the millionaire proprietor of the Cosmopolitan Magazine, walked into his office yesterday morning with a longer stride and heavier tread than usual, and startled his employes by the sharp query:\n\"How quick can a woman go around the world?\"\nMr. A. D. Wilson, the business manager",
+        "focus": {
+          "x": 2398,
+          "y": 4364,
+          "w": 669,
+          "h": 246
+        }
+      }
+    ]
+  },
+  {
+    "day": 30,
+    "date1889": "1889-12-13",
+    "title": "Can Bly Keep Her Pace?",
+    "clue": {
+      "clippingId": "j57468zkpcn8sq5vdgf6fm7wed8h5jye",
+      "pageId": "http://www.loc.gov/resource/sn84020107/1889-12-13/ed-1/?sp=1",
+      "iiifBase": "https://tile.loc.gov/image-services/iiif/service:ndnp:nbu:batch_nbu_crane_ver01:data:sn84020107:00517014035:1889121301:0414",
+      "box": {
+        "h": 3959,
+        "w": 696,
+        "x": 131,
+        "y": 348
+      },
+      "paper": "The Beatrice daily express",
+      "date": "1889-12-13",
+      "citationMla": "The Beatrice daily express. (Beatrice, NE) 13 Dec. 1889, p. 1. Retrieved from the Library of Congress, www.loc.gov/item/sn84020107/1889-12-13/ed-1/.",
+      "excerpt": "The correspondent is a woman, who writes charming letters under the nom de plume \"Nellie Bly.\"\nTHE Kearney Enterprise denies the truth of the report that it is to be removed to Grand Island. The Hub insists, however, that it bargained to go, and traces the negotiations to that end. Under the circums",
+      "focus": {
+        "x": 141.97057699656096,
+        "y": 2230.571455865495,
+        "w": 665.1274837600306,
+        "h": 328.1918704623613
+      }
+    },
+    "question": {
+      "kind": "choice",
+      "prompt": "When Nellie Bly reaches Hong Kong, will she be ahead of, on, or behind schedule?",
+      "options": [
+        "She will be early",
+        "She will be punctual",
+        "She will be late"
+      ],
+      "answerIndex": 0
+    },
+    "hints": [
+      "Kid writes charming letters from the road. What does that tell you about her trip so far?",
+      "She sails for the World itself, son. What does that tell you about her passage?"
+    ],
+    "reveal": {
+      "clippingId": "j578r814egh1tpdxj7jrq3g1718h58r5",
+      "pageId": "http://www.loc.gov/resource/sn86090439/1889-12-28/ed-1/?sp=1",
+      "iiifBase": "https://tile.loc.gov/image-services/iiif/service:ndnp:txdn:batch_txdn_corinth_ver01:data:sn86090439:00517176618:1889122801:1216",
+      "box": {
+        "h": 2772,
+        "w": 779,
+        "x": 1688,
+        "y": 783
+      },
+      "paper": "San Antonio daily light",
+      "date": "1889-12-28",
+      "citationMla": "San Antonio daily light. (San Antonio, TX) 28 Dec. 1889, p. 1. Retrieved from the Library of Congress, www.loc.gov/item/sn86090439/1889-12-28/ed-1/.",
+      "excerpt": "Nellie Bly reached Hong Kong two days ahead of her alloted time.\nA terrific wind blowing at Bradford, Pa., has leveled a number of derr cks.\nThe Delaware River Ships building Yards are likely soon to get $5,000,000 contracts.\nTwo ladies, 80 and 70 years of age are found dead at De Witt, N. Y. asphyx",
+      "focus": {
+        "x": 1692.25,
+        "y": 1528.25,
+        "w": 767,
+        "h": 314.5
+      },
+      "explanation": "The clue calls her \"the New York World's correspondent\" who writes charming letters. The later report says \"Nellie Bly reached Hong Kong two days ahead of her alloted time.\""
+    },
+    "status": "published",
+    "rejectReasons": [],
+    "morgue": [
+      {
+        "clippingId": "j571dybxhz87kzevb6phj64wcs8h5dyz",
+        "pageId": "http://www.loc.gov/resource/sn84020631/1889-11-18/ed-1/?sp=1",
+        "iiifBase": "https://tile.loc.gov/image-services/iiif/service:ndnp:nmu:batch_nmu_emerson_ver01:data:sn84020631:00415627890:1889111801:1115",
+        "box": {
+          "h": 5051,
+          "w": 642,
+          "x": 2091,
+          "y": 744
+        },
+        "paper": "Santa Fe daily New Mexican",
+        "date": "1889-11-18",
+        "citationMla": "Santa Fe daily New Mexican. (Santa Fe., NM) 18 Nov. 1889, p. 1. Retrieved from the Library of Congress, www.loc.gov/item/sn84020631/1889-11-18/ed-1/.",
+        "excerpt": "The itinerary of the trip includes Southampton, London, Calais, Paris, Turin, Brindisi, Ismaila, Adel, Colombo (Ceylon), Penang, Singapore, Hong Kong, Yokohama and San Francisco. Nellie Bly, according to her schedule, will be due in New York on January 27.\n\nUnanimous Verdict.\nThe Royce & Lansing Mus",
+        "focus": {
+          "x": 2104.423623623624,
+          "y": 862.174974974975,
+          "w": 622.1197197197198,
+          "h": 253.04584584584575
+        }
+      },
+      {
+        "clippingId": "j57f76sq8ge6ha41f2w1em2p3x8h4127",
+        "pageId": "http://www.loc.gov/resource/sn83030193/1889-11-14/ed-1/?sp=1",
+        "iiifBase": "https://tile.loc.gov/image-services/iiif/service:ndnp:nn:batch_nn_hanyu_ver01:data:sn83030193:00206539525:1889111401:0524",
+        "box": {
+          "h": 985,
+          "w": 458,
+          "x": 1809,
+          "y": 874
+        },
+        "paper": "The Evening World",
+        "date": "1889-11-14",
+        "citationMla": "The Evening World. (New York, NY) 14 Nov. 1889, p. 1. Retrieved from the Library of Congress, www.loc.gov/item/sn83030193/1889-11-14/ed-1/.",
+        "excerpt": "M.\ne Brindisi, steamship Cathay,\nilia.\nmbo (Ceylon).\nng.\napore.\ng Kong.\ne Hong Kong for Yokohama,\no Yokohama via Pacific Mail\nSan Francisco.\nNew York.\n. 27—seventy-five days.\nRE AN EDITOR.",
+        "focus": {
+          "x": 1809,
+          "y": 1170.2232294617563,
+          "w": 455.4253068932958,
+          "h": 662.1204910292729
+        }
+      },
+      {
+        "clippingId": "j57cqq3c8zamahf0nfbsc0vr258h4zwf",
+        "pageId": "http://www.loc.gov/resource/sn86079068/1889-11-30/ed-1/?sp=1",
+        "iiifBase": "https://tile.loc.gov/image-services/iiif/service:ndnp:lu:batch_lu_connolly_ver01:data:sn86079068:00200299218:1889113001:0461",
+        "box": {
+          "h": 3023,
+          "w": 778,
+          "x": 2610,
+          "y": 1173
+        },
+        "paper": "The Lafayette advertiser",
+        "date": "1889-11-30",
+        "citationMla": "The Lafayette advertiser. (Vermilionville, LA) 30 Nov. 1889, p. 1. Retrieved from the Library of Congress, www.loc.gov/item/sn86079068/1889-11-30/ed-1/.",
+        "excerpt": "Miss Bisland will reach Yokohama, Japan, on Dec. 11, and will be in Hong Kong five days later. We have cabled for a government boat for her use in making the latter trip, and the expense for this part of the journey alone will be $8000. It is this transfer from Yokohama to Hong Kong that we expect t",
+        "focus": {
+          "x": 2614,
+          "y": 2579,
+          "w": 770,
+          "h": 348
+        }
+      }
+    ]
+  },
+  {
+    "day": 71,
+    "date1889": "1890-01-23",
+    "title": "Will Bly Keep Her Lead?",
+    "clue": {
+      "clippingId": "j578y0a5wsscn65kgqada9qkrn8h544k",
+      "pageId": "http://www.loc.gov/resource/sn86072173/1890-01-23/ed-1/?sp=1",
+      "iiifBase": "https://tile.loc.gov/image-services/iiif/service:ndnp:wyu:batch_wyu_calpet_ver02:data:sn86072173:00514150035:1890012301:0193",
+      "box": {
+        "h": 4061,
+        "w": 580,
+        "x": 756,
+        "y": 640
+      },
+      "paper": "The Cheyenne daily leader",
+      "date": "1890-01-23",
+      "citationMla": "The Cheyenne daily leader. (Cheyenne, WY) 23 Jan. 1890, p. 1. Retrieved from the Library of Congress, www.loc.gov/item/sn86072173/1890-01-23/ed-1/.",
+      "excerpt": "Traveling at the Speed of a Bird's Flight\n\nNellie Bly Continues Her Journey to New York.\n\nA March of Triumph.\nSpecial Dispatch to the Leader.\nNEW YORK, Jan. 22.—The following is Nellie Bly's own story:\nALBUQUERQUE, N. M., Dec. 22.—We are doing well, thirty-six hours in America and we have traveled o",
+      "focus": {
+        "x": 760.5,
+        "y": 877.25,
+        "w": 560.25,
+        "h": 377.25
+      }
+    },
+    "question": {
+      "kind": "choice",
+      "prompt": "After her fast start in America, will she stay ahead of, on, or behind schedule?",
+      "options": [
+        "Ahead of schedule",
+        "On schedule",
+        "Behind schedule"
+      ],
+      "answerIndex": 0
+    },
+    "hints": [
+      "She brags fifteen hundred miles in thirty-six hours, kid. Can American rails keep that clip?",
+      "She swears by American roads, son. Does that confidence mean anything for the next stretch?"
+    ],
+    "reveal": {
+      "clippingId": "j57246pv75f9r0rc450da3t9618h4p84",
+      "pageId": "http://www.loc.gov/resource/sn86090439/1890-01-24/ed-1/?sp=1",
+      "iiifBase": "https://tile.loc.gov/image-services/iiif/service:ndnp:txdn:batch_txdn_corinth_ver01:data:sn86090439:00517176606:1890012401:0146",
+      "box": {
+        "h": 5786,
+        "w": 787,
+        "x": 853,
+        "y": 898
+      },
+      "paper": "San Antonio daily light",
+      "date": "1890-01-24",
+      "citationMla": "San Antonio daily light. (San Antonio, TX) 24 Jan. 1890, p. 1. Retrieved from the Library of Congress, www.loc.gov/item/sn86090439/1890-01-24/ed-1/.",
+      "excerpt": "Chicago, Jan. 24. —Nellie Bly ar. rived in this city at 8 o’clock this morning, two hours ahead of time. At Joliet she was met by a small delegation of representatives of the press. Upon her arrival she was driven to the rooms of the Chicago press club where she held an informal reception until 9:15",
+      "focus": {
+        "x": 855,
+        "y": 3038.75,
+        "w": 776.5,
+        "h": 372.5
+      },
+      "explanation": "Bly bragged 'we have traveled over 1,500 miles in that time' in just thirty-six hours across America. That speed held, with Chicago noting she arrived 'two hours ahead of time.'"
+    },
+    "status": "published",
+    "rejectReasons": [],
+    "morgue": [
+      {
+        "clippingId": "j57dva8jww74q7gznx17g3wx5d8h45zw",
+        "pageId": "http://www.loc.gov/resource/sn83030193/1890-01-23/ed-2/?sp=1",
+        "iiifBase": "https://tile.loc.gov/image-services/iiif/service:ndnp:nn:batch_nn_hanyu_ver01:data:sn83030193:00206539537:1890012302:0253",
+        "box": {
+          "h": 4796,
+          "w": 2549,
+          "x": 0,
+          "y": 1303
+        },
+        "paper": "The Evening World",
+        "date": "1890-01-23",
+        "citationMla": "The Evening World. (New York, NY) 23 Jan. 1890, p. 1. Retrieved from the Library of Congress, www.loc.gov/item/sn83030193/1890-01-23/ed-2/.",
+        "excerpt": "The train bearing Nellie Bly over the Atlantic and Pacific Railroad dashed into Albuquerque, New Mexico, at 9.35 o'clock last night, thirty-six and a half hours from San Francisco. The distance is about 1,600 miles, or nearly half the way across the continent. From this point her journey lies over t",
+        "focus": {
+          "x": 1280.7378640776699,
+          "y": 1426.8212450028554,
+          "w": 620.3403769274703,
+          "h": 281.1467732724159
+        }
+      },
+      {
+        "clippingId": "j578b2n6pcgb1khp1y7pysbj0x8h4tbr",
+        "pageId": "http://www.loc.gov/resource/sn82015679/1890-01-23/ed-1/?sp=3",
+        "iiifBase": "https://tile.loc.gov/image-services/iiif/service:ndnp:in:batch_in_ashbel_ver01:data:sn82015679:00295870370:1890012301:0214",
+        "box": {
+          "h": 6583,
+          "w": 1207,
+          "x": 2988,
+          "y": 1441
+        },
+        "paper": "The Indianapolis journal",
+        "date": "1890-01-23",
+        "citationMla": "The Indianapolis journal. (Indianapolis, IN) 23 Jan. 1890, p. 3. Retrieved from the Library of Congress, www.loc.gov/item/sn82015679/1890-01-23/ed-1/.",
+        "excerpt": "There she will take a special train over the Union Pacific for Council Bluffs via Denver. At the Bluffs she takes the Northwestern for Chicago, and at the latter place she will be turned over to the Michigan Central for New York. This change, bringing her via Denver, instead of going east on the San",
+        "focus": {
+          "x": 2991,
+          "y": 1776,
+          "w": 1176,
+          "h": 459
+        }
+      },
+      {
+        "clippingId": "j578mv1qsvg04c58d1hcymkzas8h5dsy",
+        "pageId": "http://www.loc.gov/resource/sn93067777/1890-01-23/ed-1/?sp=2",
+        "iiifBase": "https://tile.loc.gov/image-services/iiif/service:ndnp:scu:batch_scu_floydcouncil_ver01:data:sn93067777:00237287010:1890012301:0206",
+        "box": {
+          "h": 3382,
+          "w": 914,
+          "x": 1070,
+          "y": 7429
+        },
+        "paper": "The Newberry herald and news",
+        "date": "1890-01-23",
+        "citationMla": "The Newberry herald and news. (Newberry, SC) 23 Jan. 1890, p. 2. Retrieved from the Library of Congress, www.loc.gov/item/sn93067777/1890-01-23/ed-1/.",
+        "excerpt": "SAN FRANCISCO, Jan. 21.—The steamer Oceanic arrived this morning with Nellie Bly aboard. A tug took her off the steamer outside and carried her to Oakland, where a special train was in waiting which took her eastward over the Southern Pacific road to Mojave, where a change was made to the Atlantic a",
+        "focus": {
+          "x": 1070,
+          "y": 8059.333333333333,
+          "w": 914,
+          "h": 375.33333333333485
+        }
+      }
+    ]
+  },
+  {
+    "day": 73,
+    "date1889": "1890-01-25",
+    "title": "Nellie Bly Almost Home",
+    "clue": {
+      "clippingId": "j57c1ckect0keredfqbg706by98h40ks",
+      "pageId": "http://www.loc.gov/resource/sn83030193/1890-01-24/ed-1/?sp=1",
+      "iiifBase": "https://tile.loc.gov/image-services/iiif/service:ndnp:nn:batch_nn_hanyu_ver01:data:sn83030193:00206539537:1890012401:0261",
+      "box": {
+        "h": 4596,
+        "w": 669,
+        "x": 18,
+        "y": 1390
+      },
+      "paper": "The Evening World",
+      "date": "1890-01-24",
+      "citationMla": "The Evening World. (New York, NY) 24 Jan. 1890, p. 1. Retrieved from the Library of Congress, www.loc.gov/item/sn83030193/1890-01-24/ed-1/.",
+      "excerpt": "I ALMOST HOME I Nellie Bly Arrives in Chi-I cago at 8.05 This B Morning. 1 (lesumes Her Journey on the Pennsylvania Limited at 10.30. I Breakfasts With tho Press I Club and Visits tho M Wliout Fit. M Hor Journey Through Kansas One I Continued Ovation. fl Mils BIy's Own Account of Reckon-H Ins alli",
+      "focus": {
+        "x": 18,
+        "y": 1390,
+        "w": 656.126263589548,
+        "h": 628.3826053785999
+      }
+    },
+    "question": {
+      "kind": "choice",
+      "prompt": "After leaving Chicago this morning, will Nellie reach home by tomorrow night?",
+      "options": [
+        "Gets home by tomorrow night",
+        "Gets home one day late",
+        "Gets home two days late"
+      ],
+      "answerIndex": 0
+    },
+    "hints": [
+      "She hits Chicago at eight and leaves at half past ten. Does that short stop help her pace?",
+      "The boys say she looks fresh after the Pacific run. Does a rested traveler keep schedule better?"
+    ],
+    "reveal": {
+      "clippingId": "j570n30r1tjetsjhpnnqzwqky18h5em7",
+      "pageId": "http://www.loc.gov/resource/sn84024546/1890-01-26/ed-1/?sp=1",
+      "iiifBase": "https://tile.loc.gov/image-services/iiif/service:ndnp:pst:batch_pst_franco_ver01:data:sn84024546:00237280118:1890012601:0260",
+      "box": {
+        "h": 6183,
+        "w": 1530,
+        "x": 4359,
+        "y": 590
+      },
+      "paper": "Pittsburg Dispatch",
+      "date": "1890-01-26",
+      "citationMla": "Pittsburg Dispatch. (Pittsburgh, PA) 26 Jan. 1890, p. 1. Retrieved from the Library of Congress, www.loc.gov/item/sn84024546/1890-01-26/ed-1/.",
+      "excerpt": "WARD\nClara Belle's Chat......................CLARA BELLE\nNELLIE BLY THERE.\nHer Record-Breaking Tour\nAround the Earth Ended.\nGOTHAM'S WILD WELCOME.\nMany Thoroughfares Blockaded by\nthe Enthusiastic Crowds.\nTHE TRAVELER'S OWN NARRATIVE\nMiss Elizabeth Cochrane, known as\n\"Nellie Bly,\" completed her round",
+      "focus": {
+        "x": 5049,
+        "y": 1171,
+        "w": 680,
+        "h": 467
+      },
+      "explanation": "The Chicago paper said she was expected to 'eat her dinner lit her own home to-morrow' after continuing 'Her Journey on the Penn- sylvania Limited at 10.30'. The later dispatch says she completed her round trip yesterday afternoon and alighted in Jersey City, keeping that forecast."
+    },
+    "finaleSeconds": 6243000,
+    "status": "published",
+    "rejectReasons": [],
+    "morgue": [
+      {
+        "clippingId": "j579r9t4v5w5m938803qv0kcy58h48wm",
+        "pageId": "http://www.loc.gov/resource/sn83030193/1890-01-25/ed-3/?sp=1",
+        "iiifBase": "https://tile.loc.gov/image-services/iiif/service:ndnp:nn:batch_nn_hanyu_ver01:data:sn83030193:00206539537:1890012503:0281",
+        "box": {
+          "h": 396,
+          "w": 5020,
+          "x": 63,
+          "y": 921
+        },
+        "paper": "The Evening World",
+        "date": "1890-01-25",
+        "citationMla": "The Evening World. (New York, NY) 25 Jan. 1890, p. 1. Retrieved from the Library of Congress, www.loc.gov/item/sn83030193/1890-01-25/ed-3/.",
+        "excerpt": "KANSAS CITY. CHICAGO. PITTSBURG. (Jersey City.) NEW YORK.\n(Penn. R.R. Sta.)\n0.10 A. M. 7.45 P. M. 4 A. M. 3 P. M. 9.35 P. M. 1.40 A. M. 6.45 A. M. 3.40 P. M. 4.30 P. M. 6 P. M. 7.25 P. M. 10.20 A. M. 3.10 A. M.\nJAN. 21. JAN. 21. JAN. 22. JAN. 22. JAN. 23. JAN. 23. JAN. 23. JAN. 23. JAN. 24. JAN. 25."
+      },
+      {
+        "clippingId": "j577cv6nfgds6e1z5zdj8mmq5x8h5r46",
+        "pageId": "http://www.loc.gov/resource/sn84024546/1890-01-19/ed-1/?sp=1",
+        "iiifBase": "https://tile.loc.gov/image-services/iiif/service:ndnp:pst:batch_pst_franco_ver01:data:sn84024546:00237280118:1890011901:0187",
+        "box": {
+          "h": 6370,
+          "w": 2143,
+          "x": 3788,
+          "y": 1070
+        },
+        "paper": "Pittsburg Dispatch",
+        "date": "1890-01-19",
+        "citationMla": "Pittsburg Dispatch. (Pittsburgh, PA) 19 Jan. 1890, p. 1. Retrieved from the Library of Congress, www.loc.gov/item/sn84024546/1890-01-19/ed-1/.",
+        "excerpt": "catch the fast night\nil for the Sunday steamer at Queenstown.\nspecial train at a cost of $300 was\nered to be in readiness at Paris, and the\nnch steamship company was appealed to\nold the Champagne at Havre until this\ncial could bring Miss Bisland from Paris\nthat port. The Western Railroad of\nance sai",
+        "focus": {
+          "x": 5117.4519368723095,
+          "y": 3323.5944524151123,
+          "w": 677.3122907699662,
+          "h": 293.12864658058334
+        }
+      }
+    ]
+  }
+]
