@@ -133,6 +133,9 @@ export const exploreCardFields = {
 
 export const shelfFields = { slug: v.string(), title: v.string(), blurb: v.string(), order: v.number(), cards: v.array(v.object(exploreCardFields)) };
 
+const packItem = v.object({ clippingId: v.string(), pageId: v.string(), iiifBase: v.string(), box, paper: v.string(), date: v.string(), citationMla: v.string(), excerpt: v.string() });
+export const packFields = { slug: v.string(), title: v.string(), theme: v.string(), items: v.array(packItem), hardItems: v.array(packItem), questions: v.array(v.string()) };
+
 export const followFields = {
   owner: v.string(),
   kind: v.union(v.literal("name"), v.literal("place")),
@@ -173,5 +176,6 @@ export default defineSchema({
   notes: defineTable(noteFields).index("by_owner", ["owner"]),
   activity: defineTable(activityFields).index("by_owner", ["owner"]),
   shelves: defineTable(shelfFields),
+  packs: defineTable(packFields),
   agentState: defineTable({ key: v.string(), value: v.string() }).index("by_key", ["key"]),
 });

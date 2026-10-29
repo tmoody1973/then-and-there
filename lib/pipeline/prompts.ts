@@ -58,6 +58,15 @@ ${claim}
 CLIPPING TRANSCRIPTION:
 ${sourceText}`;
 
+// Teacher packs: discussion questions a class can answer from these clippings alone.
+export const PACK_QUESTIONS_PROMPT = (theme: string, excerpts: string[], count: number, avoid: string[] = []) =>
+  `You are helping a history teacher. Below are ${excerpts.length} transcribed clippings from historic American newspapers on the theme: ${theme}. The transcriptions may contain OCR misspellings.
+Write ${count} open discussion question${count === 1 ? "" : "s"} for students aged 13 to 18. Each question must be answerable or discussable from what these clippings print, not outside knowledge. Ask students to compare, notice language and point of view, or reason from evidence. Plain modern English, one sentence each, no answers.${avoid.length ? `\nDo not repeat these questions: ${avoid.join(" | ")}` : ""}
+Return only JSON: {"questions": string[]}.
+
+CLIPPINGS:
+${excerpts.map((e, i) => `[${i + 1}] ${e}`).join("\n\n")}`;
+
 // Solvability: could a reader of the clue reason toward an answer? Future events are fine.
 export const EDITOR_SOLVABLE_PROMPT = (question: string, clueText: string) =>
   `A history game shows players this newspaper clue, then asks a question about what happens next. The question may mention places or events the clue doesn't print yet; that's expected. Decide whether the clue gives a careful reader relevant evidence (schedules, positions, pace, plans, delays) to reason toward an answer, rather than making it a blind guess.

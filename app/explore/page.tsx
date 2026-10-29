@@ -55,6 +55,7 @@ export default function ExplorePage() {
   const agent = useAgent();
   const stats = useQuery(api.explore.stats, {}) as Stats | undefined;
   const shelves = useQuery(api.explore.shelves, {}) as Shelf[] | undefined;
+  const packs = useQuery(api.packs.list, {}) as Array<{ slug: string; title: string; count: number }> | undefined;
   const [input, setInput] = useState("");
   const [q, setQ] = useState("");
   const [filters, setFilters] = useState<Filters>(NO_FILTERS);
@@ -182,6 +183,17 @@ export default function ExplorePage() {
               </section>
             ))
           )}
+          {!q && packs?.length ? (
+            <section className="shelf packs-shelf" aria-labelledby="packs-h">
+              <h2 id="packs-h">Teacher packs</h2>
+              <p className="shelf-blurb">Printable sets of verified clippings with discussion questions.</p>
+              <ul className="pack-links">
+                {packs.map((p) => (
+                  <li key={p.slug}><Link href={`/explore/pack/${p.slug}`}>{p.title}</Link> <span className="caption">({p.count} clippings)</span></li>
+                ))}
+              </ul>
+            </section>
+          ) : null}
         </section>
 
         <section className="wire-proof" ref={proofRef} aria-label="The pulled story">

@@ -192,5 +192,16 @@ describe("explore cards and shelves", () => {
     expect(((await t.query(api.explore.shelves, {})) as Array<{ slug: string }>).map((x) => x.slug)).toEqual(["c"]);
     await expect(t.mutation(api.explore.replaceShelves, { secret: "nope", shelves: [] })).rejects.toThrow(/not allowed/);
   });
+
+  test("packs are listed and served by slug; writing them needs the secret", async () => {
+    const t = convexTest(schema, modules);
+    process.env.CONVEX_WRITE_SECRET = "s";
+    const pack = { slug: "p1", title: "Pack", theme: "t", items: [], hardItems: [], questions: ["Q?"] };
+    await t.mutation(api.packs.replacePacks, { secret: "s", packs: [pack] });
+    expect(await t.query(api.packs.list, {})).toEqual([{ slug: "p1", title: "Pack", count: 0 }]);
+    expect(await t.query(api.packs.bySlug, { slug: "p1" })).toMatchObject({ questions: ["Q?"] });
+    expect(await t.query(api.packs.bySlug, { slug: "nope" })).toBeNull();
+    await expect(t.mutation(api.packs.replacePacks, { secret: "x", packs: [] })).rejects.toThrow(/not allowed/);
+  });
 });
 
