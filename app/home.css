@@ -1,17 +1,57 @@
-/* Home: two doors onto one engine. */
-.home { width: min(100% - 2 * var(--s4), 76rem); margin-inline: auto; padding-bottom: var(--s8); }
-.home .dateline a { color: inherit; text-decoration: none; }
-.home .dateline a:hover { text-decoration: underline; }
-.home h1 { max-width: 24ch; }
-.home-lede { color: var(--ink-2); }
-.doors { display: grid; gap: var(--s7); margin-top: var(--s6); }
-.door { padding-top: var(--s3); border-top: 2px solid var(--ink); }
-.door h2 { margin-top: 0; }
-.door-proof { margin: var(--s4) 0 var(--s2); }
-.door-clip { max-width: 22rem; }
-.door-go { font-family: var(--font-head); font-weight: 700; font-size: var(--step-1); margin-top: var(--s4); }
-.home-foot { margin-top: var(--s7); }
+/* Today: the front page of the site. Laptop: today's game and the ways in, with the agent's
+   morning report down the right rail. Phone: one column, the agent as a single flash. */
+@import "./agent.css";
+
+.today { width: min(100% - 2 * var(--s4), var(--wide)); margin: var(--s4) auto 0; display: grid; gap: var(--s6); }
+.today-main { display: grid; gap: var(--s5); align-content: start; }
+@media (min-width: 960px) { .today-main { gap: var(--s6); } }
 @media (min-width: 960px) {
-  .home { width: min(100% - 2 * var(--s6), 76rem); }
-  .doors { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--s8); }
+  .today { width: min(100% - 2 * var(--s7), var(--wide)); margin-top: var(--s6); grid-template-columns: minmax(0, 1fr) 21rem; gap: var(--s7); align-items: start; }
 }
+
+/* ---------- Today's front page ---------- */
+.front-hero {
+  display: grid; grid-template-columns: 6.5rem minmax(0, 1fr); gap: var(--s4); align-items: start;
+  padding: var(--s4); background: var(--paper-raised); box-shadow: inset 0 0 0 1.5px var(--ink);
+}
+.front-hero-sketch { width: 100%; height: auto; display: block; }
+.front-hero h1 { margin: 0 0 var(--s2); font-size: clamp(1.5rem, 1.1rem + 2vw, 1.75rem); }
+.front-hero-lede { margin: 0 0 var(--s4); font-size: var(--step--1); line-height: 1.45; color: var(--ink-2); }
+.front-hero-go { width: 100%; }
+@media (max-width: 959px) { .front-hero .slugline { font-size: 0.6875rem; letter-spacing: 0.05em; } }
+@media (max-width: 959px) { .front-hero-lede.only-phone { font-family: var(--font-head); font-size: var(--step--2); } }
+@media (min-width: 960px) {
+  .front-hero { grid-template-columns: 15.5rem minmax(0, 1fr); gap: var(--s6); padding: var(--s6); }
+  .front-hero h1 { font-size: clamp(2.5rem, 1rem + 2.8vw, 3.5rem); margin-bottom: var(--s4); max-width: 17ch; }
+  .front-hero-lede { font-size: var(--step-1); line-height: 1.45; color: var(--ink); max-width: 34em; }
+  .front-hero-go { width: auto; }
+}
+.front-hero-meta { display: flex; flex-wrap: wrap; gap: var(--s2) var(--s5); margin: 0 0 var(--s4); font-family: var(--font-head); font-size: var(--step--2); color: var(--ink-2); }
+
+/* ---------- The agent's flash (phone) ---------- */
+.agent-flash { padding: var(--s4); background: var(--paper-raised); border-top: 3px solid var(--red); }
+.agent-flash-text { font-size: var(--step-1); line-height: 1.35; margin-bottom: var(--s4); }
+.agent-flash a { font-family: var(--font-head); font-weight: 700; font-size: var(--step--1); color: var(--ink); }
+
+/* ---------- Ways to play ---------- */
+.ways-grid { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--s3); }
+@media (min-width: 960px) { .ways-grid { gap: var(--s4); } .ways .rule-head { margin-top: var(--s2); } }
+.way {
+  display: grid; align-content: start; gap: var(--s1); height: 100%; padding: var(--s3);
+  background: var(--paper-raised); box-shadow: inset 0 0 0 1.5px var(--ink); color: var(--ink); text-decoration: none;
+  transition: box-shadow 160ms var(--ease-out);
+}
+.way .slugline { margin: 0; }
+.way:hover { box-shadow: inset 0 0 0 1.5px var(--ink), inset 0 -3px 0 1.5px var(--red); }
+.way-title { font-family: var(--font-display); font-weight: 700; font-size: 1.1875rem; line-height: 1.15; letter-spacing: -0.01em; text-wrap: balance; }
+.way-blurb { font-size: var(--step--1); line-height: 1.35; color: var(--ink-2); }
+@media (min-width: 960px) {
+  .way { padding: var(--s5); gap: var(--s2); }
+  .way-title { font-size: var(--step-2); }
+  .way-blurb { font-size: var(--step-0); }
+}
+
+/* ---------- The agent's rail (laptop) ---------- */
+.today-agent h2 { margin: 0 0 var(--s2); font-size: var(--step-2); }
+.today-agent .find-card { margin-bottom: var(--s5); }
+.agent-more a { font-family: var(--font-head); font-weight: 700; font-size: var(--step--2); color: var(--ink); }

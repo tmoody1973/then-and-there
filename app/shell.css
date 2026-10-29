@@ -1,0 +1,82 @@
+/* The paper's furniture: nameplate, section nav, tab bar, footer. */
+
+/* One layout per class of screen; hiding wins over any component's own display. */
+@media (max-width: 959px) { .only-laptop { display: none !important; } }
+@media (min-width: 960px) { .only-phone { display: none !important; } }
+
+.site-head-inner { width: min(100% - 2 * var(--s4), var(--wide)); margin: 0 auto 4px; }
+.nameplate {
+  font-family: var(--font-mast); font-weight: 700; color: var(--ink); text-decoration: none;
+  line-height: 1; letter-spacing: 0; white-space: nowrap;
+}
+.nameplate:hover { text-decoration: none; }
+.site-date, .site-edition, .site-meta, .site-tagline, .site-nav a, .site-foot, .tab-bar a {
+  font-family: var(--font-head); text-transform: uppercase; letter-spacing: 0.06em;
+}
+.site-edition, .site-meta, .site-tagline { margin: 0; max-width: none; font-size: var(--step--2); color: var(--ink-2); }
+
+/* Phone: the nameplate leads the front page only; every other page opens on its own bar. */
+@media (max-width: 959px) {
+  .site-head:not(.is-home) { display: none; }
+  .site-head-inner { display: grid; justify-items: center; gap: var(--s2); padding: var(--s3) 0 var(--s4); text-align: center; }
+  .site-edition { justify-self: stretch; display: flex; justify-content: space-between; }
+  .nameplate { font-size: clamp(2.75rem, 13vw, 3.75rem); margin-top: var(--s1); }
+  .site-tagline { font-weight: 600; }
+  .site-nav, .site-meta { display: none; }
+}
+
+/* Laptop: nameplate, sections, and the date, on one line over a double rule. */
+@media (min-width: 960px) {
+  .site-head-inner {
+    width: min(100% - 2 * var(--s7), var(--wide));
+    display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: var(--s6);
+    padding-top: var(--s5);
+  }
+  .site-edition, .site-tagline { display: none; }
+  .nameplate { font-size: 2.75rem; padding-bottom: var(--s3); }
+  .site-nav { display: flex; justify-content: center; gap: var(--s1) var(--s5); flex-wrap: wrap; }
+  .site-nav a {
+    position: relative; display: inline-flex; align-items: center; gap: 6px; min-height: 48px; padding: 0 var(--s2);
+    font-size: var(--step--1); font-weight: 600; color: var(--ink); text-decoration: none;
+  }
+  .site-nav a:hover { color: var(--red); }
+  .site-nav a[aria-current="page"] { color: var(--red); }
+  .site-nav a[aria-current="page"]::after { content: ""; position: absolute; inset: auto 0 -2px; height: 2px; background: var(--red); }
+  .site-meta { display: grid; justify-items: end; gap: 2px; padding-bottom: var(--s2); }
+  .site-meta a { color: var(--ink-2); text-decoration-color: var(--rule-strong); }
+  .site-meta a:hover { color: var(--red); }
+}
+
+.tab-count {
+  display: inline-grid; place-items: center; min-width: 1.35rem; height: 1.35rem; padding: 0 4px;
+  border-radius: 999px; background: var(--red); color: var(--paper-bright);
+  font-family: var(--font-head); font-size: 0.6875rem; font-weight: 700; letter-spacing: 0;
+}
+
+/* ---------- Phone tab bar ---------- */
+.tab-bar { display: none; }
+@media (max-width: 959px) {
+  .tab-bar {
+    position: fixed; inset: auto 0 0; z-index: 20; display: grid; grid-template-columns: repeat(4, 1fr);
+    padding-bottom: env(safe-area-inset-bottom);
+    background: var(--paper-raised); border-top: 1.5px solid var(--ink);
+  }
+  .tab-bar a {
+    position: relative; display: grid; justify-items: center; align-content: center; gap: 4px; min-height: 64px;
+    font-size: 0.6875rem; font-weight: 600; color: var(--ink); text-decoration: none;
+  }
+  .tab-bar a[aria-current="page"] { color: var(--red); }
+  .tab-icon { font-size: 1.5rem; stroke-width: 1.75; }
+  .tab-bar .tab-count { position: absolute; top: 6px; left: calc(50% + 8px); }
+  body:has(.tab-bar) { padding-bottom: calc(72px + env(safe-area-inset-bottom)); }
+}
+
+/* ---------- Footer ---------- */
+.site-foot {
+  width: min(100% - 2 * var(--s4), var(--wide)); margin: var(--s8) auto 0; padding: var(--s4) 0 var(--s6);
+  display: flex; flex-wrap: wrap; gap: var(--s2) var(--s5);
+  border-top: 1px solid var(--rule-strong); font-size: var(--step--2); color: var(--ink-3);
+}
+.site-foot a { color: var(--ink-2); }
+.site-foot a:hover { color: var(--red); }
+@media (min-width: 960px) { .site-foot { width: min(100% - 2 * var(--s7), var(--wide)); } }

@@ -151,6 +151,7 @@ export const noteFields = {
   replay: v.boolean(),
   createdAt: v.number(),
   readAt: v.optional(v.number()),
+  dismissed: v.optional(v.boolean()), // "Not my family": hidden, still blocks a resend
 };
 
 // owner absent = a shared nightly line every reader sees.

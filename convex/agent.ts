@@ -67,6 +67,15 @@ export const unfollow = mutation({
   },
 });
 
+export const dismissNote = mutation({
+  args: { key: v.string(), clippingId: v.string() },
+  handler: async (ctx, { key, clippingId }) => {
+    requireKey(key);
+    const rows = await ctx.db.query("notes").withIndex("by_owner", (i) => i.eq("owner", key)).collect();
+    await Promise.all(rows.filter((n) => n.clippingId === clippingId).map((n) => ctx.db.patch(n._id, { dismissed: true })));
+  },
+});
+
 // "Forget everything": follows, notes and this reader's own activity lines.
 export const forgetMe = mutation({
   args: { key: v.string() },
@@ -90,7 +99,7 @@ export const mine = query({
     const shared = await ctx.db.query("activity").withIndex("by_owner", (i) => i.eq("owner", undefined)).order("desc").take(ACTIVITY_SHOWN);
     return {
       follows: follows.map((f) => ({ id: f._id as string, kind: f.kind as string, value: f.value as string })),
-      notes: notes.map(({ owner: _o, ...n }) => n),
+      notes: notes.filter((n) => !n.dismissed).map(({ owner: _o, dismissed: _d, ...n }) => n),
       activity: [...own, ...shared]
         .sort((a, b) => b.createdAt - a.createdAt)
         .slice(0, ACTIVITY_SHOWN)

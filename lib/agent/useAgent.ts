@@ -64,6 +64,7 @@ export function useAgent() {
   const followM = useMutation(api.agent.follow);
   const unfollowM = useMutation(api.agent.unfollow);
   const forgetM = useMutation(api.agent.forgetMe);
+  const dismissM = useMutation(api.agent.dismissNote);
 
   const follow = useCallback(async (kind: "name" | "place", value: string) => {
     if (!key) throw new Error("This browser can't keep follows (storage is off).");
@@ -72,6 +73,11 @@ export function useAgent() {
   const unfollow = useCallback(async (id: string) => {
     if (key) await unfollowM({ key, id: id as never });
   }, [key, unfollowM]);
+
+  // "Not my family": hides the note here; the server keeps it so the agent never resends it.
+  const dismiss = useCallback(async (clippingId: string) => {
+    if (key) await dismissM({ key, clippingId });
+  }, [key, dismissM]);
 
   const save = useCallback((clip: ClipRef) => {
     setSaved((prev) => {
@@ -102,7 +108,7 @@ export function useAgent() {
   }, []);
 
   const unread = (mine?.notes ?? []).filter((n) => n.createdAt > readAt).length;
-  return { ready: key !== null || mine !== undefined, key, mine, follow, unfollow, saved, save, unsave, forgetEverything, unread, markDeskRead };
+  return { ready: key !== null || mine !== undefined, key, mine, follow, unfollow, dismiss, saved, save, unsave, forgetEverything, unread, markDeskRead };
 }
 
 // Stories a reader has already seen (Meanwhile, notes), so the agent never repeats one.

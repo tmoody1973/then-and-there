@@ -1,64 +1,115 @@
+"use client";
+
 import Link from "next/link";
-import { DeskLink } from "../components/DeskLink";
+import { useEffect, useState } from "react";
+import { FindCard, NightLog, WatchList } from "../components/AgentDigest";
+import { PageSketch } from "../components/PageSketch";
+import { useAgent } from "../lib/agent/useAgent";
 import "./home.css";
 
-// A verified story from the Black-press shelf (The Wisconsin Weekly Advocate, Feb 5, 1903).
-const FENWICK =
-  "https://tile.loc.gov/image-services/iiif/service:ndnp:dlc:batch_dlc_ifill_ver01:data:sn84025861:00211664794:1903020501:0169/243,4499,845,640/845,/0/default.jpg";
-const CONTEST =
-  "https://tile.loc.gov/image-services/iiif/service:ndnp:nn:batch_nn_hanyu_ver01:data:sn83030193:00206539525:1889112902:0708/0,0,5308,1800/1200,/0/default.jpg";
+const WAYS = [
+  { href: "/play", slug: "Detective · Case 01", phoneSlug: "Detective", title: "Nellie Bly's race around the world", phoneTitle: "Nellie Bly's race", blurb: "Follow her 1889–90 trail stop by stop, using only what the papers printed.", phoneBlurb: "Case 01 · 1889–90" },
+  { href: "/one-day", slug: "One day, many papers", phoneSlug: "One day, many papers", title: "August 26, 1920", phoneTitle: "August 26, 1920", blurb: "The 19th Amendment is certified. See how papers across the country told it.", phoneBlurb: "Suffrage, coast to coast" },
+  { href: "/quests", slug: "Quest · 4 chapters", phoneSlug: "Quest", title: "The Great Migration through the Black press", phoneTitle: "The Great Migration", blurb: "A guided journey through primary sources, one question at a time.", phoneBlurb: "Through the Black press" },
+  { href: "/forgery", slug: "Spot the forgery", phoneSlug: "Spot the forgery", title: "One thing on this page was never printed", phoneTitle: "One page is lying", blurb: "Find the anachronism planted on a real 1889 page.", phoneBlurb: "Round 1 · an 1889 page" },
+];
 
-// Two doors onto one engine: the daily race, and the Story Finder.
-export default function Home() {
+const monthYear = (date: string) => new Date(`${date}T12:00:00Z`).toLocaleDateString("en-US", { timeZone: "UTC", month: "long", year: "numeric" });
+
+export default function Today() {
+  const agent = useAgent();
+  const [now, setNow] = useState(0);
+  useEffect(() => setNow(Date.now()), []);
+  const note = agent.mine?.notes[0];
+  const follows = agent.mine?.follows ?? [];
+
   return (
-    <main className="home">
-      <p className="dateline">
-        <span>THEN &amp; THERE</span>
-        <span>
-          <Link href="/explore">Explore</Link> · <DeskLink />
-        </span>
-      </p>
-      <h1>The stories in America&apos;s old newspapers, found and checked.</h1>
-      <p className="home-lede">
-        The Library of Congress has put millions of newspaper pages online, and almost nobody reads them: you have to know
-        a name to search for one. Meta&apos;s models cut each page into stories and repair the text, and an independent
-        Editor checks every claim against the scan.
-      </p>
-      <div className="doors">
-        <section className="door" aria-labelledby="door-play">
-          <h2 id="door-play">Race Nellie Bly</h2>
-          <p>
-            In real time, 137 years later: one dispatch a day from the papers 1889 readers held, November 14 to January 25.
-            Make the call before the papers tell you.
-          </p>
-          <figure className="proof door-proof">
-            <img src={CONTEST} alt="Front page banner of The Evening World, November 29, 1889: A free trip to Europe for the nearest guess as to the exact time of Nellie Bly's tour." />
-          </figure>
-          <p className="caption">The Evening World (New York), November 29, 1889, page 1.</p>
-          <p className="door-go">
-            <Link href="/play">Start the race</Link>
-          </p>
+    <main className="today">
+      <div className="today-main">
+        <section className="front-hero" aria-labelledby="fp-h">
+          <PageSketch className="front-hero-sketch" />
+          <div className="front-hero-copy">
+            <p className="slugline">Today&apos;s front page · No. 1</p>
+            <h1 id="fp-h">Where and when was this printed?</h1>
+            <p className="front-hero-lede only-laptop">
+              Everyone in the country gets the same real page today. Reveal it one piece at a time: an ad, the weather, the
+              prices, a photo, the headline, the masthead. The fewer clues you need, the higher you score.
+            </p>
+            <p className="front-hero-lede only-phone">Same real page for everyone. Six clues, one at a time.</p>
+            <p className="front-hero-meta only-laptop">
+              <span>6 clues</span>
+              <span>1 guess</span>
+              <span>New page at midnight</span>
+            </p>
+            <Link className="file-button front-hero-go" href="/front-page">Play today&apos;s page</Link>
+          </div>
         </section>
-        <section className="door" aria-labelledby="door-explore">
-          <h2 id="door-explore">Find the stories nobody knew to search for</h2>
-          <p>
-            Search the pages we&apos;ve processed by name, town or date, or start from shelves of verified stories: the
-            Black press of Milwaukee and Detroit, German Milwaukee, the race in the papers. Every story opens on its
-            scan, with a citation.
-          </p>
-          <figure className="proof door-proof door-clip">
-            <img src={FENWICK} alt="Rev. L. M. Fenwick, A. M., M. D., E. M., Pastor of St. Mark's A. M. E. Church, Milwaukee. Rev. Louis Madison Fenwick, M. D., the subject of the accompanying sketch, was born in Gentry county, Missouri, August 29, 1858." />
-          </figure>
-          <p className="caption">The Wisconsin Weekly Advocate (Milwaukee), February 5, 1903, page 1.</p>
-          <p>Follow a name or a place, and an agent checks each night&apos;s newly added pages for it.</p>
-          <p className="door-go">
-            <Link href="/explore">Open the Story Finder</Link>
-          </p>
+
+        <section className="agent-flash only-phone" aria-labelledby="flash-h">
+          {note ? (
+            <>
+              <p className="slugline" id="flash-h">Your agent found something</p>
+              <p className="agent-flash-text">
+                A name you&apos;re watching, {note.matched}, appears in {note.clip.paper} from {monthYear(note.clip.date)}.
+                {note.replay ? " (A replay, to show the agent at work.)" : ""}
+              </p>
+              <Link href={`/desk#find-${note.clippingId}`}>See the clipping →</Link>
+            </>
+          ) : (
+            <>
+              <p className="slugline" id="flash-h">Your agent</p>
+              <p className="agent-flash-text">Give it a family name or a town. Each night it checks the pages the Library of Congress just added.</p>
+              <Link href="/desk#add">Set it up →</Link>
+            </>
+          )}
+        </section>
+
+        <section className="ways" aria-labelledby="ways-h">
+          <h2 id="ways-h" className="rule-head">
+            <span className="only-laptop">Ways to play and learn</span>
+            <span className="only-phone">Ways to play</span>
+          </h2>
+          <ul className="ways-grid">
+            {WAYS.map((w) => (
+              <li key={w.href}>
+                <Link className="way" href={w.href}>
+                  <span className="slugline">
+                    <span className="only-laptop">{w.slug}</span>
+                    <span className="only-phone">{w.phoneSlug}</span>
+                  </span>
+                  <span className="way-title">
+                    <span className="only-laptop">{w.title}</span>
+                    <span className="only-phone">{w.phoneTitle}</span>
+                  </span>
+                  <span className="way-blurb">
+                    <span className="only-laptop">{w.blurb}</span>
+                    <span className="only-phone">{w.phoneBlurb}</span>
+                  </span>
+                </Link>
+              </li>
+            ))}
+          </ul>
         </section>
       </div>
-      <p className="caption home-foot">
-        <Link href="/how">How a page becomes a story</Link> · A project by Tarik Moody.
-      </p>
+
+      <aside className="today-agent only-laptop" aria-labelledby="agent-h">
+        <p className="slugline">My Agent</p>
+        <h2 id="agent-h">Digging while you&apos;re away</h2>
+        <p className="agent-sub">Quiet by default. It only writes when it finds something real.</p>
+        {agent.mine === undefined ? (
+          <p className="agent-empty">Opening your agent…</p>
+        ) : note ? (
+          <FindCard note={note} href={`/desk#find-${note.clippingId}`} onDismiss={() => agent.dismiss(note.clippingId)} />
+        ) : (
+          <p className="agent-empty">Nothing found yet. A note appears here only when the Editor confirms a find against the scan.</p>
+        )}
+        <p className="agent-label"><span>Watching for you</span></p>
+        <WatchList follows={follows} addHref="/desk#add" />
+        <NightLog activity={agent.mine?.activity ?? []} now={now} />
+        <p className="agent-more">
+          <Link href="/desk">Read and edit what it remembers →</Link>
+        </p>
+      </aside>
     </main>
   );
 }

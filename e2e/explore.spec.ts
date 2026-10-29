@@ -27,10 +27,10 @@ test("following a place from a story lists it on Your Desk, and Forget everythin
   await follow.click();
   await expect(page.locator(".pulled")).toContainText(`Following ${label}`);
   await page.goto("/desk");
-  await expect(page.locator(".follow-list")).toContainText(label);
+  await expect(page.locator(".watch-list")).toContainText(label);
   await page.getByRole("button", { name: "Forget everything" }).click();
   await page.getByRole("button", { name: "Delete everything" }).click();
-  await expect(page.locator(".follow-list")).toHaveCount(0);
+  await expect(page.locator(".watch-list")).not.toContainText(label);
 });
 
 test("a saved story appears on Your Desk and can be removed", async ({ page }) => {
