@@ -5,6 +5,7 @@
 import Link from "next/link";
 import { useState } from "react";
 import { iiifCropUrl, pageUrl } from "../iiif";
+import { PageNote } from "../PageNote";
 import { ScanCrop } from "../ScanCrop";
 import { useImageFailed } from "../useImageFailed";
 import { DAYS, dayLabel, weekday } from "../../lib/oneday/days";
@@ -75,6 +76,8 @@ export function OneDayView({ day }: { day: DayData }) {
                   <span className="od-place">{p.city}, {p.state} · {shortDate(p.date)}{p.language ? ` · in ${p.language}` : ""}</span>
                 </figcaption>
                 <a href={pageUrl(p.pageId)} title={p.citationMla}><Sheet p={p} onlyOwn={onlyOwn} /></a>
+                {/* Under the sheet, so the three pages still start level for comparison. */}
+                <PageNote pageId={p.pageId} />
                 <p className="od-only only-laptop">
                   {own.length ? `Only here: “${own[0].excerpt.slice(0, 90).trim()}…”` : "Nothing on the story that another paper didn’t also run."}
                 </p>

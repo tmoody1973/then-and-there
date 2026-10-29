@@ -11,6 +11,7 @@ import type { Region } from "../../lib/frontpage/rules";
 import { shareText } from "../../lib/frontpage/share";
 import { titleCase } from "../../lib/game/format";
 import type { BoardClue } from "./Board";
+import { PageNote } from "../PageNote";
 
 const longDate = (d: string) => new Date(`${d}T12:00:00Z`).toLocaleDateString("en-US", { timeZone: "UTC", weekday: "long", month: "long", day: "numeric", year: "numeric" });
 const pct = (n: number) => `${(n * 100).toFixed(2)}%`;
@@ -56,6 +57,7 @@ export function Result({ no, count, clues, revealed, guess }: { no: number; coun
 
       <div className="fp-result-grid">
         <figure className="fp-page">
+          <PageNote pageId={a.pageId} />
           {imgFailed ? (
             <p className="scan-fallback">The Library&apos;s image server didn&apos;t answer. <a href={locPage(a.pageId)}>Open this page at loc.gov</a>.</p>
           ) : (

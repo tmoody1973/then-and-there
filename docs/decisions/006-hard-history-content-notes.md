@@ -16,3 +16,7 @@
 **How we'll know if this was right.** In a test with a teacher, flagged material is neither a surprise nor buried, and the context notes pass a historian's spot check.
 
 **What actually happened.**
+
+## Update, 2026-10-29: whole pages
+
+**Decision (Tarik):** a whole page shown as a scan (the Front Page result, the One Day sheets) gets the same calm note, reworded for a page ("Something on this page reflects…"), when any clipping on it is flagged. The alternative of never showing such pages would have emptied the Front Page rotation: all 7 current pages and 6 of 9 One Day sheets carry at least one flagged clipping. **Cost:** the note appears on most whole pages, which may make it read as boilerplate.

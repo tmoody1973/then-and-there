@@ -175,3 +175,6 @@ button:disabled { cursor: default; }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
 }
+
+/* The hard-history note (decision 006): calm, fixed copy, never hidden, never decorated. */
+.content-note { margin: var(--s2) 0; padding: var(--s2) 0; border-block: 1px solid var(--rule); font-size: var(--step--1); font-style: italic; color: var(--ink-2); }

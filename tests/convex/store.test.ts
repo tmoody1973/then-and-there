@@ -51,6 +51,18 @@ describe("store", () => {
     expect(rows[0].status).toBe("processed");
   });
 
+  test("pageFlagged says whether any clipping on a page carries a content note", async () => {
+    const t = convexTest(schema, modules);
+    await t.mutation(api.clippings.replaceForPage, { secret: SECRET, pageId: PAGE.pageId, clippings: [clip(0), clip(1)] });
+    expect(await t.query(api.clippings.pageFlagged, { pageId: PAGE.pageId })).toBe(false);
+    await t.run(async (ctx) => {
+      const [first] = await ctx.db.query("clippings").collect();
+      await ctx.db.patch(first._id, { hardHistory: true });
+    });
+    expect(await t.query(api.clippings.pageFlagged, { pageId: PAGE.pageId })).toBe(true);
+    expect(await t.query(api.clippings.pageFlagged, { pageId: "nope" })).toBe(false);
+  });
+
   test("replaceForPage replaces", async () => {
     const t = convexTest(schema, modules);
     await t.mutation(api.clippings.replaceForPage, { secret: SECRET, pageId: PAGE.pageId, clippings: [clip(0), clip(1), clip(2)] });

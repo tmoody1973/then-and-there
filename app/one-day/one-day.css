@@ -74,3 +74,4 @@
   .od-columns { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 }
 @media (prefers-reduced-motion: reduce) { .od-mark { transition: none; } }
+.od-paper .content-note { margin: var(--s2) 0 0; font-size: var(--step--2); }
