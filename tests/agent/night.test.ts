@@ -1,7 +1,7 @@
 import { describe, expect, test } from "vitest";
 import { activityLine } from "../../lib/agent/night";
 
-const base = { batches: 2, pages: 7907, follows: 3, candidates: 1, confirmed: 1, notes: 1, replay: false };
+const base = { batches: 2, pages: 7907, follows: 3, candidates: 1, capped: 0, confirmed: 1, notes: 1, replay: false };
 
 describe("activityLine", () => {
   test('activityLine pluralizes, and prefixes "Replay: "', () => {

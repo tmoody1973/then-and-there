@@ -19,7 +19,7 @@ import { withRetry } from "../../lib/util/retry";
 import { fetchPage } from "../fetch";
 import { makeProcessDeps, processPage } from "../process";
 import { createBulkLimiter, downloadBatch, readBatchPages, readPageAlto } from "./batches";
-import { runNight, type FoundClip } from "./night";
+import { runNight, safeErrorLine, type FoundClip } from "./night";
 
 const BATCH_LIST = "https://chroniclingamerica.loc.gov/data/ocr/ocr.json";
 const DAY_MS = 86_400_000;
@@ -47,6 +47,13 @@ const minusDays = (d: string, n: number) => new Date(Date.parse(`${d}T00:00:00Z`
 const limiter = createBulkLimiter();
 const work = mkdtempSync(join(tmpdir(), "tt-night-"));
 
+type PageRow = { pageId: string; title: string; date: string; iiifBase: string; citeThis: { mla: string }; status: string };
+const toFound = (page: PageRow, rows: ClipRow[]): FoundClip[] =>
+  rows.map((c) => ({
+    clippingId: c._id, text: c.cleanedText ?? c.rawText, type: c.type, people: c.people, humanStoryScore: c.humanStoryScore, hardHistory: c.hardHistory,
+    box: c.box, iiifBase: page.iiifBase, pageId: page.pageId, paper: paperFromCite(page.citeThis.mla, page.title), date: page.date, citationMla: plainCitation(page.citeThis.mla),
+  }));
+
 type ClipRow = { _id: string; cleanedText?: string; rawText: string; type?: string; people?: string[]; humanStoryScore?: number; hardHistory?: boolean; box: FoundClip["box"] };
 
 try {
@@ -73,10 +80,12 @@ try {
         const res = await processPage(page, makeProcessDeps(page, { loc, meta, convex, onUsage, cacheDir }));
         if (res.error) throw new Error(res.error);
         const rows = (await withRetry(() => convex.query(anyApi.clippings.byPage, { pageId }))) as ClipRow[];
-        return rows.map((c) => ({
-          clippingId: c._id, text: c.cleanedText ?? c.rawText, type: c.type, people: c.people, humanStoryScore: c.humanStoryScore, hardHistory: c.hardHistory,
-          box: c.box, iiifBase: page.iiifBase, pageId, paper: paperFromCite(page.citeThis.mla, page.title), date: page.date, citationMla: plainCitation(page.citeThis.mla),
-        }));
+        return toFound({ ...page, status: "processed" }, rows);
+      },
+      existing: async (pageId) => {
+        const page = (await withRetry(() => convex.query(anyApi.pages.byPageId, { pageId }))) as PageRow | null;
+        if (page?.status !== "processed") return null;
+        return toFound(page, (await withRetry(() => convex.query(anyApi.clippings.byPage, { pageId }))) as ClipRow[]);
       },
       verifyFind: ({ clippingId, text, claim, cropUrl }) =>
         verifyClaim(
@@ -84,7 +93,15 @@ try {
           { complete: makeComplete(meta, `find-${clippingId}`, onUsage), loadImage, log: async (run) => void (await m(anyApi.editorRuns.log, { run })) },
         ),
       store: {
-        follows: () => q<Follow[]>(anyApi.agent.allFollows),
+        follows: async () => {
+          const all: Follow[] = [];
+          for (let cursor: string | null = null; ; ) {
+            const res: { page: Follow[]; isDone: boolean; continueCursor: string } = await q(anyApi.agent.allFollows, { cursor });
+            all.push(...res.page);
+            if (res.isDone) return all;
+            cursor = res.continueCursor;
+          }
+        },
         publishedDays: async () => ((await withRetry(() => convex.query(anyApi.gameDays.listPublished, {}))) as Array<{ day: number }>).map((d) => d.day),
         meanwhileCandidates: (date) => loadClips(convex, minusDays(date, MEANWHILE_DAYS_BACK), date),
         replaceMeanwhile: async (date, rows) => void (await m(anyApi.meanwhile.replaceForDate, { date1889: date, rows: rows.map((r) => ({ ...r, date1889: date })) })),
@@ -99,6 +116,9 @@ try {
     { today: new Date().toLocaleDateString("en-CA", { timeZone: "America/New_York" }), replay, budget },
   );
   process.stdout.write(`notes sent: ${summary.notes} | model spend: $${spent.toFixed(4)} of $${budget}\n`);
+} catch (e) {
+  process.stdout.write(`${safeErrorLine(e)}\n`);
+  process.exitCode = 1;
 } finally {
   rmSync(work, { recursive: true, force: true });
 }

@@ -40,6 +40,8 @@ export type NightDeps = {
   download(e: BatchEntry): Promise<string>;
   pages(archive: string): AsyncIterable<BatchPage>;
   placeOf(lccn: string): Promise<{ state: string; city: string }>;
+  // A page processed before keeps its clippings (and their ids, badges and shelf places).
+  existing(pageId: string): Promise<FoundClip[] | null>;
   processPage(page: CandidatePage): Promise<FoundClip[]>;
   verifyFind(input: { clippingId: string; text: string; claim: string; cropUrl: string }): Promise<{ pass: boolean; reason: string }>;
   store: {
@@ -55,7 +57,11 @@ export type NightDeps = {
   print(line: string): void;
   spent(): number;
 };
-export type NightSummary = { batches: number; pages: number; follows: number; candidates: number; confirmed: number; notes: number; skipped: string[] };
+export type NightSummary = { batches: number; pages: number; follows: number; candidates: number; capped: number; confirmed: number; notes: number; skipped: string[] };
+
+// The Actions log is public: an uncaught error is reported by type only, never its text, which can
+// echo stored values (a reader's key, a matched name).
+export const safeErrorLine = (e: unknown) => `night failed: ${e instanceof Error ? e.name : "unknown error"} (details withheld from the public log)`;
 
 const firstLine = (e: unknown) => (e instanceof Error ? e.message : String(e)).split("\n")[0].slice(0, 160);
 
@@ -65,7 +71,7 @@ function findIn(clips: FoundClip[], hit: Hit, follow: Follow): { clip: FoundClip
   if (follow.kind === "name") {
     for (const clip of usable) {
       const matched = matchName(clip.text, follow.value);
-      if (matched) return { clip, matched, claim: `This clipping mentions ${matched}` };
+      if (matched) return { clip, matched, claim: `This clipping names a person called ${matched}` };
     }
     return null;
   }
@@ -79,7 +85,7 @@ export async function runNight(deps: NightDeps, opts: { today: string; replay?: 
   const replay = Boolean(opts.replay);
   const runId = `${opts.today}${replay ? `-replay-${opts.replay}` : ""}`;
   const now = Date.now();
-  const s: NightSummary = { batches: 0, pages: 0, follows: 0, candidates: 0, confirmed: 0, notes: 0, skipped: [] };
+  const s: NightSummary = { batches: 0, pages: 0, follows: 0, candidates: 0, capped: 0, confirmed: 0, notes: 0, skipped: [] };
   const lines: Line[] = [];
 
   // 1. Tomorrow's "meanwhile, back home", precomputed per place, never per reader.
@@ -139,8 +145,11 @@ export async function runNight(deps: NightDeps, opts: { today: string; replay?: 
   s.batches = scanned.length;
 
   // 4–6. Process candidate pages, have the Editor confirm, one note per reader per night.
-  const { pages: candidates } = pickCandidates(hits);
+  const { pages: candidates, capped } = pickCandidates(hits);
   s.candidates = candidates.length;
+  s.capped = capped;
+  // An infrastructure stop leaves finds unjudged: keep tonight's batches unseen so tomorrow retries.
+  let hold = false;
   const noted = new Set<string>();
   let stop = false;
   for (const cand of candidates) {
@@ -149,15 +158,17 @@ export async function runNight(deps: NightDeps, opts: { today: string; replay?: 
     if (!waiting.length) continue;
     if (deps.spent() >= opts.budget) {
       s.skipped.push("budget");
+      hold = true;
       break;
     }
     let clips: FoundClip[];
     try {
-      clips = await deps.processPage(pageInfo.get(cand.pageId)!);
+      clips = (await deps.existing(cand.pageId)) ?? (await deps.processPage(pageInfo.get(cand.pageId)!));
     } catch (e) {
       if (NO_CREDITS.test(firstLine(e))) {
         s.skipped.push("no credits");
         stop = true;
+        hold = true;
       } else s.skipped.push(`page: ${firstLine(e)}`);
       continue;
     }
@@ -166,16 +177,18 @@ export async function runNight(deps: NightDeps, opts: { today: string; replay?: 
       const follow = followById.get(hit.followId);
       const find = follow ? findIn(clips, hit, follow) : null;
       if (!find) continue;
-      let verdict: { pass: boolean };
+      let verdict: { pass: boolean; reason: string };
       try {
         verdict = await deps.verifyFind({ clippingId: find.clip.clippingId, text: find.clip.text, claim: find.claim, cropUrl: cropUrl(find.clip.iiifBase, find.clip.box) });
       } catch (e) {
-        if (NO_CREDITS.test(firstLine(e))) {
-          s.skipped.push("no credits");
-          stop = true;
-          break;
-        }
-        continue;
+        verdict = { pass: false, reason: NO_CREDITS.test(firstLine(e)) ? "no credits" : "editor-unavailable" };
+      }
+      // The Editor fails closed: an unreachable Editor is a skip, not a rejection.
+      if (verdict.reason === "editor-unavailable" || verdict.reason === "no credits") {
+        s.skipped.push(verdict.reason === "no credits" ? "no credits" : "editor unavailable");
+        stop = true;
+        hold = true;
+        break;
       }
       if (!verdict.pass) continue;
       s.confirmed += 1;
@@ -196,10 +209,10 @@ export async function runNight(deps: NightDeps, opts: { today: string; replay?: 
   }
 
   // 7–8. The log, then remember which batches are done (failed ones are retried tomorrow).
-  const shared = activityLine({ batches: s.batches, pages: s.pages, follows: s.follows, candidates: s.candidates, confirmed: s.confirmed, notes: s.notes, replay });
+  const shared = activityLine({ batches: s.batches, pages: s.pages, follows: s.follows, candidates: s.candidates, capped: s.capped, confirmed: s.confirmed, notes: s.notes, replay });
   await deps.store.log([{ runId, line: shared, replay, createdAt: now }, ...lines]);
   deps.print(shared);
   for (const why of s.skipped) deps.print(`skipped: ${why}`);
-  if (!replay) await deps.store.setState(STATE_KEY, JSON.stringify([...prev, ...scanned]));
+  if (!replay && !hold) await deps.store.setState(STATE_KEY, JSON.stringify([...prev, ...scanned]));
   return s;
 }

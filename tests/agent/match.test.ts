@@ -22,6 +22,13 @@ describe("matchName", () => {
     expect(matchName("Miss Bley arrived", "Bly")).toBeNull();
   });
 
+  test("a near-miss only counts when it is capitalized like a name (review #3: Turner ≠ turned)", () => {
+    expect(matchName("he turned around and walked home", "Turner")).toBeNull();
+    expect(matchName("the homes of the poor", "Holmes")).toBeNull();
+    expect(matchName("Mr. Turnor spoke at the hall", "Turner")).toBe("Turnor");
+    expect(matchName("Mr. Turner spoke", "Turner")).toBe("Turner");
+  });
+
   test('matchName does not match inside a longer word ("Blythe" for "Bly")', () => {
     expect(matchName("Mr. Blythe of Chicago", "Bly")).toBeNull();
     expect(matchName("Nellie Bly, the World's reporter", "Bly")).toBe("Bly");

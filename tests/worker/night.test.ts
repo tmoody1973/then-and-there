@@ -1,6 +1,6 @@
 import { describe, expect, test } from "vitest";
 import type { BatchEntry, Follow } from "../../lib/agent/types";
-import { MAX_BATCHES_PER_NIGHT, runNight, type FoundClip, type NightDeps } from "../../worker/agent/night";
+import { MAX_BATCHES_PER_NIGHT, runNight, safeErrorLine, type FoundClip, type NightDeps } from "../../worker/agent/night";
 
 const KEY = "aaaabbbbccccddddaaaabbbbccccdddd";
 const KEY2 = "11112222333344441111222233334444";
@@ -11,10 +11,10 @@ const clip = (id: string, text = PAGE_TEXT): FoundClip => ({
   box: { x: 0, y: 0, w: 10, h: 10 }, iiifBase: "https://iiif/x", pageId: "p1", paper: "The Wisconsin Weekly Advocate", date: "1898-12-22", citationMla: "mla",
 });
 
-type Recorded = { printed: string[]; editor: Array<{ clippingId: string; text: string; claim: string }>; notes: Array<{ owner: string; clippingId: string; replay: boolean }>; lines: Array<{ owner?: string; line: string; replay: boolean }>; state: Record<string, string> };
+type Recorded = { processed: number; printed: string[]; editor: Array<{ clippingId: string; text: string; claim: string }>; notes: Array<{ owner: string; clippingId: string; replay: boolean }>; lines: Array<{ owner?: string; line: string; replay: boolean }>; state: Record<string, string> };
 
-function fake(o: Partial<{ follows: Follow[]; prev: string[] | null; list: BatchEntry[]; failDownload: string[]; clips: FoundClip[]; editorPass: boolean; noCredits: boolean }> = {}) {
-  const rec: Recorded = { printed: [], editor: [], notes: [], lines: [], state: {} };
+function fake(o: Partial<{ follows: Follow[]; prev: string[] | null; list: BatchEntry[]; failDownload: string[]; clips: FoundClip[]; editorPass: boolean; editorReason: string; noCredits: boolean; pageCount: number; existing: FoundClip[] }> = {}) {
+  const rec: Recorded = { processed: 0, printed: [], editor: [], notes: [], lines: [], state: {} };
   if (o.prev !== null) rec.state.batches = JSON.stringify(o.prev ?? ["old"]);
   const deps: NightDeps = {
     listBatches: async () => o.list ?? [batch("old"), batch("new1")],
@@ -23,17 +23,23 @@ function fake(o: Partial<{ follows: Follow[]; prev: string[] | null; list: Batch
       return `/tmp/${e.batch}.tar.bz2`;
     },
     pages: async function* (archive) {
+      if (o.pageCount) {
+        for (let i = 0; i < o.pageCount; i += 1) yield { pageId: `${archive}#n${i}`, lccn: "sn84025861", date: "1898-12-22", text: PAGE_TEXT, xmlMember: `${i}/ocr.xml` };
+        return;
+      }
       yield { pageId: `${archive}#p1`, lccn: "sn84025861", date: "1898-12-22", text: PAGE_TEXT, xmlMember: "a/ocr.xml" };
       yield { pageId: `${archive}#p2`, lccn: "sn84025861", date: "1898-12-23", text: "Nothing of note.", xmlMember: "b/ocr.xml" };
     },
+    existing: async () => o.existing ?? null,
     placeOf: async () => ({ state: "wisconsin", city: "milwaukee" }),
     processPage: async () => {
+      rec.processed += 1;
       if (o.noCredits) throw new Error("402 Payment Required: insufficient credits");
       return o.clips ?? [clip("c1"), clip("c2", "Mr. Ellmore's barber shop is the finest.")];
     },
     verifyFind: async (input) => {
       rec.editor.push(input);
-      return { pass: o.editorPass ?? true, reason: "quoted" };
+      return { pass: o.editorReason ? false : (o.editorPass ?? true), reason: o.editorReason ?? "quoted" };
     },
     store: {
       follows: async () => o.follows ?? [{ id: "f1", owner: KEY, kind: "name", value: "Ellmore" }],
@@ -98,7 +104,7 @@ describe("runNight", () => {
       expect(JSON.stringify(call)).not.toContain(KEY);
       expect(JSON.stringify(call)).not.toContain(KEY2);
       // The only follow-derived text the Editor sees is a span printed in that very clipping.
-      const MENTION = "This clipping mentions ";
+      const MENTION = "This clipping names a person called ";
       if (call.claim.startsWith(MENTION)) expect(call.text).toContain(call.claim.slice(MENTION.length));
     }
   });
@@ -143,4 +149,41 @@ describe("runNight", () => {
     expect(downloads).toBe(0);
     expect(JSON.parse(rec.state.batches)).toEqual(["old", "new1"]);
   });
+
+  test("candidates left out by the cap are logged as a count (review #1)", async () => {
+    const { deps, rec } = fake({ pageCount: 12, editorPass: false });
+    const s = await runNight(deps, OPTS);
+    expect(s.capped).toBe(7);
+    expect(rec.lines.find((l) => !l.owner)!.line).toContain("5 candidates (7 more set aside)");
+  });
+
+  test("a page already processed is reused, not re-processed, so its clippings keep their ids (review #2)", async () => {
+    const { deps, rec } = fake({ existing: [clip("c1")] });
+    await runNight(deps, OPTS);
+    expect(rec.processed).toBe(0);
+    expect(rec.notes.map((n) => n.clippingId)).toEqual(["c1"]);
+  });
+
+  test("a name find asks the Editor whether a person is named, not just whether the word is printed (review #3)", async () => {
+    const { deps, rec } = fake();
+    await runNight(deps, OPTS);
+    expect(rec.editor[0].claim).toBe("This clipping names a person called Ellmore");
+  });
+
+  test("an unreachable Editor is logged as skipped and the batch is retried tomorrow (review #5, #6)", async () => {
+    const { deps, rec } = fake({ editorReason: "editor-unavailable" });
+    const s = await runNight(deps, OPTS);
+    expect(s.skipped).toContain("editor unavailable");
+    expect(rec.printed.join("\n")).toContain("skipped: editor unavailable");
+    expect(JSON.parse(rec.state.batches)).toEqual(["old"]);
+  });
+
+  test("an error line for the public log never carries the error's text (review #8)", () => {
+    const e = new Error("ArgumentValidationError: Value does not match validator. Value: {owner: 'aaaabbbb', matched: 'Zyxwvut'}");
+    const line = safeErrorLine(e);
+    expect(line).not.toContain("aaaabbbb");
+    expect(line).not.toContain("Zyxwvut");
+    expect(line).toContain("Error");
+  });
 });
+

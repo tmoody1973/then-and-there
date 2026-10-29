@@ -1,5 +1,5 @@
 import { mutationGeneric as mutation, queryGeneric as query } from "convex/server";
-import type { GenericDatabaseReader } from "convex/server";
+import type { GenericDatabaseReader, GenericDatabaseWriter } from "convex/server";
 import { v } from "convex/values";
 import { KEY_PATTERN } from "../lib/agent/key";
 import { normalizePlace } from "../lib/agent/places";
@@ -10,6 +10,11 @@ const MAX_FOLLOWS = 20;
 const MIN_LEN = 2;
 const MAX_LEN = 60;
 const ACTIVITY_SHOWN = 50;
+// Anyone can mint a key, so follows are capped across all readers: this bounds the nightly job's
+// read and its matching time (review #4). The count lives in agentState and moves with each change.
+export const MAX_TOTAL_FOLLOWS = 1000;
+const COUNT_KEY = "follows:count";
+const FOLLOWS_PER_PAGE = 500;
 
 // The browser key is the reader's credential; a malformed one is refused before anything is read.
 function requireKey(key: string): void {
@@ -17,6 +22,19 @@ function requireKey(key: string): void {
 }
 
 type Db = GenericDatabaseReader<any>;
+type DbW = GenericDatabaseWriter<any>;
+async function adjustCount(db: DbW, delta: number): Promise<number> {
+  const row = await db.query("agentState").withIndex("by_key", (i) => i.eq("key", COUNT_KEY)).unique();
+  const next = Math.max(0, Number(row?.value ?? 0) + delta);
+  if (row) await db.patch(row._id, { value: String(next) });
+  else await db.insert("agentState", { key: COUNT_KEY, value: String(next) });
+  return next;
+}
+async function totalFollows(db: Db): Promise<number> {
+  const row = await db.query("agentState").withIndex("by_key", (i) => i.eq("key", COUNT_KEY)).unique();
+  return Number(row?.value ?? 0);
+}
+
 const followsOf = (db: Db, owner: string) => db.query("follows").withIndex("by_owner", (i) => i.eq("owner", owner)).collect();
 
 export const follow = mutation({
@@ -31,6 +49,8 @@ export const follow = mutation({
     const same = mine.find((f) => f.kind === kind && f.value.toLowerCase() === stored.toLowerCase());
     if (same) return same._id;
     if (mine.length >= MAX_FOLLOWS) throw new Error(`you can follow up to ${MAX_FOLLOWS} names and places`);
+    if ((await totalFollows(ctx.db)) >= MAX_TOTAL_FOLLOWS) throw new Error("follows are full right now; please try again later");
+    await adjustCount(ctx.db, 1);
     return ctx.db.insert("follows", { owner: key, kind, value: stored, createdAt: Date.now() });
   },
 });
@@ -40,7 +60,10 @@ export const unfollow = mutation({
   handler: async (ctx, { key, id }) => {
     requireKey(key);
     const row = await ctx.db.get(id);
-    if (row && row.owner === key) await ctx.db.delete(id);
+    if (row && row.owner === key) {
+      await ctx.db.delete(id);
+      await adjustCount(ctx.db, -1);
+    }
   },
 });
 
@@ -52,6 +75,7 @@ export const forgetMe = mutation({
     for (const table of ["follows", "notes", "activity"] as const) {
       const rows = await ctx.db.query(table).withIndex("by_owner", (i) => i.eq("owner", key)).collect();
       await Promise.all(rows.map((r) => ctx.db.delete(r._id)));
+      if (table === "follows" && rows.length) await adjustCount(ctx.db, -rows.length);
     }
   },
 });
@@ -77,12 +101,17 @@ export const mine = query({
 
 // ---- Nightly job only (shared secret) ----
 
+// Paged, so the nightly read never meets Convex's per-query limit (review #4).
 export const allFollows = query({
-  args: { secret: v.string() },
-  handler: async (ctx, { secret }) => {
+  args: { secret: v.string(), cursor: v.union(v.string(), v.null()) },
+  handler: async (ctx, { secret, cursor }) => {
     requireSecret(secret);
-    const rows = await ctx.db.query("follows").collect();
-    return rows.map((f) => ({ id: f._id as string, owner: f.owner as string, kind: f.kind as "name" | "place", value: f.value as string }));
+    const res = await ctx.db.query("follows").paginate({ cursor, numItems: FOLLOWS_PER_PAGE });
+    return {
+      page: res.page.map((f) => ({ id: f._id as string, owner: f.owner as string, kind: f.kind as "name" | "place", value: f.value as string })),
+      isDone: res.isDone,
+      continueCursor: res.continueCursor,
+    };
   },
 });
 

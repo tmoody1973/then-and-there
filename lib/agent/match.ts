@@ -35,7 +35,10 @@ export function matchName(text: string, name: string): string | null {
       for (let j = i; j < words.length; j += 1) {
         acc += words[j].key;
         if (acc.length > target.length + (tolerant ? 1 : 0)) break;
-        if (acc === target || (tolerant && withinOneEdit(acc, target))) {
+        // A near miss counts only when printed with a capital, like a name ("Turnor"), never a
+        // common word ("turned" for Turner).
+        const nearName = tolerant && /^\p{Lu}/u.test(joined.slice(words[i].start, words[i].start + 1)) && withinOneEdit(acc, target);
+        if (acc === target || nearName) {
           return joined.slice(words[i].start, words[j].end).replace(/\s+/g, " ");
         }
       }
