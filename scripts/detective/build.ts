@@ -11,7 +11,7 @@ import { iiifCropUrl } from "../../components/iiif";
 import { clueEligible, leaksNext, STOPS } from "../../lib/detective/case";
 import { verifyClaim, verifyHint } from "../../lib/editor/verify";
 import { passage, ref } from "../../lib/game/draftDay";
-import { framed } from "../../lib/game/framed";
+import { framed } from "../game/framed";
 import { convexUrl, loadClips, writeSecret } from "../../lib/game/load";
 import { createLocClient } from "../../lib/loc/client";
 import { makeComplete, metaClient } from "../../lib/meta/client";

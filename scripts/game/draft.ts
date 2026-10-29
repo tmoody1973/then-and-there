@@ -6,7 +6,7 @@ import { anyApi } from "convex/server";
 import { verifyClaim, verifyHint, verifyRelevant, verifySolvable } from "../../lib/editor/verify";
 import { draftDay, MENTION, ref, type Pick } from "../../lib/game/draftDay";
 import { pickMorgue } from "../../lib/game/pickMorgue";
-import { framed } from "../../lib/game/framed";
+import { framed } from "./framed";
 import { convexUrl, loadClips, writeSecret } from "../../lib/game/load";
 import { createLocClient } from "../../lib/loc/client";
 import { makeComplete, metaClient } from "../../lib/meta/client";

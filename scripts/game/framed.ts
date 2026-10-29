@@ -1,8 +1,8 @@
 // Node-only: frames a clipping's evidence lines from its page's cached OCR file.
 import { readFileSync } from "node:fs";
-import { altoScale, parseAlto } from "../alto/parse";
+import { altoScale, parseAlto } from "../../lib/alto/parse";
 import { safeId } from "../../worker/fetch";
-import { focusBox } from "./focus";
+import { focusBox } from "../../lib/game/focus";
 
 export function framed<T extends { pageId: string; box: { x: number; y: number; w: number; h: number } }>(c: T, mention: RegExp): T {
   const dir = `cache/pages/${safeId(c.pageId)}`;
