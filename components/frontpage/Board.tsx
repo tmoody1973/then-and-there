@@ -7,7 +7,7 @@ import { useId } from "react";
 
 export type BoardClue = { kind: string; label: string; box: { x: number; y: number; w: number; h: number }; url: string };
 const pct = (n: number) => `${(n * 100).toFixed(2)}%`;
-const SHORT: Record<string, string> = { ad: "Ad", weather: "Weather", prices: "Prices", item: "Local item", notice: "Notice", headline: "Headline", photo: "Picture", masthead: "Masthead" };
+const SHORT: Record<string, string> = { ad: "Ad", weather: "Weather", prices: "Prices", item: "News item", notice: "Notice", headline: "Headline", photo: "Picture", masthead: "Masthead" };
 export const shortLabel = (kind: string) => SHORT[kind] ?? kind;
 
 export function Board({ clues, aspect, revealed, selected, onSelect }: { clues: BoardClue[]; aspect: number; revealed: number; selected: number; onSelect: (n: number) => void }) {

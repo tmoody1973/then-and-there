@@ -20,8 +20,9 @@ export function answer(s: CaseState, n: number, correct: boolean, today: string)
   return { ...s, results: { ...s.results, [n]: { correct, hintsUsed: s.asked[n] ? 1 : 0, answeredOn: today } } };
 }
 
-// total = how many stops the case has; the last one is the finish.
-export const advance = (s: CaseState, total: number): CaseState => (s.results[s.at] && s.at < total - 1 ? { ...s, at: s.at + 1 } : s);
+// `at` counts built stops; answers are keyed by route number `n` (stops can be missing from the
+// case), so the check takes the current stop's n. total = built stops; the last is the finish.
+export const advance = (s: CaseState, total: number, n: number): CaseState => (s.results[n] && s.at < total - 1 ? { ...s, at: s.at + 1 } : s);
 
 export function parseCase(raw: string | null): CaseState {
   try {

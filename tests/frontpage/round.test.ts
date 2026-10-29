@@ -1,5 +1,5 @@
 import { describe, expect, test } from "vitest";
-import { clueLabel, mastheadBox, orderClues, validatePicks, type RoundClip } from "../../lib/frontpage/round";
+import { bandClear, clueLabel, mastheadBox, orderClues, validatePicks, type RoundClip } from "../../lib/frontpage/round";
 
 const W = 1000, H = 1400;
 const clip = (i: number, segLabel: string, extra: Partial<RoundClip> = {}): RoundClip => ({
@@ -51,4 +51,11 @@ describe("front page round", () => {
     expect(clueLabel("item", 1912)).toBe("A news item");
     expect(clueLabel("notice", 1912)).toBe("A notice");
   });
+});
+
+test("the masthead band is only used when it touches no hard-history clipping", () => {
+  const band = mastheadBox(W, H, 0.12);
+  expect(bandClear(band, [clip(0, "article", { box: { x: 0, y: 50, w: 200, h: 100 } })])).toBe(true);
+  expect(bandClear(band, [clip(0, "article", { hardHistory: true, box: { x: 0, y: 50, w: 200, h: 100 } })])).toBe(false);
+  expect(bandClear(band, [clip(0, "article", { hardHistory: true, box: { x: 0, y: 900, w: 200, h: 100 } })])).toBe(true);
 });

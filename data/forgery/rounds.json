@@ -1,5 +1,5 @@
 {
-  "builtAt": "2026-10-29T15:41:54.228Z",
+  "builtAt": "2026-10-29T19:06:58.956Z",
   "rounds": [
     {
       "round": 1,
@@ -13,7 +13,7 @@
       "date": "1889-11-29",
       "citationMla": "Homer Guardian. (Homer, LA) 29 Nov. 1889, p. 1. Retrieved from the Library of Congress, www.loc.gov/item/sn88064119/1889-11-29/ed-1/.",
       "product": "a radio receiver",
-      "why": "Nobody could buy a radio in 1889. Radio waves had only just been shown in a laboratory, and home radio sets went on sale in the 1920s.",
+      "why": "Nobody could buy a radio around 1890. Radio waves had only just been shown in a laboratory, and home radio sets went on sale in the 1920s.",
       "parts": [
         {
           "n": 1,
@@ -82,15 +82,15 @@
       "round": 2,
       "image": "/forgery/round-2.jpg",
       "width": 1600,
-      "height": 2317,
-      "pageId": "http://www.loc.gov/resource/sn96061150/1889-11-17/ed-1/?sp=1",
-      "iiifBase": "https://tile.loc.gov/image-services/iiif/service:ndnp:oru:batch_oru_hufnagel_ver03:data:sn96061150:00200298111:1889111701:0460",
-      "paper": "The daily morning Astorian",
-      "place": "Astoria, Oregon",
-      "date": "1889-11-17",
-      "citationMla": "The daily morning Astorian. (Astoria, OR) 17 Nov. 1889, p. 1. Retrieved from the Library of Congress, www.loc.gov/item/sn96061150/1889-11-17/ed-1/.",
+      "height": 2131,
+      "pageId": "http://www.loc.gov/resource/sn98062948/1889-11-28/ed-1/?sp=1",
+      "iiifBase": "https://tile.loc.gov/image-services/iiif/service:ndnp:sdhi:batch_sdhi_imbe_ver01:data:sn98062948:00340581076:1889112801:0430",
+      "paper": "Hand County press",
+      "place": "Miller, South Dakota",
+      "date": "1889-11-28",
+      "citationMla": "Hand County press. (Miller, SD) 28 Nov. 1889, p. 1. Retrieved from the Library of Congress, www.loc.gov/item/sn98062948/1889-11-28/ed-1/.",
       "product": "a pocket telephone",
-      "why": "Telephones in 1889 were fixed to a wall and wired to an exchange. Nothing you could carry in a pocket would exist for about a hundred years.",
+      "why": "Telephones around 1890 were fixed to a wall and wired to an exchange. Nothing you could carry in a pocket would exist for about a hundred years.",
       "parts": [
         {
           "n": 1,
@@ -100,40 +100,40 @@
             "x": 0,
             "y": 0,
             "w": 1600,
-            "h": 232
+            "h": 213
           }
         },
         {
           "n": 2,
-          "label": "An advertisement",
+          "label": "A story",
           "forged": false,
           "box": {
-            "x": 51,
-            "y": 956,
-            "w": 215,
-            "h": 757
+            "x": 251,
+            "y": 291,
+            "w": 182,
+            "h": 1723
           }
         },
         {
           "n": 3,
-          "label": "An advertisement",
-          "forged": true,
+          "label": "A story",
+          "forged": false,
           "box": {
-            "x": 1072,
-            "y": 958,
-            "w": 456,
-            "h": 369
+            "x": 607,
+            "y": 297,
+            "w": 186,
+            "h": 1688
           }
         },
         {
           "n": 4,
           "label": "An advertisement",
-          "forged": false,
+          "forged": true,
           "box": {
-            "x": 470,
-            "y": 962,
-            "w": 200,
-            "h": 552
+            "x": 1148,
+            "y": 1093,
+            "w": 370,
+            "h": 310
           }
         },
         {
@@ -141,33 +141,33 @@
           "label": "A story",
           "forged": false,
           "box": {
-            "x": 268,
-            "y": 1376,
-            "w": 202,
-            "h": 727
+            "x": 793,
+            "y": 1177,
+            "w": 184,
+            "h": 831
           }
         }
       ],
       "originalBox": {
-        "h": 1514,
-        "w": 1872,
-        "x": 4401,
-        "y": 3931
+        "h": 1275,
+        "w": 1523,
+        "x": 4729,
+        "y": 4502
       }
     },
     {
       "round": 3,
       "image": "/forgery/round-3.jpg",
       "width": 1600,
-      "height": 2151,
-      "pageId": "http://www.loc.gov/resource/sn99063952/1890-01-25/ed-1/?sp=1",
-      "iiifBase": "https://tile.loc.gov/image-services/iiif/service:ndnp:oru:batch_oru_desalvo_ver01:data:sn99063952:00280760298:1890012501:0091",
-      "paper": "Evening Capital Journal",
-      "place": "Salem, Oregon",
-      "date": "1890-01-25",
-      "citationMla": "Evening Capital Journal. (Salem, OR) 25 Jan. 1890, p. 1. Retrieved from the Library of Congress, www.loc.gov/item/sn99063952/1890-01-25/ed-1/.",
+      "height": 2396,
+      "pageId": "http://www.loc.gov/resource/2019270503/1890-01-29/ed-1/?sp=1",
+      "iiifBase": "https://tile.loc.gov/image-services/iiif/service:ndnp:nbu:batch_nbu_greatauk_ver01:data:2019270503:00332899417:1890012901:0556",
+      "paper": "Stjernen",
+      "place": "Dannebrog, Nebraska",
+      "date": "1890-01-29",
+      "citationMla": "Stjernen. (Dannebrog, NE) 29 Jan. 1890, p. 1. Retrieved from the Library of Congress, www.loc.gov/item/2019270503/1890-01-29/ed-1/.",
       "product": "a television set",
-      "why": "Television was first demonstrated in the 1920s. In 1889 there was no way to send a moving picture anywhere, let alone into a parlor.",
+      "why": "Television was first demonstrated in the 1920s. Around 1890 there was no way to send a moving picture anywhere, let alone into a parlor.",
       "parts": [
         {
           "n": 1,
@@ -177,18 +177,18 @@
             "x": 0,
             "y": 0,
             "w": 1600,
-            "h": 215
+            "h": 240
           }
         },
         {
           "n": 2,
           "label": "An advertisement",
-          "forged": false,
+          "forged": true,
           "box": {
-            "x": 1060,
-            "y": 264,
-            "w": 500,
-            "h": 461
+            "x": 1253,
+            "y": 128,
+            "w": 270,
+            "h": 433
           }
         },
         {
@@ -196,21 +196,21 @@
           "label": "A story",
           "forged": false,
           "box": {
-            "x": 478,
-            "y": 319,
-            "w": 212,
-            "h": 880
+            "x": 263,
+            "y": 569,
+            "w": 253,
+            "h": 1805
           }
         },
         {
           "n": 4,
-          "label": "An advertisement",
-          "forged": true,
+          "label": "A story",
+          "forged": false,
           "box": {
-            "x": 1102,
-            "y": 1217,
-            "w": 447,
-            "h": 347
+            "x": 516,
+            "y": 575,
+            "w": 246,
+            "h": 1110
           }
         },
         {
@@ -218,33 +218,33 @@
           "label": "A story",
           "forged": false,
           "box": {
-            "x": 478,
-            "y": 1622,
-            "w": 210,
-            "h": 430
+            "x": 1010,
+            "y": 832,
+            "w": 248,
+            "h": 1504
           }
         }
       ],
       "originalBox": {
-        "h": 1127,
-        "w": 1451,
-        "x": 3577,
-        "y": 3949
+        "h": 1291,
+        "w": 803,
+        "x": 3731,
+        "y": 381
       }
     },
     {
       "round": 4,
       "image": "/forgery/round-4.jpg",
       "width": 1600,
-      "height": 2269,
-      "pageId": "http://www.loc.gov/resource/sn85032814/1890-01-30/ed-1/?sp=1",
-      "iiifBase": "https://tile.loc.gov/image-services/iiif/service:ndnp:khi:batch_khi_earhart_ver01:data:sn85032814:00237283260:1890013001:0228",
-      "paper": "Thomas County cat",
-      "place": "Colby, Kansas",
-      "date": "1890-01-30",
-      "citationMla": "Thomas County cat. (Colby, KS) 30 Jan. 1890, p. 1. Retrieved from the Library of Congress, www.loc.gov/item/sn85032814/1890-01-30/ed-1/.",
+      "height": 2275,
+      "pageId": "http://www.loc.gov/resource/sn90061066/1889-11-19/ed-1/?sp=1",
+      "iiifBase": "https://tile.loc.gov/image-services/iiif/service:ndnp:mohi:batch_mohi_berenice_ver01:data:sn90061066:00200291967:1889111901:0242",
+      "paper": "The Sedalia weekly bazoo",
+      "place": "Sedalia, Missouri",
+      "date": "1889-11-19",
+      "citationMla": "The Sedalia weekly bazoo. (Sedalia, MO) 19 Nov. 1889, p. 1. Retrieved from the Library of Congress, www.loc.gov/item/sn90061066/1889-11-19/ed-1/.",
       "product": "airplane passage",
-      "why": "The first powered airplane flight was in December 1903. In 1889 nobody had flown a machine with wings and an engine.",
+      "why": "The first powered airplane flight was in December 1903. Around 1890 nobody had flown a machine with wings and an engine.",
       "parts": [
         {
           "n": 1,
@@ -254,18 +254,18 @@
             "x": 0,
             "y": 0,
             "w": 1600,
-            "h": 227
+            "h": 228
           }
         },
         {
           "n": 2,
-          "label": "An advertisement",
+          "label": "A story",
           "forged": false,
           "box": {
-            "x": 100,
-            "y": 403,
-            "w": 450,
-            "h": 365
+            "x": 857,
+            "y": 232,
+            "w": 192,
+            "h": 894
           }
         },
         {
@@ -273,10 +273,10 @@
           "label": "A story",
           "forged": false,
           "box": {
-            "x": 780,
-            "y": 869,
-            "w": 446,
-            "h": 622
+            "x": 1066,
+            "y": 422,
+            "w": 243,
+            "h": 768
           }
         },
         {
@@ -284,44 +284,44 @@
           "label": "An advertisement",
           "forged": true,
           "box": {
-            "x": 97,
-            "y": 1112,
-            "w": 452,
-            "h": 365
+            "x": 84,
+            "y": 1049,
+            "w": 491,
+            "h": 378
           }
         },
         {
           "n": 5,
-          "label": "A story",
+          "label": "An advertisement",
           "forged": false,
           "box": {
-            "x": 780,
-            "y": 1846,
-            "w": 446,
-            "h": 368
+            "x": 1292,
+            "y": 1439,
+            "w": 280,
+            "h": 810
           }
         }
       ],
       "originalBox": {
-        "h": 1376,
-        "w": 1702,
-        "x": 367,
-        "y": 4187
+        "h": 1734,
+        "w": 2251,
+        "x": 385,
+        "y": 4806
       }
     },
     {
       "round": 5,
       "image": "/forgery/round-5.jpg",
       "width": 1600,
-      "height": 1835,
-      "pageId": "http://www.loc.gov/resource/sn83030193/1890-01-17/ed-1/?sp=1",
-      "iiifBase": "https://tile.loc.gov/image-services/iiif/service:ndnp:nn:batch_nn_hanyu_ver01:data:sn83030193:00206539537:1890011701:0191",
-      "paper": "The Evening World",
-      "place": "New York, New York",
-      "date": "1890-01-17",
-      "citationMla": "The Evening World. (New York, NY) 17 Jan. 1890, p. 1. Retrieved from the Library of Congress, www.loc.gov/item/sn83030193/1890-01-17/ed-1/.",
+      "height": 2394,
+      "pageId": "http://www.loc.gov/resource/sn84022060/1890-01-28/ed-1/?sp=1",
+      "iiifBase": "https://tile.loc.gov/image-services/iiif/service:ndnp:nvln:batch_nvln_bullfrog_ver01:data:sn84022060:00332890542:1890012801:0092",
+      "paper": "The Silver state",
+      "place": "Unionville, Nevada",
+      "date": "1890-01-28",
+      "citationMla": "The Silver state. (Unionville, NV) 28 Jan. 1890, p. 1. Retrieved from the Library of Congress, www.loc.gov/item/sn84022060/1890-01-28/ed-1/.",
       "product": "an electric refrigerator",
-      "why": "Kitchens in 1889 kept food cold with blocks of ice. Electric home refrigerators went on sale in the 1910s, and few homes yet had electricity.",
+      "why": "Kitchens around 1890 kept food cold with blocks of ice. Electric home refrigerators went on sale in the 1910s, and few homes yet had electricity.",
       "parts": [
         {
           "n": 1,
@@ -331,59 +331,59 @@
             "x": 0,
             "y": 0,
             "w": 1600,
-            "h": 184
+            "h": 239
           }
         },
         {
           "n": 2,
-          "label": "An advertisement",
+          "label": "A story",
           "forged": false,
           "box": {
-            "x": 253,
-            "y": 209,
-            "w": 1047,
-            "h": 240
+            "x": 334,
+            "y": 302,
+            "w": 286,
+            "h": 752
           }
         },
         {
           "n": 3,
-          "label": "An advertisement",
-          "forged": true,
+          "label": "A story",
+          "forged": false,
           "box": {
-            "x": 1315,
-            "y": 226,
-            "w": 218,
-            "h": 244
+            "x": 902,
+            "y": 306,
+            "w": 286,
+            "h": 739
           }
         },
         {
           "n": 4,
-          "label": "A story",
+          "label": "An advertisement",
           "forged": false,
           "box": {
-            "x": 18,
-            "y": 477,
-            "w": 206,
-            "h": 1310
+            "x": 329,
+            "y": 1498,
+            "w": 289,
+            "h": 821
           }
         },
         {
           "n": 5,
-          "label": "A story",
-          "forged": false,
+          "label": "An advertisement",
+          "forged": true,
           "box": {
-            "x": 1154,
-            "y": 1190,
-            "w": 376,
-            "h": 627
+            "x": 1180,
+            "y": 1590,
+            "w": 307,
+            "h": 564
           }
         }
       ],
       "originalBox": {
-        "h": 811,
-        "w": 723,
-        "x": 4370,
-        "y": 750
+        "h": 1625,
+        "w": 885,
+        "x": 3400,
+        "y": 4582
       }
     }
   ]

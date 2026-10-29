@@ -23,6 +23,7 @@ type Mine = { follows: Array<{ id: string; kind: "name" | "place"; value: string
 const SAVED_KEY = "tt.saved.v1";
 const SEEN_KEY = "tt.seen.v1";
 const DESK_READ_KEY = "tt.desk.readAt.v1";
+const DESK_READ_EVENT = "tt:desk-read";
 const MAX_SAVED = 100;
 const MAX_SEEN = 200;
 
@@ -58,6 +59,19 @@ export function useAgent() {
     }
     setSaved(readJson<ClipRef[]>(SAVED_KEY, [], (v) => Array.isArray(v) && v.every(isClip)));
     setReadAt(readJson<number>(DESK_READ_KEY, 0, (v) => typeof v === "number"));
+  }, []);
+
+  // The header badge has its own copy of this hook and stays mounted across pages, so a read on
+  // My Agent (this tab, or another) has to reach it.
+  useEffect(() => {
+    const sync = () => setReadAt(readJson<number>(DESK_READ_KEY, 0, (v) => typeof v === "number"));
+    const onStorage = (e: StorageEvent) => e.key === DESK_READ_KEY && sync();
+    window.addEventListener(DESK_READ_EVENT, sync);
+    window.addEventListener("storage", onStorage);
+    return () => {
+      window.removeEventListener(DESK_READ_EVENT, sync);
+      window.removeEventListener("storage", onStorage);
+    };
   }, []);
 
   const mine = useQuery(api.agent.mine, key ? { key } : "skip") as Mine | undefined;
@@ -105,6 +119,7 @@ export function useAgent() {
     const now = Date.now();
     writeJson(DESK_READ_KEY, now);
     setReadAt(now);
+    window.dispatchEvent(new Event(DESK_READ_EVENT));
   }, []);
 
   const unread = (mine?.notes ?? []).filter((n) => n.createdAt > readAt).length;

@@ -51,4 +51,4 @@ export function optionsFor(i: number): Extract<Question, { kind: "choice" }> {
 // One built stop, as scripts/detective/build.ts writes it to data/detective/case01.json.
 type Box = { x: number; y: number; w: number; h: number };
 export type CaseClip = { clippingId: string; pageId: string; iiifBase: string; box: Box; focus?: Box; paper: string; date: string; citationMla: string; excerpt: string };
-export type CaseStop = { n: number; name: string; place: string; clue: CaseClip; summary: string; title: string; hint?: string };
+export type CaseStop = { n: number; name: string; place: string; clue: CaseClip; summary: string; title: string; hint?: string; hardHistory?: boolean };

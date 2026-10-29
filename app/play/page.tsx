@@ -5,6 +5,7 @@
 import Link from "next/link";
 import caseData from "../../data/detective/case01.json";
 import { Notebook } from "../../components/detective/Notebook";
+import { HARD_HISTORY_NOTE } from "../../components/ExploreCard";
 import { Trail } from "../../components/detective/Trail";
 import { ScanCrop } from "../../components/ScanCrop";
 import { type CaseStop, optionsFor, STOPS } from "../../lib/detective/case";
@@ -59,6 +60,7 @@ export default function CasePage() {
               <span>Clue · Dispatch from {stop.place.split(", ").at(-1)}</span>
               <span className="clue-real">real page</span>
             </p>
+            {stop.hardHistory ? <p className="content-note">{HARD_HISTORY_NOTE}</p> : null}
             <ScanCrop
               iiifBase={stop.clue.iiifBase}
               box={stop.clue.box}
@@ -96,7 +98,7 @@ export default function CasePage() {
                     {nextBuilt && nextBuilt.n !== n + 1 ? " No paper in our files reported her there, so the trail picks her up further on." : ""}
                   </p>
                   {nextBuilt ? (
-                    <button type="button" className="file-button" onClick={() => update(advance(state, built.length))}>
+                    <button type="button" className="file-button" onClick={() => update(advance(state, built.length, n))}>
                       Follow her to {nextBuilt.name} →
                     </button>
                   ) : null}
@@ -117,7 +119,7 @@ export default function CasePage() {
             <section className="case-finish" aria-labelledby="finish-h">
               <h2 id="finish-h" className="case-q">One leg left: the train home</h2>
               <p>
-                From here she crossed the country by rail. In 1890 The World asked its readers to guess her exact time,
+                From here she crossed the country by rail. While she traveled, The World asked its readers to guess her exact time,
                 door to door. File your own guess.
               </p>
               <p className="case-finish-actions">

@@ -104,7 +104,7 @@ export function QuestView({ sources }: { sources: QuestSource[] }) {
               <p className="qs-yours">{answered}</p>
               <p className="agent-label">What the guide noticed</p>
               <p className="qs-notice">{s.notice}</p>
-              {pos.done && viewing === null ? (
+              {pos.done ? (
                 <p className="qs-end">
                   You finished the quest. <button type="button" className="text-button" onClick={() => { save({}); setViewing(null); }}>Start again</button>
                 </p>

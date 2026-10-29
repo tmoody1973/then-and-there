@@ -42,14 +42,21 @@ const clips = await loadClips(convex, "1889-11-14", "1890-02-28");
 const Card = z.object({ i: z.number().int(), summary: z.string().min(8), title: z.string().min(3), hint: z.string().min(8).optional() });
 
 const stops = [];
+// One clipping serves one stop: a reused clue shows up twice in the notebook.
+const usedClips = new Set<string>();
 const skipped: string[] = [];
 // Every stop but home gets a card; home is the finish line (the finale ballot).
-for (let n = 0; n < STOPS.length - 1; n += 1) {
+// Scarcest stops choose first, so a stop with one usable clipping keeps it (no clipping serves two stops).
+const order = STOPS.slice(0, -1)
+  .map((_, n) => ({ n, eligible: clips.filter((c) => clueEligible(c, n)).length }))
+  .sort((a, b) => a.eligible - b.eligible)
+  .map((o) => o.n);
+for (const n of order) {
   const stop = STOPS[n];
   const asks = n + 1 < STOPS.length - 1; // the last leg (San Francisco) asks for her time instead
   const next = asks ? STOPS[n + 1].name : null;
   // Earliest first: the news of the day, not the look back.
-  let pool = clips.filter((c) => clueEligible(c, n) && c.type !== "ad").sort((a, b) => a.date.localeCompare(b.date) || a.text.length - b.text.length).slice(0, LISTED);
+  let pool = clips.filter((c) => clueEligible(c, n) && c.type !== "ad" && !usedClips.has(c.clippingId)).sort((a, b) => a.date.localeCompare(b.date) || a.text.length - b.text.length).slice(0, LISTED);
   let card = null;
   for (let t = 0; t < TRIES && pool.length && !card && spent < BUDGET; t += 1) {
     const complete = makeComplete(meta, `detective-${n}-${pool.map((c) => c.clippingId).join(",")}`, onUsage);
@@ -78,12 +85,14 @@ for (let n = 0; n < STOPS.length - 1; n += 1) {
         continue;
       }
     }
-    card = { n, name: stop.name, place: stop.place, clue: ref(c, BLY), summary, title, ...(hint ? { hint } : {}) };
+    usedClips.add(c.clippingId);
+    card = { n, name: stop.name, place: stop.place, clue: ref(c, BLY), summary, title, ...(hint ? { hint } : {}), ...(c.hardHistory ? { hardHistory: true } : {}) };
   }
   if (card) stops.push(card);
   else skipped.push(`${stop.name}: left out (${clips.filter((c) => clueEligible(c, n)).length} eligible clippings)`);
   process.stdout.write(`${card ? "ok  " : "skip"} ${stop.name}  ($${spent.toFixed(3)})\n`);
 }
 
+stops.sort((a, b) => a.n - b.n);
 writeFileSync("data/detective/case01.json", `${JSON.stringify({ builtAt: new Date().toISOString(), stops }, null, 2)}\n`);
 process.stdout.write(`${stops.length} of ${STOPS.length - 1} stops built · $${spent.toFixed(3)} spent\n${skipped.map((s) => `  ${s}`).join("\n")}\n`);

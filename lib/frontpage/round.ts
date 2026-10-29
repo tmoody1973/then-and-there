@@ -60,3 +60,8 @@ export function validatePicks(picks: Picks, clips: RoundClip[], width: number, h
 export const orderClues = <T>(text: T[], photo: T, masthead: T): T[] => [...text.slice(0, 3), photo, ...text.slice(3), masthead];
 
 export const mastheadBox = (width: number, height: number, share = 0.12): Box => ({ x: 0, y: 0, w: width, h: Math.round(height * share) });
+
+// The masthead clue is a band across the top of the page; it is only used when it touches no
+// clipping flagged as hard history, which must never appear as a game clue.
+export const bandClear = (band: Box, clips: RoundClip[]) =>
+  !clips.some((c) => c.hardHistory && c.box.x < band.x + band.w && band.x < c.box.x + c.box.w && c.box.y < band.y + band.h && band.y < c.box.y + c.box.h);

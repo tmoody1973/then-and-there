@@ -1,7 +1,10 @@
 "use client";
 
 import Link from "next/link";
+import { useQuery } from "convex/react";
 import { useEffect, useState } from "react";
+import { api } from "../convex/_generated/api";
+import { frontPageNo, LAUNCH } from "../lib/frontpage/rules";
 import { FindCard, NightLog, WatchList } from "../components/AgentDigest";
 import { PageSketch } from "../components/PageSketch";
 import { useAgent } from "../lib/agent/useAgent";
@@ -11,7 +14,7 @@ const WAYS = [
   { href: "/play", slug: "Detective · Case 01", phoneSlug: "Detective", title: "Nellie Bly's race around the world", phoneTitle: "Nellie Bly's race", blurb: "Follow her 1889–90 trail stop by stop, using only what the papers printed.", phoneBlurb: "Case 01 · 1889–90" },
   { href: "/one-day", slug: "One day, many papers", phoneSlug: "One day, many papers", title: "August 26, 1920", phoneTitle: "August 26, 1920", blurb: "The 19th Amendment is certified. See how papers across the country told it.", phoneBlurb: "Suffrage, coast to coast" },
   { href: "/quests", slug: "Quest · 4 chapters", phoneSlug: "Quest", title: "The Great Migration through the Black press", phoneTitle: "The Great Migration", blurb: "A guided journey through primary sources, one question at a time.", phoneBlurb: "Through the Black press" },
-  { href: "/forgery", slug: "Spot the forgery", phoneSlug: "Spot the forgery", title: "One thing on this page was never printed", phoneTitle: "One page is lying", blurb: "Find the anachronism planted on a real 1889 page.", phoneBlurb: "Round 1 · an 1889 page" },
+  { href: "/forgery", slug: "Spot the forgery", phoneSlug: "Spot the forgery", title: "One thing on this page was never printed", phoneTitle: "One page is lying", blurb: "Find the anachronism planted on a real page from 1889–90.", phoneBlurb: "Round 1 · an 1889–90 page" },
 ];
 
 const monthYear = (date: string) => new Date(`${date}T12:00:00Z`).toLocaleDateString("en-US", { timeZone: "UTC", month: "long", year: "numeric" });
@@ -20,6 +23,9 @@ export default function Today() {
   const agent = useAgent();
   const [now, setNow] = useState(0);
   useEffect(() => setNow(Date.now()), []);
+  // Today's number in the rotation, the same one /front-page opens (read after mount: it depends on the clock).
+  const count = useQuery(api.frontPages.count, {});
+  const frontNo = now && count ? frontPageNo(new Date(now), LAUNCH, count) : null;
   const note = agent.mine?.notes[0];
   const follows = agent.mine?.follows ?? [];
 
@@ -29,11 +35,11 @@ export default function Today() {
         <section className="front-hero" aria-labelledby="fp-h">
           <PageSketch className="front-hero-sketch" />
           <div className="front-hero-copy">
-            <p className="slugline">Today&apos;s front page · No. 1</p>
+            <p className="slugline">Today&apos;s front page{frontNo ? ` · No. ${frontNo}` : ""}</p>
             <h1 id="fp-h">Where and when was this printed?</h1>
             <p className="front-hero-lede only-laptop">
-              Everyone in the country gets the same real page today. Reveal it one piece at a time: an ad, the weather, the
-              prices, a photo, the headline, the masthead. The fewer clues you need, the higher you score.
+              Everyone in the country gets the same real page today. Reveal it one piece at a time, from ads and news items
+              to a picture, with the masthead last. The fewer clues you need, the higher you score.
             </p>
             <p className="front-hero-lede only-phone">Same real page for everyone. Six clues, one at a time.</p>
             <p className="front-hero-meta only-laptop">

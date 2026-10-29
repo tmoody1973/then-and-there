@@ -21,6 +21,12 @@ describe("pickAd", () => {
     expect(pickAd([tiny, huge, story, good], page)?.id).toBe("good");
   });
 
+  test("never builds a round on a page that holds any hard-history item: the whole page is the board", () => {
+    const ad = clip("good", 4000, 6000, 800, 1300, { type: "ad" });
+    const flagged = clip("h", 0, 0, 800, 800, { hardHistory: true });
+    expect(pickAd([ad, flagged], page)).toBeNull();
+  });
+
   test("never forges anything carrying a hard-history note", () => {
     expect(pickAd([clip("h", 4000, 6000, 800, 1300, { type: "ad", hardHistory: true })], page)).toBeNull();
   });

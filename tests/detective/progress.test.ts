@@ -22,11 +22,11 @@ describe("case progress", () => {
   });
 
   test("you move on only after answering, and never past the last stop", () => {
-    expect(advance(FRESH, 3)).toBe(FRESH);
-    const s = advance(answer(FRESH, 0, true, DAY), 3);
+    expect(advance(FRESH, 3, 0)).toBe(FRESH);
+    const s = advance(answer(FRESH, 0, true, DAY), 3, 0);
     expect(s.at).toBe(1);
     const end = { ...FRESH, at: 2 };
-    expect(advance(answer(end, 2, true, DAY), 3).at).toBe(2);
+    expect(advance(answer(end, 2, true, DAY), 3, 2).at).toBe(2);
   });
 
   test("bad saved data starts the case fresh", () => {
@@ -36,4 +36,15 @@ describe("case progress", () => {
     const saved = answer(FRESH, 0, true, DAY);
     expect(parseCase(JSON.stringify(saved))).toEqual(saved);
   });
+});
+
+test("the real Case 01 can be walked from New York to the last leg, gaps and all", () => {
+  // eslint-disable-next-line @typescript-eslint/no-require-imports
+  const stops = (require("../../data/detective/case01.json") as { stops: Array<{ n: number }> }).stops;
+  let s = FRESH;
+  for (let k = 0; k < stops.length - 1; k += 1) {
+    const n = stops[s.at].n;
+    s = advance(answer(s, n, true, DAY), stops.length, n);
+  }
+  expect(s.at).toBe(stops.length - 1);
 });

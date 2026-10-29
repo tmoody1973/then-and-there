@@ -5,6 +5,7 @@ type Day = { day: number; status: string; question: { kind: string; options?: st
 const days = JSON.parse(readFileSync("data/game/days.json", "utf8")) as Day[];
 const published = days.filter((d) => d.status === "published");
 const first = published[0];
+const caseStops = (JSON.parse(readFileSync("data/detective/case01.json", "utf8")) as { stops: Array<{ hardHistory?: boolean }> }).stops;
 
 test("plays the first stop of the case, and a reload can't re-answer", async ({ page }) => {
   await page.goto("/play");
@@ -17,6 +18,17 @@ test("plays the first stop of the case, and a reload can't re-answer", async ({ 
   await expect(page.locator(".case-option").first()).toBeDisabled();
   await page.getByRole("button", { name: /Follow her to/ }).click();
   await expect(page.locator(".trail-dots .is-here")).toHaveCount(1);
+});
+
+test("a clue flagged as hard history shows the fixed content note", async ({ page }) => {
+  const flagged = caseStops.findIndex((st) => st.hardHistory);
+  test.skip(flagged < 0, "no flagged stop in this build");
+  await page.goto("/play");
+  for (let k = 0; k < flagged; k += 1) {
+    await page.locator(".case-option").first().click();
+    await page.getByRole("button", { name: /Follow her to/ }).click();
+  }
+  await expect(page.locator(".clue-card .content-note")).toHaveText(/shown as printed, as a historical record/);
 });
 
 test("asking the City Editor costs a day and shows the nudge", async ({ page }) => {

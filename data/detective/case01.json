@@ -1,5 +1,5 @@
 {
-  "builtAt": "2026-10-29T16:45:08.769Z",
+  "builtAt": "2026-10-29T18:58:12.933Z",
   "stops": [
     {
       "n": 0,
@@ -57,7 +57,8 @@
       },
       "summary": "She is due in Southampton and rides by rail to London in three hours.",
       "title": "Due in Southampton",
-      "hint": "Listen, kid, she hops rails to London then dashes across to France — follow south."
+      "hint": "Listen, kid, she hops rails to London then dashes across to France — follow south.",
+      "hardHistory": true
     },
     {
       "n": 2,
@@ -93,29 +94,29 @@
       "name": "Brindisi",
       "place": "Brindisi, Italy",
       "clue": {
-        "clippingId": "j57emk3ejvy3x0jx7rw974b55s8h7gvv",
-        "pageId": "http://www.loc.gov/resource/sn83045081/1889-12-09/ed-1/?sp=4",
-        "iiifBase": "https://tile.loc.gov/image-services/iiif/service:ndnp:mdu:batch_mdu_dill_ver01:data:sn83045081:00294559310:1889120901:0473",
+        "clippingId": "j578q4vsv57tdjb3gkar7vsndd8h4fqm",
+        "pageId": "http://www.loc.gov/resource/sn85047084/1889-12-11/ed-1/?sp=2",
+        "iiifBase": "https://tile.loc.gov/image-services/iiif/service:ndnp:hihouml:batch_hihouml_brutus_ver02:data:sn85047084:00202195623:1889121101:0555",
         "box": {
-          "h": 4800,
-          "w": 1614,
-          "x": 5556,
-          "y": 1844
+          "h": 9864,
+          "w": 1103,
+          "x": 2263,
+          "y": 528
         },
-        "paper": "Der Deutsche correspondent",
-        "date": "1889-12-09",
-        "citationMla": "Der Deutsche correspondent. (Baltimore, MD) 9 Dec. 1889, p. 4. Retrieved from the Library of Congress, www.loc.gov/item/sn83045081/1889-12-09/ed-1/.",
-        "excerpt": "Dezember. — Das Ausbleiben der Nachrichten von den beiden Weltumseglerinnen Nellie Bly und Frl. Bisland erregt große Besorgniß in den Bureaux der „World\" und des „Metropolitan-Magazine,\" in deren Interesse die beiden Damen unterwegs sind. Von Nellie Bly ist seit ihrer Abreise von Brindisi Nichts meh",
+        "paper": "The Pacific commercial advertiser",
+        "date": "1889-12-11",
+        "citationMla": "The Pacific commercial advertiser. (Honolulu, HI) 11 Dec. 1889, p. 2. Retrieved from the Library of Congress, www.loc.gov/item/sn85047084/1889-12-11/ed-1/.",
+        "excerpt": "PARIS, Nov. 23.—Nellie Bly, who is racing around the world against Miss Elizabeth Bisland, is now on board of the Indian mail express train bound for Brindisi, and flying across the Italian Alps. The lady had an interview with the well known author Mons. Jules Verne:\n\"The first thing I want to know,",
         "focus": {
-          "x": 5556,
-          "y": 5366,
-          "w": 716,
-          "h": 282.33333333333303
+          "x": 2354.920741989882,
+          "y": 7926.087949150344,
+          "w": 1004.3813724218444,
+          "h": 439.16149954598586
         }
       },
-      "summary": "No news comes from Nellie Bly since her departure from Brindisi.",
-      "title": "Silent Since Brindisi",
-      "hint": "Listen, kid, she sails east across the Med toward the Canal — find where steamers coal up in Egypt."
+      "summary": "Nellie Bly rides the Indian mail express train across Italy toward Brindisi after interviewing Jules Verne.",
+      "title": "Racing Train to Brindisi",
+      "hint": "Kid, she's eastbound for the Canal — grab a map, find where the Med pinches into Egypt."
     },
     {
       "n": 5,
@@ -144,7 +145,8 @@
       },
       "summary": "The paper worries because no word arrives from Bly, overdue in Aden since December 3 after leaving Brindisi.",
       "title": "Overdue at Aden",
-      "hint": "Kid, quit fretting — she's bound east across the big water; check the steamer maps, follow the coal stops."
+      "hint": "Kid, quit fretting — she's bound east across the big water; check the steamer maps, follow the coal stops.",
+      "hardHistory": true
     },
     {
       "n": 6,
@@ -171,9 +173,9 @@
           "h": 196
         }
       },
-      "summary": "She sails from Colombo today after five days waiting for a connecting steamship.",
-      "title": "Five-Day Wait Ends",
-      "hint": "Listen, kid, she's steaming east toward China — find the next British coaling port past the Bay."
+      "summary": "She sails from Colombo today after five-day wait for connecting steamer.",
+      "title": "Five Days Stuck in Colombo",
+      "hint": "Kid, quit gawking — she's steaming east up the straits toward China; grab a map."
     },
     {
       "n": 9,

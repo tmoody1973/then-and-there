@@ -6,7 +6,7 @@ import { ConvexHttpClient } from "convex/browser";
 import { anyApi } from "convex/server";
 import { z } from "zod";
 import { verifyClaim } from "../../lib/editor/verify";
-import { clueLabel, type Kind, mastheadBox, orderClues, type Picks, type RoundClip, TEXT_CLUES, validatePicks } from "../../lib/frontpage/round";
+import { bandClear, clueLabel, type Kind, mastheadBox, orderClues, type Picks, type RoundClip, TEXT_CLUES, validatePicks } from "../../lib/frontpage/round";
 import { regionOf } from "../../lib/frontpage/rules";
 import { convexUrl, writeSecret } from "../../lib/game/load";
 import { createLocClient } from "../../lib/loc/client";
@@ -135,6 +135,7 @@ for (const { page: p, clips } of ordered) {
     let masthead = null;
     for (const s of [0.12, 0.16]) {
       const box = mastheadBox(p.imageWidth, p.imageHeight, s);
+      if (!bandClear(box, clips)) continue;
       const m = { kind: "masthead" as const, src: "", label: clueLabel("masthead", year), box, url: crop(p, box), prints: `The nameplate reads "${paper}".`, why: "A paper's nameplate usually carries its town's name, which is why it is the last clue." };
       const v = await verifyClaim({ subjectKind: "clue", subjectId: `fp-${p.pageId}-masthead-${s}`, claim: `KIND: ${m.label}. PRINTS: ${m.prints} WHY: ${m.why}`, sourceText: "(no transcription; judge from the image)", cropUrl: m.url, prompt: EDITOR_CLUE_PROMPT }, { complete, loadImage, log });
       if (v.pass) {
