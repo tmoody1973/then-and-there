@@ -10,3 +10,11 @@
 !next.config.ts
 !next-env.d.ts
 !tsconfig.json
+# The games ship their answers as static JSON and the forged pages as images (decisions 010, 011).
+!data
+/data/*
+!/data/detective
+!/data/forgery
+!/data/oneday
+!/data/quests
+!public
