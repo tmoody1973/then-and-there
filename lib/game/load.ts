@@ -3,7 +3,7 @@ import type { ConvexHttpClient } from "convex/browser";
 import { anyApi } from "convex/server";
 import type { MeanwhileCandidate } from "./pickMeanwhile";
 
-type PageRow = { pageId: string; title: string; state: string; date: string; iiifBase: string; citeThis: { mla: string }; status: string };
+type PageRow = { pageId: string; title: string; state: string; city: string; date: string; iiifBase: string; citeThis: { mla: string }; status: string };
 type ClipRow = {
   _id: string;
   box: { x: number; y: number; w: number; h: number };
@@ -39,6 +39,7 @@ export async function loadClips(convex: ConvexHttpClient, start: string, end: st
         translation: r.translation,
         language: r.language,
         state: p.state,
+        city: p.city,
         type: r.type,
         humanStoryScore: r.humanStoryScore,
         hardHistory: r.hardHistory,
