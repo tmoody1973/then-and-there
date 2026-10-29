@@ -11,6 +11,7 @@ import { makeComplete, metaClient } from "../../lib/meta/client";
 import { toDataUrl } from "../../lib/meta/image";
 import { costOf, type Usage } from "../../lib/meta/pricing";
 import { mapPool } from "../../lib/util/pool";
+import { withRetry } from "../../lib/util/retry";
 
 const flag = (name: string) => {
   const i = process.argv.indexOf(name);
@@ -29,18 +30,25 @@ const loc = createLocClient({ servicesPerMinute: 60 });
 const loadImage = async (url: string) => toDataUrl(await loc.getBytes(url));
 let spent = 0;
 const onUsage = (model: string, u: Usage) => void (spent += costOf(model, u));
-const log = async (run: unknown) => void (await convex.mutation(anyApi.editorRuns.log, { secret, run }));
+// Local Convex caps a function at 1 s and can time out under load: retry writes (as the worker does).
+const log = async (run: unknown) => void (await withRetry(() => convex.mutation(anyApi.editorRuns.log, { secret, run })));
 
 const rows = (await convex.query(anyApi.clippings.topForVerify, { secret, limit })) as Row[];
-const tally = { pass: 0, fail: 0, skipped: 0 };
+const tally = { pass: 0, fail: 0, skipped: 0, errors: 0 };
 await mapPool(rows, CONCURRENCY, async (r) => {
   if (spent >= budget) return void (tally.skipped += 1);
-  const complete = makeComplete(meta, `label-${r.clippingId}`, onUsage);
-  const verdict = await verifyLabel({ ...r, cropUrl: cropUrl(r.iiifBase, r.box) }, { complete, loadImage, log });
-  await convex.mutation(anyApi.clippings.setEditorStatus, { secret, clippingId: r.clippingId, editorStatus: verdict.pass ? "pass" : "fail" });
-  tally[verdict.pass ? "pass" : "fail"] += 1;
+  try {
+    const complete = makeComplete(meta, `label-${r.clippingId}`, onUsage);
+    const verdict = await verifyLabel({ ...r, cropUrl: cropUrl(r.iiifBase, r.box) }, { complete, loadImage, log });
+    const editorStatus = verdict.pass ? "pass" : "fail";
+    await withRetry(() => convex.mutation(anyApi.clippings.setEditorStatus, { secret, clippingId: r.clippingId, editorStatus }));
+    tally[editorStatus] += 1;
+  } catch {
+    // Left "unchecked", so the next run retries it; one bad row never stops the batch.
+    tally.errors += 1;
+  }
 });
 process.stdout.write(
   `verified ${tally.pass + tally.fail} of ${rows.length}: ${tally.pass} pass, ${tally.fail} fail` +
-    `${tally.skipped ? `, ${tally.skipped} not started (budget)` : ""} | spent $${spent.toFixed(4)} of $${budget}\n`,
+    `${tally.skipped ? `, ${tally.skipped} not started (budget)` : ""}${tally.errors ? `, ${tally.errors} errored (left unchecked)` : ""} | spent $${spent.toFixed(4)} of $${budget}\n`,
 );
