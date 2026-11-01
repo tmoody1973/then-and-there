@@ -23,7 +23,7 @@
 }
 .fp-q {
   padding: 2px 6px; background: var(--paper-raised);
-  font-family: var(--font-head); font-size: 0.625rem; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; white-space: nowrap; color: var(--ink);
+  font-family: var(--font-head); font-size: var(--step--2); font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; white-space: nowrap; color: var(--ink);
 }
 @container (max-width: 64px) { .fp-q { display: none; } }
 @container (max-height: 18px) { .fp-q { display: none; } }
@@ -32,7 +32,7 @@
 .fp-slot.is-selected { box-shadow: 0 0 0 1.5px var(--ink), 0 0 0 4px var(--red); z-index: 2; }
 .fp-tag {
   position: absolute; top: 0; left: 0; padding: 1px 5px; background: var(--red); color: var(--paper-bright);
-  font-family: var(--font-head); font-size: 0.5625rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; white-space: nowrap;
+  font-family: var(--font-head); font-size: var(--step--2); font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; white-space: nowrap;
 }
 @container (max-width: 48px) { .fp-tag { display: none; } }
 @keyframes fp-in { from { clip-path: inset(0 100% 0 0); } to { clip-path: inset(0 0 0 0); } }
@@ -40,6 +40,16 @@
 /* ---------- The clue being read ---------- */
 .fp-reader { margin: var(--s4) 0 0; padding: var(--s4); background: var(--paper-raised); border-top: 3px solid var(--red); }
 .fp-reader img { display: block; max-width: 100%; max-height: 70vh; margin: 0 auto; background: var(--paper-bright); box-shadow: 0 0 0 1px var(--rule-strong); }
+/* Phone: the board shrinks to a locator beside the clue being read, so the reveal and the guess
+   share the first screen (mockup p-02). The real page keeps its proportions; the reader does the reading. */
+@media (max-width: 959px) {
+  .fp-left { display: grid; grid-template-columns: minmax(0, 2fr) minmax(0, 3fr); gap: var(--s3); align-items: start; margin-top: var(--s4); }
+  .fp-left > .fp-board:only-child { grid-column: 1 / -1; max-width: 60%; }
+  .fp-reader { margin: 0; padding: var(--s2) var(--s3) var(--s3); }
+  .fp-reader .slugline { margin-bottom: var(--s2); }
+  .fp-reader img { max-height: 32svh; }
+  .fp-grid { margin-top: 0; gap: var(--s4); }
+}
 
 /* ---------- Clues and the guess ---------- */
 .fp-clues { list-style: none; margin: 0 0 var(--s4); padding: 0; }

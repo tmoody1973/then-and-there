@@ -4,10 +4,10 @@ import { loadProgress } from "../game/progress";
 import { daysLeft } from "../game/scoring";
 import type { DayResult } from "../game/types";
 
-export type CaseState = { at: number; results: Record<number, DayResult>; asked: Record<number, true> };
+export type CaseState = { at: number; results: Record<number, DayResult>; asked: Record<number, true>; picks: Record<number, string> };
 
 export const CASE_KEY = "tt.case01.v1";
-export const FRESH: CaseState = { at: 0, results: {}, asked: {} };
+export const FRESH: CaseState = { at: 0, results: {}, asked: {}, picks: {} };
 
 export const left = (s: CaseState) => daysLeft({ days: s.results });
 
@@ -15,9 +15,10 @@ export function askEditor(s: CaseState, n: number): CaseState {
   return s.results[n] || s.asked[n] ? s : { ...s, asked: { ...s.asked, [n]: true } };
 }
 
-export function answer(s: CaseState, n: number, correct: boolean, today: string): CaseState {
+export function answer(s: CaseState, n: number, correct: boolean, today: string, pick?: string): CaseState {
   if (s.results[n]) return s;
-  return { ...s, results: { ...s.results, [n]: { correct, hintsUsed: s.asked[n] ? 1 : 0, answeredOn: today } } };
+  const picks = pick ? { ...s.picks, [n]: pick } : s.picks;
+  return { ...s, picks, results: { ...s.results, [n]: { correct, hintsUsed: s.asked[n] ? 1 : 0, answeredOn: today } } };
 }
 
 // `at` counts built stops; answers are keyed by route number `n` (stops can be missing from the
@@ -28,12 +29,13 @@ export function parseCase(raw: string | null): CaseState {
   try {
     const p: unknown = JSON.parse(raw ?? "");
     if (typeof p !== "object" || p === null) return FRESH;
-    const { at, results, asked } = p as Record<string, unknown>;
+    const { at, results, asked, picks } = p as Record<string, unknown>;
     if (!Number.isInteger(at) || (at as number) < 0) return FRESH;
     // The race's loader already drops malformed results; reuse it.
     const days = loadProgress({ getItem: () => JSON.stringify({ days: results }) }).days;
     const ok = typeof asked === "object" && asked !== null ? Object.fromEntries(Object.keys(asked).map((k) => [Number(k), true as const])) : {};
-    return { at: at as number, results: days, asked: ok };
+    const chosen = typeof picks === "object" && picks !== null ? Object.fromEntries(Object.entries(picks).filter(([, v]) => typeof v === "string").map(([k, v]) => [Number(k), v as string])) : {};
+    return { at: at as number, results: days, asked: ok, picks: chosen };
   } catch {
     return FRESH;
   }

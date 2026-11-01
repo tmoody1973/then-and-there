@@ -25,6 +25,8 @@ test("a Forgery round: pick, lock in, see the real ad, and a reload keeps the an
   await page.getByRole("button", { name: /Lock in part 2/ }).click();
   await expect(page.locator(".fg-result h2")).toBeVisible();
   await expect(page.getByAltText("The advertisement as the paper really printed it")).toBeVisible();
+  // A forged image never appears without its printed label, even cut down to the one ad.
+  await expect(page.locator(".fg-cut")).toContainText("Altered for a game");
   await page.reload();
   await expect(page.locator(".fg-result h2")).toBeVisible();
   await expect(page.locator(".fg-pick").first()).toBeDisabled();
@@ -32,11 +34,11 @@ test("a Forgery round: pick, lock in, see the real ad, and a reload keeps the an
 
 test("a Quest source: answer it, read what the guide noticed, and a blank answer can't be sent", async ({ page }) => {
   await page.goto("/quests");
-  await expect(page.getByRole("button", { name: "Send answer" })).toBeDisabled();
+  await expect(page.getByRole("button", { name: "Save my answer" })).toBeDisabled();
   await page.locator("#qs-answer").fill("   ");
-  await expect(page.getByRole("button", { name: "Send answer" })).toBeDisabled();
+  await expect(page.getByRole("button", { name: "Save my answer" })).toBeDisabled();
   await page.locator("#qs-answer").fill("To reach families still in the South.");
-  await page.getByRole("button", { name: "Send answer" }).click();
+  await page.getByRole("button", { name: "Save my answer" }).click();
   await expect(page.getByText("What the guide noticed")).toBeVisible();
   await page.getByRole("button", { name: /Next source/ }).click();
   await expect(page.locator(".qs-slug")).toContainText("Source 2");
@@ -50,7 +52,15 @@ test("answering the last Quest source shows the finish, not a dead Next button",
   await page.addInitScript((a) => localStorage.setItem("tt.quest.migration.v1", a), JSON.stringify(answered));
   await page.goto("/quests");
   await page.locator("#qs-answer").fill("The last one.");
-  await page.getByRole("button", { name: "Send answer" }).click();
+  await page.getByRole("button", { name: "Save my answer" }).click();
   await expect(page.getByText("You finished the quest.")).toBeVisible();
   await expect(page.getByRole("button", { name: /Next source/ })).toHaveCount(0);
+});
+
+test("an empty My Agent shows one find, clearly labelled as an example", async ({ page }) => {
+  await page.goto("/desk");
+  const example = page.locator(".find-card.is-example");
+  await expect(example).toContainText("Example · what a find looks like");
+  await expect(example).toContainText("The Evening World");
+  await expect(example.getByRole("button", { name: "Not my family" })).toHaveCount(0);
 });

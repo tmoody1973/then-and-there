@@ -82,11 +82,12 @@ export default function CasePage() {
                   <li key={opt}>
                     <button
                       type="button"
-                      className={`case-option ${result && i === q.answerIndex ? "is-answer" : ""}`}
+                      className={`case-option ${result && i === q.answerIndex ? "is-answer" : ""} ${result && !result.correct && state.picks[n] === opt ? "is-picked" : ""}`}
                       disabled={!ready || Boolean(result)}
-                      onClick={() => update(answer(state, n, i === q.answerIndex, today()))}
+                      onClick={() => update(answer(state, n, i === q.answerIndex, today(), opt))}
                     >
-                      {opt}
+                      <span className="case-option-name">{opt}</span>
+                      {result && !result.correct && state.picks[n] === opt ? <span className="case-option-mark">your call</span> : null}
                     </button>
                   </li>
                 ))}

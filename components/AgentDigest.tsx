@@ -1,8 +1,8 @@
 "use client";
 
 // The agent's morning report, in the three parts both Today and My Agent show: what it found,
-// what it's watching for, and what it did overnight. Every line comes from stored data; an empty
-// part says so plainly rather than showing a sample.
+// what it's watching for, and what it did overnight. Every line comes from stored data, except the
+// one labelled example find shown while a reader has none (lib/agent/example.ts).
 import Link from "next/link";
 import { useState } from "react";
 import type { Note } from "../lib/agent/useAgent";
@@ -36,14 +36,18 @@ function Thumb({ note }: { note: Note }) {
   );
 }
 
-export function FindCard({ note, onDismiss, href }: { note: Note; onDismiss: () => void; href?: string }) {
+export function FindCard({ note, onDismiss, href, example }: { note: Note; onDismiss?: () => void; href?: string; example?: boolean }) {
   const [open, setOpen] = useState(false);
   const { clip } = note;
   const p = pageNo(clip.pageId);
   return (
-    <article className="find-card" id={`find-${note.clippingId}`}>
+    <article className={`find-card${example ? " is-example" : ""}`} id={example ? undefined : `find-${note.clippingId}`}>
       <p className="slugline">
-        {note.replay ? "Replay find" : "New find"} · <time className="num">{clock(note.createdAt)}</time>
+        {example ? "Example · what a find looks like" : (
+          <>
+            {note.replay ? "Replay find" : "New find"} · <time className="num">{clock(note.createdAt)}</time>
+          </>
+        )}
       </p>
       <div className="find-body">
         <Thumb note={note} />
@@ -52,7 +56,9 @@ export function FindCard({ note, onDismiss, href }: { note: Note; onDismiss: () 
             “{note.matched}” in {clip.paper}, {monthYear(clip.date)}
           </h3>
           <p>
-            {note.replay
+            {example
+              ? "A sample, not a find for you: a real clipping the Editor checked, shown so you can see what a note looks like. Yours arrive here when the agent finds a name or town you follow."
+              : note.replay
               ? "Found by replaying a batch the Library of Congress added earlier, to show the agent at work. The Editor checked it against the page."
               : "Found in a batch the Library of Congress added recently. The Editor checked it against the page."}
           </p>
@@ -70,9 +76,11 @@ export function FindCard({ note, onDismiss, href }: { note: Note; onDismiss: () 
             {open ? "Close clipping" : "Open clipping"}
           </button>
         )}
-        <button type="button" className="file-button is-outline" onClick={onDismiss}>
-          Not my family
-        </button>
+        {onDismiss && !example ? (
+          <button type="button" className="file-button is-outline" onClick={onDismiss}>
+            Not my family
+          </button>
+        ) : null}
       </div>
       {open ? (
         <div className="find-scan">

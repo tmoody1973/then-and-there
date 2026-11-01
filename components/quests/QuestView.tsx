@@ -127,7 +127,7 @@ export function QuestView({ sources }: { sources: QuestSource[] }) {
               <label className="agent-label" htmlFor="qs-answer">Your answer</label>
               <textarea id="qs-answer" rows={4} maxLength={ANSWER_MAX} placeholder="Write a sentence or two…" value={draft} onChange={(e) => setDraft(e.target.value)} />
               <button type="submit" className="file-button qs-send" disabled={!draft.trim()}>
-                Send answer
+                Save my answer
               </button>
               <p className="qs-private">Your answers stay in this browser.</p>
             </form>

@@ -35,6 +35,16 @@ describe("front page round", () => {
     expect(validatePicks(good, big, W, H)).toContain("prices: clipping 2 covers too much of the page");
   });
 
+  test("the three clues before the picture never print a year: the year is the answer", () => {
+    const dated = clips.map((c, i) => (i === 0 ? { ...c, text: "Olympia, June 3, 1887. CARLTON HOUSE" } : i === 4 ? { ...c, text: "Sale opens Nov. 18th, 1889" } : c));
+    expect(validatePicks(good, dated, W, H)).toContain("clue 1: clipping 0 prints a year");
+    // The fourth text clue comes after the picture, near the end, where a date is fair.
+    expect(validatePicks(good, dated, W, H)).not.toContain("clue 4: clipping 4 prints a year");
+    // A month and day alone (a wire dateline) is fair: it doesn't give the year.
+    const wire = clips.map((c, i) => (i === 0 ? { ...c, text: "NEW YORK, Nov. 15.— While Nellie Bly" } : c));
+    expect(validatePicks(good, wire, W, H)).toEqual([]);
+  });
+
   test("the picture is the fourth clue and the masthead always the last", () => {
     expect(orderClues(["a", "b", "c", "d"], "pic", "mast")).toEqual(["a", "b", "c", "pic", "d", "mast"]);
   });

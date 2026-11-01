@@ -34,14 +34,17 @@ function ForgedCut({ r, box }: { r: Round; box: Box }) {
     <div
       className="fg-cut"
       role="img"
-      aria-label={`The redrawn ad: ${r.product}`}
+      aria-label={`The redrawn ad: ${r.product}. Altered for a game, never printed.`}
       style={{
         aspectRatio: `${box.w} / ${box.h}`,
         backgroundImage: `url(${r.image})`,
         backgroundSize: `${(r.width / box.w) * 100}% auto`,
         backgroundPosition: `${(box.x / (r.width - box.w)) * 100}% ${(box.y / (H - box.h)) * 100}%`,
       }}
-    />
+    >
+      {/* Cut down to the one ad, the forgery still carries its printed label. */}
+      <span className="fg-cut-band" aria-hidden="true">Altered for a game · not a real page</span>
+    </div>
   );
 }
 

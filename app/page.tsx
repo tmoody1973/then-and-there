@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import { api } from "../convex/_generated/api";
 import { frontPageNo, LAUNCH } from "../lib/frontpage/rules";
 import { FindCard, NightLog, WatchList } from "../components/AgentDigest";
+import { EXAMPLE_NOTE } from "../lib/agent/example";
 import { PageSketch } from "../components/PageSketch";
 import { useAgent } from "../lib/agent/useAgent";
 import "./home.css";
@@ -107,7 +108,10 @@ export default function Today() {
         ) : note ? (
           <FindCard note={note} href={`/desk#find-${note.clippingId}`} onDismiss={() => agent.dismiss(note.clippingId)} />
         ) : (
-          <p className="agent-empty">Nothing found yet. A note appears here only when the Editor confirms a find against the scan.</p>
+          <>
+            <p className="agent-empty">Nothing found yet. A note appears here only when the Editor confirms a find against the scan.</p>
+            <FindCard note={EXAMPLE_NOTE} example />
+          </>
         )}
         <p className="agent-label"><span>Watching for you</span></p>
         <WatchList follows={follows} addHref="/desk#add" />

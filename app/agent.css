@@ -30,3 +30,6 @@
 .night-log { list-style: none; margin: 0 0 var(--s4); padding: 0; }
 .night-log li { display: grid; grid-template-columns: 3.5rem minmax(0, 1fr); gap: var(--s3); padding: var(--s3) 0; border-bottom: 1px solid var(--rule); line-height: 1.35; }
 .night-log time { font-family: var(--font-head); font-size: var(--step--2); color: var(--ink-3); padding-top: 0.2em; }
+/* The sample find: dashed, never the red rule a real find gets, so it cannot pass for one. */
+.find-card.is-example { border-top: 1.5px dashed var(--rule-strong); margin-top: var(--s4); }
+.find-card.is-example > .slugline { color: var(--ink-2); }
