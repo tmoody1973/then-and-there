@@ -179,3 +179,6 @@ button:disabled { cursor: default; }
 
 /* The hard-history note (decision 006): calm, fixed copy, never hidden, never decorated. */
 .content-note { margin: var(--s2) 0; padding: var(--s2) 0; border-block: 1px solid var(--rule); font-size: var(--step--1); font-style: italic; color: var(--ink-2); }
+/* The outage page: plain, calm, and a way to keep playing. */
+.outage { padding-block: var(--s7); }
+.outage ul { margin: var(--s4) 0 var(--s5); padding-left: var(--s5); line-height: 1.9; }

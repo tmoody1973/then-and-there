@@ -1,7 +1,6 @@
 "use client";
 
 import Link from "next/link";
-import { useQuery } from "convex/react";
 import { useEffect, useState } from "react";
 import { api } from "../convex/_generated/api";
 import { frontPageNo, LAUNCH } from "../lib/frontpage/rules";
@@ -9,6 +8,7 @@ import { FindCard, NightLog, WatchList } from "../components/AgentDigest";
 import { EXAMPLE_NOTE } from "../lib/agent/example";
 import { PageSketch } from "../components/PageSketch";
 import { useAgent } from "../lib/agent/useAgent";
+import { useSafeQuery } from "../lib/useSafeQuery";
 import "./home.css";
 
 const WAYS = [
@@ -25,7 +25,7 @@ export default function Today() {
   const [now, setNow] = useState(0);
   useEffect(() => setNow(Date.now()), []);
   // Today's number in the rotation, the same one /front-page opens (read after mount: it depends on the clock).
-  const count = useQuery(api.frontPages.count, {});
+  const count = useSafeQuery(api.frontPages.count, {}).data;
   const frontNo = now && count ? frontPageNo(new Date(now), LAUNCH, count) : null;
   const note = agent.mine?.notes[0];
   const follows = agent.mine?.follows ?? [];

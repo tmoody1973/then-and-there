@@ -2,7 +2,8 @@
 
 // This reader's agent memory: a private browser key owns follows and notes on our server; saved
 // clippings, "seen" stories and the Desk's read marker stay in this browser (decision 009).
-import { useMutation, useQuery } from "convex/react";
+import { useMutation } from "convex/react";
+import { useSafeQuery } from "../useSafeQuery";
 import { useCallback, useEffect, useState } from "react";
 import { api } from "../../convex/_generated/api";
 import { agentKey } from "./key";
@@ -74,7 +75,8 @@ export function useAgent() {
     };
   }, []);
 
-  const mine = useQuery(api.agent.mine, key ? { key } : "skip") as Mine | undefined;
+  // Safe: with the database down, the agent reads as still opening instead of crashing the page.
+  const mine = useSafeQuery(api.agent.mine, key ? { key } : "skip").data as Mine | undefined;
   const followM = useMutation(api.agent.follow);
   const unfollowM = useMutation(api.agent.unfollow);
   const forgetM = useMutation(api.agent.forgetMe);
