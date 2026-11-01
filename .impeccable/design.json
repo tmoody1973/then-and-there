@@ -1,0 +1,323 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-11-01T16:56:38Z",
+  "title": "Design System: Then & There",
+  "extensions": {
+    "colorMeta": {
+      "paper": {
+        "role": "neutral",
+        "displayName": "Newsprint",
+        "canonical": "#ebe7de",
+        "tonalRamp": [
+          "#302a1d",
+          "#564b34",
+          "#7c6d4b",
+          "#a18e63",
+          "#b8aa8a",
+          "#cfc5b0",
+          "#e6e1d6",
+          "#f5f3ef"
+        ]
+      },
+      "paper-raised": {
+        "role": "neutral",
+        "displayName": "Proof Card",
+        "canonical": "#f5f4ef",
+        "tonalRamp": [
+          "#2f2c1d",
+          "#554f35",
+          "#7a734c",
+          "#9f9565",
+          "#b6af8b",
+          "#cec9b1",
+          "#e6e3d6",
+          "#f5f4ef"
+        ]
+      },
+      "paper-bright": {
+        "role": "neutral",
+        "displayName": "Clean Sheet",
+        "canonical": "#faf9f5",
+        "tonalRamp": [
+          "#332e1a",
+          "#5c532e",
+          "#857742",
+          "#ac9b58",
+          "#c0b481",
+          "#d4ccaa",
+          "#e9e4d3",
+          "#f7f5ee"
+        ]
+      },
+      "ink": {
+        "role": "neutral",
+        "displayName": "Press Black",
+        "canonical": "#15140f",
+        "tonalRamp": [
+          "#2d2b20",
+          "#504d39",
+          "#746e53",
+          "#97906d",
+          "#b0ab91",
+          "#cac6b5",
+          "#e3e2d8",
+          "#f4f4f0"
+        ]
+      },
+      "ink-2": {
+        "role": "neutral",
+        "displayName": "Second Ink",
+        "canonical": "#4a4740",
+        "tonalRamp": [
+          "#292723",
+          "#4a4740",
+          "#6b665c",
+          "#8b8679",
+          "#a7a39a",
+          "#c4c1bb",
+          "#e0dfdb",
+          "#f3f3f1"
+        ]
+      },
+      "ink-3": {
+        "role": "neutral",
+        "displayName": "Third Ink",
+        "canonical": "#5c5952",
+        "tonalRamp": [
+          "#282724",
+          "#494641",
+          "#69665e",
+          "#89857b",
+          "#a6a39b",
+          "#c3c1bc",
+          "#e0dfdc",
+          "#f3f3f2"
+        ]
+      },
+      "rule": {
+        "role": "neutral",
+        "displayName": "Hairline",
+        "canonical": "#c9c4b9",
+        "tonalRamp": [
+          "#2b2821",
+          "#4e483c",
+          "#706857",
+          "#928872",
+          "#ada594",
+          "#c7c2b7",
+          "#e2dfda",
+          "#f4f3f1"
+        ]
+      },
+      "rule-strong": {
+        "role": "neutral",
+        "displayName": "Column Rule",
+        "canonical": "#8c877c",
+        "tonalRamp": [
+          "#292724",
+          "#494740",
+          "#6a665d",
+          "#8a857a",
+          "#a7a39b",
+          "#c3c1bb",
+          "#e0dfdc",
+          "#f3f3f1"
+        ]
+      },
+      "red": {
+        "role": "primary",
+        "displayName": "Editor's Red",
+        "canonical": "#b1271d",
+        "tonalRamp": [
+          "#420e0b",
+          "#761a13",
+          "#ab261c",
+          "#dc3428",
+          "#e4665d",
+          "#ed9891",
+          "#f6c9c6",
+          "#fbeae9"
+        ]
+      },
+      "wire": {
+        "role": "neutral",
+        "displayName": "Wire Grey",
+        "canonical": "#898375",
+        "tonalRamp": [
+          "#292723",
+          "#4a473f",
+          "#6b675c",
+          "#8c8678",
+          "#a8a499",
+          "#c4c1ba",
+          "#e0dfdb",
+          "#f3f3f1"
+        ]
+      }
+    },
+    "typographyMeta": {
+      "masthead": {
+        "displayName": "Nameplate",
+        "purpose": "The blackletter \"Then & There\" only."
+      },
+      "display": {
+        "displayName": "Headline",
+        "purpose": "Page titles."
+      },
+      "body": {
+        "displayName": "Reading",
+        "purpose": "Every word meant to be read."
+      },
+      "label": {
+        "displayName": "Slug",
+        "purpose": "Labels, nav, buttons, counts."
+      },
+      "caption": {
+        "displayName": "Citation",
+        "purpose": "Citations under scans."
+      }
+    },
+    "shadows": [
+      {
+        "name": "lift",
+        "value": "0 1px 2px rgb(21 20 15 / 0.06), 0 6px 18px -8px rgb(21 20 15 / 0.18)",
+        "purpose": "A real scan laid on the desk. Scans only."
+      }
+    ],
+    "motion": [
+      {
+        "name": "ease-out",
+        "value": "cubic-bezier(0.16, 1, 0.3, 1)",
+        "purpose": "Clue reveals (a left-to-right wipe, 260ms) and state fades (220ms)."
+      }
+    ],
+    "breakpoints": [
+      {
+        "name": "laptop",
+        "value": "960px"
+      }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "The one action on a screen: Lock in guess, Follow her, Open clipping.",
+      "html": "<button class=\"ds-btn\">Lock in guess</button>",
+      "css": ".ds-btn{font-family:\"IBM Plex Mono\",ui-monospace,Menlo,monospace;font-weight:700;font-size:15px;min-height:48px;padding:0 24px;border:0;border-radius:0;background:#15140f;color:#ebe7de;cursor:pointer}.ds-btn:hover{background:#b1271d}.ds-btn:focus-visible{outline:2.5px solid #b1271d;outline-offset:3px}"
+    },
+    {
+      "name": "Outline Button",
+      "kind": "button",
+      "refersTo": "button-outline",
+      "description": "A secondary action beside a primary one: Reveal next clue, Not my family.",
+      "html": "<button class=\"ds-btn-o\">Reveal next clue · −150 pts</button>",
+      "css": ".ds-btn-o{font-family:\"IBM Plex Mono\",ui-monospace,Menlo,monospace;font-weight:700;font-size:15px;min-height:48px;padding:0 24px;border:0;border-radius:0;background:transparent;color:#15140f;box-shadow:inset 0 0 0 1.5px #15140f;cursor:pointer}.ds-btn-o:hover{background:#f5f4ef}.ds-btn-o:focus-visible{outline:2.5px solid #b1271d;outline-offset:3px}"
+    },
+    {
+      "name": "Waiting Button",
+      "kind": "button",
+      "refersTo": "button-waiting",
+      "description": "A disabled action that says what to do first; reads as not yet, never broken.",
+      "html": "<button class=\"ds-btn-w\" disabled>Pick a region first</button>",
+      "css": ".ds-btn-w{font-family:\"IBM Plex Mono\",ui-monospace,Menlo,monospace;font-weight:700;font-size:15px;min-height:48px;padding:0 24px;border:0;border-radius:0;background:transparent;color:#4a4740;outline:1.5px dashed #8c877c;outline-offset:-1.5px}"
+    },
+    {
+      "name": "Slug Line",
+      "kind": "chip",
+      "refersTo": "slugline",
+      "description": "The small red section label a front page sets over a story.",
+      "html": "<p class=\"ds-slug\">Clue 1 · An advertisement</p>",
+      "css": ".ds-slug{font-family:\"IBM Plex Mono\",ui-monospace,Menlo,monospace;font-size:12px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:#b1271d;margin:0}"
+    },
+    {
+      "name": "Proof Card",
+      "kind": "card",
+      "refersTo": "card-proof",
+      "description": "A card laid on the page; red top rule when live, dashed grey when a labelled sample.",
+      "html": "<article class=\"ds-card\"><p class=\"ds-card-slug\">New find · 02:14</p><h3>“Bly” in The Evening World, November 1889</h3><p>The Editor checked it against the page.</p></article>",
+      "css": ".ds-card{background:#f5f4ef;padding:16px;border-top:3px solid #b1271d;font-family:\"Source Serif 4\",Georgia,serif;color:#15140f}.ds-card h3{margin:4px 0;font-size:20px}.ds-card p{margin:0}.ds-card-slug{font-family:\"IBM Plex Mono\",ui-monospace,Menlo,monospace;font-size:12px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:#b1271d}"
+    },
+    {
+      "name": "Content Note",
+      "kind": "custom",
+      "description": "Fixed-copy hard-history note: calm, visible, never decorated.",
+      "html": "<p class=\"ds-note\">This item reflects attitudes or language of its time. It is shown as printed, as a historical record.</p>",
+      "css": ".ds-note{margin:8px 0;padding:8px 0;border-block:1px solid #c9c4b9;font-family:\"Source Serif 4\",Georgia,serif;font-size:13px;font-style:italic;color:#4a4740}"
+    },
+    {
+      "name": "Forgery Band",
+      "kind": "custom",
+      "description": "Printed under every forged page and on any crop of one.",
+      "html": "<div class=\"ds-band\">Altered for a game · not a real page</div>",
+      "css": ".ds-band{background:#b1271d;color:#faf9f5;font-family:\"IBM Plex Mono\",ui-monospace,Menlo,monospace;font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;text-align:center;padding:4px 8px}"
+    },
+    {
+      "name": "Section Nav",
+      "kind": "nav",
+      "description": "Laptop section links under the nameplate; current section red with a 2px underline.",
+      "html": "<nav class=\"ds-nav\"><a>Today</a><a aria-current=\"page\">Front Page</a><a>Detective</a><a>One Day</a></nav>",
+      "css": ".ds-nav{display:flex;gap:24px;font-family:\"IBM Plex Mono\",ui-monospace,Menlo,monospace;font-size:12px;font-weight:600;letter-spacing:.08em;text-transform:uppercase}.ds-nav a{color:#15140f;text-decoration:none;position:relative;padding-bottom:6px;cursor:pointer}.ds-nav a:hover,.ds-nav a[aria-current]{color:#b1271d}.ds-nav a[aria-current]::after{content:\"\";position:absolute;left:0;right:0;bottom:-2px;height:2px;background:#b1271d}"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Proof Sheet",
+    "overview": "Every screen is a galley proof laid on an editor's desk: warm newsprint, black type, and red pencil wherever something was checked, marked, or chosen. The real scan is always the most important object on the page; the interface is the desk around it. Delight comes from the page itself (a 1889 ad, a front page from the morning the news broke), never from the chrome.\n\nThe mood is archival, calm and exact. This is a reading room, not an arcade: square corners, no glow, no gradients, and motion only where a clue is revealed. Hard-history content sits in this same calm register, never louder and never hidden.",
+    "keyCharacteristics": [
+      "Warm paper ground with three paper weights (page, raised card, bright sheet).",
+      "One accent, editor's red, used for marks, slugs, the current state and the score; never decoration.",
+      "Three voices of type: a blackletter nameplate, a serif for reading, a monospace for labels and numbers.",
+      "Square corners everywhere. Newsprint has no radius.",
+      "Real Library of Congress scans as the imagery; nothing drawn to imitate a page."
+    ],
+    "rules": [
+      {
+        "name": "The One Pencil Rule",
+        "body": "Red marks something a person or the Editor did: checked, chosen, current, altered. If nothing was marked, it is not red.",
+        "section": "colors"
+      },
+      {
+        "name": "The Paper Never Glows Rule",
+        "body": "No gradients, tints or glows on the ground. Hatching (diagonal lines on a dashed box) is allowed only for a slot on the Front Page board that hides a real clipping.",
+        "section": "colors"
+      },
+      {
+        "name": "The Twelve-Pixel Floor",
+        "body": "No text below 12px (the `--step--2` size), including the tags pinned to clues on the Front Page board.",
+        "section": "typography"
+      },
+      {
+        "name": "The Slug, Not the Kicker Rule",
+        "body": "A red uppercase slug above a headline is a newspaper convention and stays (mockup authority). It names the section; it never repeats the headline.",
+        "section": "typography"
+      },
+      {
+        "name": "The First Screen Rule",
+        "body": "On a phone, the screen a player lands on must show the thing to look at and the way to answer it.",
+        "section": "layout"
+      },
+      {
+        "name": "The Scan Lifts, Nothing Else Rule",
+        "body": "Only a real scan casts a shadow. Cards and panels sit flat and are separated by a 3px top rule (red for a live item, ink for a panel, dashed grey for a sample).",
+        "section": "elevation & depth"
+      }
+    ],
+    "dos": [
+      "**Do** put the real scan first and give it the most space on the screen.",
+      "**Do** show a citation and a way to the full page with every scan.",
+      "**Do** keep the content note's fixed copy calm and visible wherever hard history appears, whole pages included.",
+      "**Do** label a sample as a sample (\"Example · what a find looks like\") and style it apart from the real thing.",
+      "**Do** keep every forged image labelled, cropped or not.",
+      "**Do** say what is happening in plain words: \"No new pages from the Library of Congress last night\", not a row of zeros."
+    ],
+    "donts": [
+      "**Don't** round corners, add gradients, glows, or glass.",
+      "**Don't** use red for decoration; red means marked.",
+      "**Don't** set any text below 12px.",
+      "**Don't** draw imitation newspapers or illustrations; use real scans.",
+      "**Don't** resemble or reference Carmen Sandiego in any name, character, look or structure. The guide is \"the City Editor\".",
+      "**Don't** let a button promise what doesn't happen (\"Send\" when nothing is sent)."
+    ]
+  }
+}
