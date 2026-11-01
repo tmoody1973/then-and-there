@@ -81,6 +81,14 @@ describe("runNight", () => {
     expect(rec.lines.find((l) => !l.owner)!.line).toContain("Editor confirmed 0. Sent 0 notes.");
   });
 
+  test("each batch prints a count-only progress line as it finishes, so a killed run still leaves a trace", async () => {
+    const { deps, rec } = fake();
+    await runNight(deps, OPTS);
+    const progress = rec.printed.findIndex((l) => l === "batch 1 of 1 read: 2 pages");
+    expect(progress).toBeGreaterThanOrEqual(0);
+    expect(progress).toBeLessThan(rec.printed.length - 1);
+  });
+
   test("a failed batch is not saved as seen", async () => {
     const { deps, rec } = fake({ list: [batch("old"), batch("good"), batch("bad")], failDownload: ["bad"] });
     const s = await runNight(deps, OPTS);

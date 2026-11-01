@@ -16,6 +16,8 @@ const DEFAULT_429_WAIT_MS = 60_000;
 const MAX_429 = 3;
 const MAX_5XX = 3;
 const SERVER_ERROR_WAIT_MS = 30_000;
+// fetch has no time limit of its own; one stalled answer must not hold a whole run.
+const REQUEST_TIMEOUT_MS = 60_000;
 // The Library 403s some default user agents; always identify ourselves.
 const USER_AGENT = "then-and-there/0.1 (historic newspaper research; Radio Milwaukee)";
 
@@ -48,6 +50,7 @@ type Opts = {
   sleep?: (ms: number) => Promise<void>;
   jsonPerMinute?: number;
   servicesPerMinute?: number;
+  timeoutMs?: number;
 };
 
 type Bucket = { limit: number; stamps: number[] };
@@ -98,7 +101,7 @@ export function createLocClient(opts: Opts = {}): LocClient {
     let serverErrors = 0;
     for (;;) {
       await takeSlot(bucket);
-      const res = await fetchImpl(url, { headers: { "user-agent": USER_AGENT } });
+      const res = await fetchImpl(url, { headers: { "user-agent": USER_AGENT }, signal: AbortSignal.timeout(opts.timeoutMs ?? REQUEST_TIMEOUT_MS) });
       if (res.status === 404) throw new LocNotFoundError(url);
       if (res.status === 429) {
         rateLimited += 1;
