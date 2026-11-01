@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { FindCard, NightLog, WatchList } from "../../components/AgentDigest";
+import { EXAMPLE_NOTE } from "../../lib/agent/example";
 import { ScanCrop } from "../../components/ScanCrop";
 import { PLACES } from "../../lib/agent/places";
 import { markSeen, useAgent } from "../../lib/agent/useAgent";
@@ -55,10 +56,13 @@ export default function MyAgentPage() {
                 ))}
               </div>
             ) : (
-              <p className="agent-empty find-none">
-                No finds yet. Each night the agent reads the pages the Library of Congress has just added. A note lands here
-                only when the Editor confirms the find against the scan.
-              </p>
+              <>
+                <p className="agent-empty find-none">
+                  No finds yet. Each night the agent reads the pages the Library of Congress has just added. A note lands here
+                  only when the Editor confirms the find against the scan.
+                </p>
+                <FindCard note={EXAMPLE_NOTE} example />
+              </>
             )}
           </section>
 

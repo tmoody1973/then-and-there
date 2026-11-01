@@ -21,7 +21,7 @@ const shortDate = (iso: string) => new Date(`${iso}T12:00:00Z`).toLocaleDateStri
 function Sheet({ p, onlyOwn }: { p: DayPaper; onlyOwn: boolean }) {
   const { failed, bind } = useImageFailed();
   return (
-    <div className="od-sheet" style={{ aspectRatio: `${p.width} / ${p.height}` }}>
+    <div className={`od-sheet${onlyOwn ? " is-only-own" : ""}`} style={{ aspectRatio: `${p.width} / ${p.height}` }}>
       {failed ? (
         // Already inside the link to the page; a second link here would nest.
         <p className="od-fallback">Scan unavailable. Tap to open this page at loc.gov.</p>
@@ -76,14 +76,17 @@ export function OneDayView({ day }: { day: DayData }) {
                   <span className="od-place">{p.city}, {p.state} · {shortDate(p.date)}{p.language ? ` · in ${p.language}` : ""}</span>
                 </figcaption>
                 <a href={pageUrl(p.pageId)} title={p.citationMla}><Sheet p={p} onlyOwn={onlyOwn} /></a>
-                {/* Under the sheet, so the three pages still start level for comparison. */}
-                <PageNote pageId={p.pageId} />
                 <p className="od-only only-laptop">
                   {own.length ? `Only here: “${own[0].excerpt.slice(0, 90).trim()}…”` : "Nothing on the story that another paper didn’t also run."}
                 </p>
               </figure>
             );
           })}
+          <div className="od-notes">
+            {day.papers.map((p) => (
+              <PageNote key={p.pageId} pageId={p.pageId} label={p.paper} />
+            ))}
+          </div>
         </div>
 
         <aside className="od-side">

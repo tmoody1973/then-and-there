@@ -30,6 +30,10 @@ const MUST: Partial<Record<Kind, (c: RoundClip) => string | null>> = {
   headline: (c) => (c.segLabel === "headline" ? null : "is not a headline box"),
 };
 const isText = (k: string): k is TextKind => (TEXT_KINDS as readonly string[]).includes(k);
+// The year is the answer, so the clues a player sees before the picture may not print one.
+// A month and day alone (a wire dateline) stays fair.
+const PRINTS_YEAR = /\b1[789]\d\d\b/;
+const BEFORE_PICTURE = 3;
 
 export function validatePicks(picks: Picks, clips: RoundClip[], width: number, height: number): string[] {
   const errors: string[] = [];
@@ -51,6 +55,7 @@ export function validatePicks(picks: Picks, clips: RoundClip[], width: number, h
     const wrong = MUST[kind as Kind]?.(c) ?? (kind !== "photo" && c.segLabel === "photograph" ? "is a picture, not text" : null);
     if (wrong) errors.push(`${kind}: clipping ${i} ${wrong}`);
     if (c.hardHistory) errors.push(`${kind}: clipping ${i} carries a content note`);
+    if (n >= 0 && n < BEFORE_PICTURE && PRINTS_YEAR.test(c.text)) errors.push(`clue ${n + 1}: clipping ${i} prints a year`);
     if ((c.box.w * c.box.h) / (width * height) > MAX_PAGE_SHARE) errors.push(`${kind}: clipping ${i} covers too much of the page`);
   }
   return errors;

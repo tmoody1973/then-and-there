@@ -29,7 +29,7 @@ export function ScanCrop({ iiifBase, box, focus, pageId, alt, citation, ringed =
   const native = widths[widths.length - 1];
   return (
     <figure className="scan">
-      <div className={`proof scan-proof ${tall && !whole ? "is-capped" : ""}`} style={{ maxWidth: `${native}px` }}>
+      <div className={`proof scan-proof ${tall && !whole ? "is-capped" : ""} ${whole ? "is-whole" : ""}`} style={{ maxWidth: `${native}px` }}>
         {failed ? (
           <p className="scan-fallback">
             Scan unavailable right now. <a href={pageUrl(pageId)}>Open this page at loc.gov</a>

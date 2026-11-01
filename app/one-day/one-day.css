@@ -22,7 +22,7 @@
 .od-paper { margin: 0; }
 .od-paper figcaption { min-height: 3.6em; margin-bottom: var(--s2); }
 .od-name { display: block; font-family: var(--font-display); font-weight: 700; font-size: var(--step-0); line-height: 1.15; }
-.od-place { display: block; margin-top: 2px; font-family: var(--font-head); font-size: 0.6875rem; color: var(--ink-2); }
+.od-place { display: block; margin-top: 2px; font-family: var(--font-head); font-size: var(--step--2); color: var(--ink-2); }
 .od-paper > a { display: block; }
 .od-paper > a:focus-visible { outline: var(--pencil-stroke) solid var(--red); outline-offset: 3px; }
 .od-sheet { position: relative; width: 100%; background: var(--paper-bright); box-shadow: 0 0 0 1.5px var(--ink); overflow: hidden; }
@@ -74,4 +74,12 @@
   .od-columns { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 }
 @media (prefers-reduced-motion: reduce) { .od-mark { transition: none; } }
-.od-paper .content-note { margin: var(--s2) 0 0; font-size: var(--step--2); }
+/* Content notes sit under the row, full width, so the three sheets stay level and readable. */
+.od-notes { grid-column: 1 / -1; margin: var(--s1) 0 0; }
+.od-notes:empty { display: none; }
+.content-note-label { font-style: normal; font-family: var(--font-head); font-size: var(--step--2); font-weight: 600; }
+.od-notes .content-note { margin: 0; }
+.od-notes .content-note + .content-note { border-top: 0; }
+/* "Only what changed": the scan steps back so each paper's own pieces stand out in red. */
+.od-sheet img { transition: opacity 220ms var(--ease-out); }
+.od-sheet.is-only-own img { opacity: 0.4; }

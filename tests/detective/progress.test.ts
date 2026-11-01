@@ -29,6 +29,14 @@ describe("case progress", () => {
     expect(advance(answer(end, 2, true, DAY), 3, 2).at).toBe(2);
   });
 
+  test("the port you picked is kept, so a wrong call can show what you chose", () => {
+    const s = answer(FRESH, 0, false, DAY, "Liverpool");
+    expect(s.picks[0]).toBe("Liverpool");
+    expect(parseCase(JSON.stringify(s)).picks[0]).toBe("Liverpool");
+    // Saves from before picks were kept still load.
+    expect(parseCase(JSON.stringify({ at: 1, results: s.results, asked: {} })).picks).toEqual({});
+  });
+
   test("bad saved data starts the case fresh", () => {
     expect(parseCase("not json")).toEqual(FRESH);
     expect(parseCase(JSON.stringify({ at: "x" }))).toEqual(FRESH);

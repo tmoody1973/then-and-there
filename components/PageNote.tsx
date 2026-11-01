@@ -6,7 +6,9 @@ import { useQuery } from "convex/react";
 import { api } from "../convex/_generated/api";
 import { HARD_HISTORY_PAGE_NOTE } from "./ExploreCard";
 
-export function PageNote({ pageId }: { pageId: string }) {
+export function PageNote({ pageId, label }: { pageId: string; label?: string }) {
   const flagged = useQuery(api.clippings.pageFlagged, { pageId });
-  return flagged ? <p className="content-note">{HARD_HISTORY_PAGE_NOTE}</p> : null;
+  if (!flagged) return null;
+  // A label names which page the note is about when several pages share one note area.
+  return <p className="content-note">{label ? <><span className="content-note-label">{label}:</span> </> : null}{HARD_HISTORY_PAGE_NOTE}</p>;
 }
