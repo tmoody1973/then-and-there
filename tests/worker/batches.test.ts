@@ -60,6 +60,15 @@ describe("downloadBatch", () => {
     expect(calls).toBe(4);
   });
 
+  test("a download that stalls is abandoned at the time limit and leaves no file", async () => {
+    const dir = mkdtempSync(join(tmpdir(), "tt-dl-"));
+    // A body that never finishes until the request's signal fires, like a stalled connection.
+    const stalls = (async (_url: string, init?: RequestInit) =>
+      new Response(new ReadableStream({ start: (c) => init?.signal?.addEventListener("abort", () => c.error(init.signal!.reason)) }))) as unknown as typeof fetch;
+    await expect(downloadBatch(entry("slow", "x"), dir, { fetchImpl: stalls, ...noWait, timeoutMs: 20 })).rejects.toThrow();
+    expect(readdirSync(dir)).toEqual([]);
+  });
+
   test("downloadBatch rejects a truncated body", async () => {
     const dir = mkdtempSync(join(tmpdir(), "tt-batch-"));
     const e = entry("short", "full body here");
