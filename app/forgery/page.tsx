@@ -9,7 +9,7 @@ import { iiifCropUrl, pageUrl } from "../../components/iiif";
 import "./forgery.css";
 
 type Box = { x: number; y: number; w: number; h: number };
-type Round = { round: number; image: string; width: number; height: number; pageId: string; iiifBase: string; paper: string; place: string; date: string; citationMla: string; product: string; why: string; parts: Array<{ n: number; forged: boolean; box: Box }>; originalBox: Box };
+type Round = { round: number; image: string; width: number; height: number; pageId: string; iiifBase: string; paper: string; place: string; date: string; citationMla: string; product: string; why: string; parts: Array<{ n: number; label: string; forged: boolean; box: Box }>; originalBox: Box };
 type Saved = { at: number; picks: Record<number, number> };
 
 const rounds = data.rounds as Round[];
@@ -86,7 +86,7 @@ export default function ForgeryPage() {
                 type="button"
                 className={`fg-part ${chosen === p.n ? "is-picked" : ""} ${locked && p.forged ? "is-forged" : ""}`}
                 style={{ left: pct(p.box.x, r.width), top: pct(p.box.y, H), width: pct(p.box.w, r.width), height: pct(p.box.h, H) }}
-                aria-label={`Part ${p.n}`}
+                aria-label={`Part ${p.n}: ${p.label}`}
                 aria-pressed={chosen === p.n}
                 disabled={Boolean(locked)}
                 onClick={() => setPick(p.n)}
@@ -109,6 +109,7 @@ export default function ForgeryPage() {
                 key={p.n}
                 type="button"
                 className={`fg-pick ${chosen === p.n ? "is-picked" : ""} ${locked && p.forged ? "is-forged" : ""}`}
+                aria-label={`Part ${p.n}: ${p.label}`}
                 aria-pressed={chosen === p.n}
                 disabled={Boolean(locked)}
                 onClick={() => setPick(p.n)}

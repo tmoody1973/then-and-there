@@ -2,10 +2,10 @@
 
 // A quest: one real source at a time, an open question from the guide, the reader's own answer,
 // then what the guide noticed. Answers stay in this browser; nothing is sent anywhere.
-import Link from "next/link";
 import { useEffect, useState } from "react";
 import { HARD_HISTORY_NOTE } from "../ExploreCard";
 import { ScanCrop } from "../ScanCrop";
+import { titleCase } from "../../lib/game/format";
 import { type Answers, ANSWER_MAX, CHAPTERS, chapterStates, position, recordAnswer } from "../../lib/quests/quest";
 
 type Box = { x: number; y: number; w: number; h: number };
@@ -22,7 +22,6 @@ export type QuestSource = {
 const KEY = "tt.quest.migration.v1";
 const pageNo = (pageId: string) => pageId.match(/[?&]sp=(\d+)/)?.[1] ?? "1";
 const when = (iso: string) => new Date(`${iso}T12:00:00Z`).toLocaleDateString("en-US", { timeZone: "UTC", month: "short", day: "numeric", year: "numeric" });
-const titleCase = (s: string) => s.replace(/\b\w/g, (c) => c.toUpperCase());
 
 export function QuestView({ sources }: { sources: QuestSource[] }) {
   const [answers, setAnswers] = useState<Answers>({});
@@ -56,11 +55,6 @@ export function QuestView({ sources }: { sources: QuestSource[] }) {
 
   return (
     <main className="qs">
-      <p className="dateline only-phone">
-        <Link href="/">← Today</Link>
-        <span>Quest</span>
-        <span className="qs-ch num">Ch. {s.chapter} of {CHAPTERS.length}</span>
-      </p>
       <header className="qs-head">
         <p className="slugline">Quest · Chapter {s.chapter} of {CHAPTERS.length}</p>
         <h1>The Great Migration through the Black press</h1>

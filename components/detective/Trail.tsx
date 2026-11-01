@@ -19,8 +19,8 @@ export function Trail({ built, here }: Props) {
           ))}
         </ol>
         <p>
-          <span>Left New York, Nov. 14</span>
-          <span className="trail-now">Now: {now.place}</span>
+          <span className="num">Stop {here + 1} of {STOPS.length}</span>
+          <span className="trail-now">{here === 0 ? `Leaving ${now.place}, Nov. 14` : `Now: ${now.place}`}</span>
         </p>
       </div>
       <nav className="trail-list only-laptop" aria-label="The trail">

@@ -4,7 +4,6 @@ import Link from "next/link";
 import { useQuery } from "convex/react";
 import { useEffect, useRef, useState } from "react";
 import { api } from "../../convex/_generated/api";
-import { DeskLink } from "../../components/DeskLink";
 import { type Card, clipRefOf, ExploreCard, longDay, marked, paperName } from "../../components/ExploreCard";
 import { Caret, Check } from "../../components/Marks";
 import { markSeen, useAgent } from "../../lib/agent/useAgent";
@@ -91,9 +90,7 @@ export default function ExplorePage() {
       <header className="wire-head">
         <p className="dateline">
           <Link href="/">← Today</Link>
-          <span>
-            Explore · <DeskLink />
-          </span>
+          <span>Search the archive</span>
         </p>
         <h1>Find the stories nobody knew to search for.</h1>
         <form

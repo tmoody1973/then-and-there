@@ -9,6 +9,7 @@ import { PageNote } from "../PageNote";
 import { ScanCrop } from "../ScanCrop";
 import { useImageFailed } from "../useImageFailed";
 import { DAYS, dayLabel, weekday } from "../../lib/oneday/days";
+import { titleCase } from "../../lib/game/format";
 
 type Box = { x: number; y: number; w: number; h: number };
 type Mark = { box: Box; mark: "wire" | "own"; excerpt: string };
@@ -39,10 +40,14 @@ function Sheet({ p, onlyOwn }: { p: DayPaper; onlyOwn: boolean }) {
   );
 }
 
-export function OneDayView({ day }: { day: DayData }) {
+export function OneDayView({ day: raw }: { day: DayData }) {
   const [onlyOwn, setOnlyOwn] = useState(false);
+  // The catalog's casing ("New-York tribune") stays in the citations; headings read like a nameplate.
+  const day = { ...raw, papers: raw.papers.map((p) => ({ ...p, paper: titleCase(p.paper) })) };
   const meta = DAYS.find((d) => d.slug === day.slug)!;
   const others = DAYS.filter((d) => d.slug !== day.slug);
+  // Most of these papers carried the news the morning after; say so once, so "Aug 27" under an Aug 26 heading isn't a puzzle.
+  const nextDay = day.papers.filter((p) => p.date > day.slug).length;
   return (
     <main className="od">
       <p className="dateline only-phone">
@@ -58,6 +63,11 @@ export function OneDayView({ day }: { day: DayData }) {
           </p>
           <h1>{dayLabel(day.slug)}</h1>
           <p className="od-dek">{meta.dek}</p>
+          {nextDay ? (
+            <p className="caption od-when">
+              {nextDay === day.papers.length ? "Every paper here" : `${nextDay} of ${day.papers.length} papers`} printed it the next morning.
+            </p>
+          ) : null}
         </div>
         <div className="od-toggle" role="group" aria-label="What to show">
           <button type="button" aria-pressed={!onlyOwn} onClick={() => setOnlyOwn(false)}>All coverage</button>
