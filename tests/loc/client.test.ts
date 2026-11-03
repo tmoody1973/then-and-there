@@ -7,7 +7,7 @@ import {
   LocRateLimitError,
 } from "../../lib/loc/errors";
 
-type Reply = { status?: number; body?: string; contentType?: string };
+type Reply = { status?: number; body?: string; contentType?: string; retryAfter?: string };
 
 // Fake clock: sleep advances time, so the limiter's waits are observable.
 function harness(replies: Reply[] | ((url: string) => Reply)) {
@@ -21,7 +21,7 @@ function harness(replies: Reply[] | ((url: string) => Reply)) {
     const r = queue ? queue.shift() ?? {} : (replies as (u: string) => Reply)(url);
     return new Response(r.body ?? "{}", {
       status: r.status ?? 200,
-      headers: { "content-type": r.contentType ?? "application/json" },
+      headers: { "content-type": r.contentType ?? "application/json", ...(r.retryAfter ? { "retry-after": r.retryAfter } : {}) },
     });
   }) as typeof fetch;
   const client = createLocClient({
@@ -103,6 +103,12 @@ describe("LocClient", () => {
     const { client, sleeps } = harness([{ status: 429 }, { body: '{"ok":true}' }]);
     await expect(client.getPageJson("https://www.loc.gov/resource/a/")).resolves.toEqual({ ok: true });
     expect(Math.max(...sleeps)).toBeGreaterThanOrEqual(60_000);
+  });
+
+  test("a 429 asking for an hour gives up now instead of sleeping through the night's run", async () => {
+    const { client, sleeps } = harness([{ status: 429, retryAfter: "3600" }, { body: '{"ok":true}' }]);
+    await expect(client.getPageJson("https://www.loc.gov/resource/a/")).rejects.toBeInstanceOf(LocRateLimitError);
+    expect(Math.max(0, ...sleeps)).toBeLessThanOrEqual(5 * 60_000);
   });
 
   test("503 backs off then retries", async () => {

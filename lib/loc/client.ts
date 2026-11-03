@@ -14,6 +14,8 @@ const WINDOW_MS = 60_000;
 const BLOCK_PAUSE_MS = 10 * 60_000;
 const DEFAULT_429_WAIT_MS = 60_000;
 const MAX_429 = 3;
+// The Library's block lasts an hour; sleeping through it would eat the nightly job's 60 minutes.
+const MAX_RETRY_AFTER_MS = 5 * 60_000;
 const MAX_5XX = 3;
 const SERVER_ERROR_WAIT_MS = 30_000;
 // fetch has no time limit of its own; one stalled answer must not hold a whole run.
@@ -106,8 +108,9 @@ export function createLocClient(opts: Opts = {}): LocClient {
       if (res.status === 429) {
         rateLimited += 1;
         if (rateLimited >= MAX_429) throw new LocRateLimitError(url);
-        const retryAfter = Number(res.headers.get("retry-after"));
-        await sleep(retryAfter > 0 ? retryAfter * 1000 : DEFAULT_429_WAIT_MS);
+        const retryAfter = Number(res.headers.get("retry-after")) * 1000;
+        if (retryAfter > MAX_RETRY_AFTER_MS) throw new LocRateLimitError(url);
+        await sleep(retryAfter > 0 ? retryAfter : DEFAULT_429_WAIT_MS);
         continue;
       }
       if (res.status >= 500) {
