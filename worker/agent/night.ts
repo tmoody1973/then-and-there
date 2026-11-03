@@ -211,7 +211,7 @@ export async function runNight(deps: NightDeps, opts: { today: string; replay?: 
   }
 
   // 7–8. The log, then remember which batches are done (failed ones are retried tomorrow).
-  const shared = activityLine({ batches: s.batches, pages: s.pages, follows: s.follows, candidates: s.candidates, capped: s.capped, confirmed: s.confirmed, notes: s.notes, replay });
+  const shared = activityLine({ batches: s.batches, pages: s.pages, follows: s.follows, candidates: s.candidates, capped: s.capped, confirmed: s.confirmed, notes: s.notes, replay, failed: todo.length - scanned.length });
   await deps.store.log([{ runId, line: shared, replay, createdAt: now }, ...lines]);
   deps.print(shared);
   for (const why of s.skipped) deps.print(`skipped: ${why}`);

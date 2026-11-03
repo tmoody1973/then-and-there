@@ -3,10 +3,13 @@
 const n = (count: number, one: string, many: string) => `${count.toLocaleString("en-US")} ${count === 1 ? one : many}`;
 const READ = (pages: number) => `Read ${n(pages, "page", "pages")} the Library of Congress just added`;
 
-export function activityLine(s: { batches: number; pages: number; follows: number; candidates: number; capped: number; confirmed: number; notes: number; replay: boolean }): string {
-  // A quiet night reads as a sentence; a row of zeros reads as a failure.
+export function activityLine(s: { batches: number; pages: number; follows: number; candidates: number; capped: number; confirmed: number; notes: number; replay: boolean; failed?: number }): string {
+  // A quiet night reads as a sentence; a row of zeros reads as a failure. A failed download is not a quiet night.
+  const blocked = s.replay
+    ? "Couldn't download that batch from the Library of Congress. Nothing was searched."
+    : "Couldn't download the new pages from the Library of Congress last night. Trying again tomorrow.";
   const quiet = !s.batches
-    ? "No new pages from the Library of Congress last night. Nothing to search."
+    ? s.failed ? blocked : "No new pages from the Library of Congress last night. Nothing to search."
     : !s.candidates
       ? `${READ(s.pages)}. None mentioned a name or town readers watch.`
       : null;
