@@ -119,7 +119,7 @@ export default function ForgeryPage() {
             ))}
           </div>
           <p className="fg-note">
-            Muse Image changed one thing on this real page, for this round only. The untouched original is one tap away
+            An AI image model, Meta&apos;s Muse Image, changed one thing on this real page, for this round only. The untouched original is one tap away
             after you answer.
           </p>
           {!locked ? (
@@ -132,7 +132,7 @@ export default function ForgeryPage() {
               <div className="fg-compare">
                 <figure>
                   <ForgedCut r={r} box={forged.box} />
-                  <figcaption>What Muse Image drew: {r.product}</figcaption>
+                  <figcaption>What the AI drew: {r.product}</figcaption>
                 </figure>
                 <figure>
                   <img src={iiifCropUrl(r.iiifBase, r.originalBox, 600)} style={{ aspectRatio: `${r.originalBox.w} / ${r.originalBox.h}` }} alt="The advertisement as the paper really printed it" />

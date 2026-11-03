@@ -53,7 +53,7 @@ export function SiteHeader() {
       <div className="site-head-inner double-rule">
         <p className="site-edition">
           <Today />
-          <span>Free edition</span>
+          <span>Free · no sign-up</span>
         </p>
         <Link href="/" className="nameplate" aria-label="Then & There, today's edition">
           Then &amp; There

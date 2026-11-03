@@ -134,3 +134,5 @@ button.fp-clue-name:hover, button.fp-clue-name[aria-current] { text-decoration: 
 @media (prefers-reduced-motion: reduce) { .fp-slot.is-shown { animation: none; } }
 /* On a laptop the whole page fits the window, so the clue reader stays in reach. */
 @media (min-width: 960px) { .fp-board { width: min(100%, calc(80vh * var(--aspect))); } }
+/* Phone: the board is a small locator; only the clue being read keeps its tag, so it matches the panel beside it. */
+@media (max-width: 959px) { .fp-slot.is-shown:not(.is-selected) .fp-tag { display: none; } }

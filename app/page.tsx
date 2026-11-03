@@ -12,10 +12,10 @@ import { useSafeQuery } from "../lib/useSafeQuery";
 import "./home.css";
 
 const WAYS = [
-  { href: "/play", slug: "Detective · Case 01", phoneSlug: "Detective", title: "Nellie Bly's race around the world", phoneTitle: "Nellie Bly's race", blurb: "Follow her 1889–90 trail stop by stop, using only what the papers printed.", phoneBlurb: "Case 01 · 1889–90" },
-  { href: "/one-day", slug: "One day, many papers", phoneSlug: "One day, many papers", title: "August 26, 1920", phoneTitle: "August 26, 1920", blurb: "The 19th Amendment is certified. See how papers across the country told it.", phoneBlurb: "Suffrage, coast to coast" },
-  { href: "/quests", slug: "Quest · 4 chapters", phoneSlug: "Quest", title: "The Great Migration through the Black press", phoneTitle: "The Great Migration", blurb: "A guided journey through primary sources, one question at a time.", phoneBlurb: "Through the Black press" },
-  { href: "/forgery", slug: "Spot the forgery", phoneSlug: "Spot the forgery", title: "One thing on this page was never printed", phoneTitle: "One page is lying", blurb: "Find the anachronism planted on a real page from 1889–90.", phoneBlurb: "5 rounds · pages from 1889–90" },
+  { href: "/play", slug: "Detective · Case 01", phoneSlug: "Detective", title: "Nellie Bly's race around the world", phoneTitle: "Nellie Bly's race", blurb: "Follow her 1889–90 trail stop by stop, using only what the papers printed.", phoneBlurb: "Follow her trail, port by port" },
+  { href: "/one-day", slug: "One day, many papers", phoneSlug: "One day, many papers", title: "August 26, 1920", phoneTitle: "August 26, 1920", blurb: "The 19th Amendment is certified. See how papers across the country told it.", phoneBlurb: "Compare three front pages" },
+  { href: "/quests", slug: "Quest · 4 chapters", phoneSlug: "Quest", title: "The Great Migration through the Black press", phoneTitle: "The Great Migration", blurb: "A guided journey through primary sources, one question at a time.", phoneBlurb: "Read the sources, answer the guide" },
+  { href: "/forgery", slug: "Spot the forgery", phoneSlug: "Spot the forgery", title: "One thing on this page was never printed", phoneTitle: "One page is lying", blurb: "Find the anachronism planted on a real page from 1889–90.", phoneBlurb: "Find the fake on a real page" },
 ];
 
 const monthYear = (date: string) => new Date(`${date}T12:00:00Z`).toLocaleDateString("en-US", { timeZone: "UTC", month: "long", year: "numeric" });
@@ -102,14 +102,14 @@ export default function Today() {
       <aside className="today-agent only-laptop" aria-labelledby="agent-h">
         <p className="slugline">My Agent</p>
         <h2 id="agent-h">Digging while you&apos;re away</h2>
-        <p className="agent-sub">Quiet by default. It only writes when it finds something real.</p>
+        <p className="agent-sub">Give it a family name or a town. Each night it reads the pages the Library of Congress just added, and leaves you a note here when one turns up.</p>
         {agent.mine === undefined ? (
           <p className="agent-empty">Opening your agent…</p>
         ) : note ? (
           <FindCard note={note} href={`/desk#find-${note.clippingId}`} onDismiss={() => agent.dismiss(note.clippingId)} />
         ) : (
           <>
-            <p className="agent-empty">Nothing found yet. A note appears here only when the Editor confirms a find against the scan.</p>
+            <p className="agent-empty">Nothing found yet. A note appears here only after the Editor, a second AI model, checks the find against the scan.</p>
             <FindCard note={EXAMPLE_NOTE} example />
           </>
         )}
