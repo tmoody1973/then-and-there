@@ -16,6 +16,12 @@ describe("activityLine", () => {
     );
   });
 
+  test("a night whose batches could not be downloaded says so, not that nothing was added", () => {
+    const none = { ...base, batches: 0, pages: 0, candidates: 0, confirmed: 0, notes: 0, failed: 1 };
+    expect(activityLine(none)).toBe("Couldn't download the new pages from the Library of Congress last night. Trying again tomorrow.");
+    expect(activityLine({ ...none, replay: true })).toBe("Replay: Couldn't download that batch from the Library of Congress. Nothing was searched.");
+  });
+
   test("a quiet night says so in words, not a row of zeros", () => {
     expect(activityLine({ ...base, batches: 0, pages: 0, candidates: 0, confirmed: 0, notes: 0 })).toBe(
       "No new pages from the Library of Congress last night. Nothing to search.",

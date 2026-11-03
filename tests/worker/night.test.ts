@@ -96,6 +96,12 @@ describe("runNight", () => {
     expect(s.skipped.join(" ")).toContain("bad");
   });
 
+  test("when every new batch fails to download, the shared line says so instead of 'no new pages'", async () => {
+    const { deps, rec } = fake({ failDownload: ["new1"] });
+    await runNight(deps, OPTS);
+    expect(rec.lines.find((l) => !l.owner)!.line).toBe("Couldn't download the new pages from the Library of Congress last night. Trying again tomorrow.");
+  });
+
   test("nothing printed or sent to the Editor contains a follow value or a key", async () => {
     const { deps, rec } = fake({
       follows: [
