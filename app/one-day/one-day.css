@@ -83,3 +83,5 @@
 /* "Only what changed": the scan steps back so each paper's own pieces stand out in red. */
 .od-sheet img { transition: opacity 220ms var(--ease-out); }
 .od-sheet.is-only-own img { opacity: 0.4; }
+/* Own pieces carry stripes as well as red, so the key never rests on color alone. */
+.od-mark.is-own, .od-key.is-own { background-image: repeating-linear-gradient(45deg, rgb(250 249 245 / 0.45) 0 2px, transparent 2px 6px); }

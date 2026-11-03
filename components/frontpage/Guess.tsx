@@ -3,7 +3,7 @@
 import { REGIONS, type Region } from "../../lib/frontpage/rules";
 
 export const YEAR_MIN = 1770;
-export const YEAR_MAX = 1963;
+export const YEAR_MAX = 1930; // every page in the rotation was printed before 1931
 
 export function Guess({ year, region, onYear, onRegion, onLock }: { year: number; region: Region | null; onYear: (y: number) => void; onRegion: (r: Region) => void; onLock: () => void }) {
   const fill = `${((year - YEAR_MIN) / (YEAR_MAX - YEAR_MIN)) * 100}%`;

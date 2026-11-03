@@ -15,7 +15,7 @@ const WAYS = [
   { href: "/play", slug: "Detective · Case 01", phoneSlug: "Detective", title: "Nellie Bly's race around the world", phoneTitle: "Nellie Bly's race", blurb: "Follow her 1889–90 trail stop by stop, using only what the papers printed.", phoneBlurb: "Case 01 · 1889–90" },
   { href: "/one-day", slug: "One day, many papers", phoneSlug: "One day, many papers", title: "August 26, 1920", phoneTitle: "August 26, 1920", blurb: "The 19th Amendment is certified. See how papers across the country told it.", phoneBlurb: "Suffrage, coast to coast" },
   { href: "/quests", slug: "Quest · 4 chapters", phoneSlug: "Quest", title: "The Great Migration through the Black press", phoneTitle: "The Great Migration", blurb: "A guided journey through primary sources, one question at a time.", phoneBlurb: "Through the Black press" },
-  { href: "/forgery", slug: "Spot the forgery", phoneSlug: "Spot the forgery", title: "One thing on this page was never printed", phoneTitle: "One page is lying", blurb: "Find the anachronism planted on a real page from 1889–90.", phoneBlurb: "Round 1 · an 1889–90 page" },
+  { href: "/forgery", slug: "Spot the forgery", phoneSlug: "Spot the forgery", title: "One thing on this page was never printed", phoneTitle: "One page is lying", blurb: "Find the anachronism planted on a real page from 1889–90.", phoneBlurb: "5 rounds · pages from 1889–90" },
 ];
 
 const monthYear = (date: string) => new Date(`${date}T12:00:00Z`).toLocaleDateString("en-US", { timeZone: "UTC", month: "long", year: "numeric" });
@@ -52,7 +52,7 @@ export default function Today() {
           </div>
         </section>
 
-        <section className="agent-flash only-phone" aria-labelledby="flash-h">
+        <section className={`agent-flash only-phone${note ? "" : " is-setup"}`} aria-labelledby="flash-h">
           {note ? (
             <>
               <p className="slugline" id="flash-h">Your agent found something</p>

@@ -4,7 +4,6 @@
 .qs { width: min(100% - 2 * var(--s4), var(--wide)); margin: 0 auto; padding-bottom: var(--s8); }
 .qs .dateline { margin-inline: calc(-1 * var(--s4)); padding-inline: var(--s4); font-family: var(--font-head); font-size: var(--step--1); font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; }
 .qs .dateline a { text-transform: none; letter-spacing: 0; }
-.qs-ch { color: var(--red); }
 .qs-head { margin: var(--s5) 0 var(--s5); padding-bottom: var(--s4); border-bottom: 3px solid var(--ink); box-shadow: 0 3px 0 var(--paper), 0 4px 0 var(--ink); }
 .qs-head h1 { margin: 0 0 var(--s3); font-size: var(--step-3); line-height: 1.05; text-wrap: balance; max-width: 22ch; }
 .qs-bar { list-style: none; margin: 0 0 var(--s2); padding: 0; display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--s2); max-width: 32rem; }
@@ -44,4 +43,10 @@
   .qs-grid { grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: var(--s7); align-items: start; }
   .qs-card { padding: var(--s5); }
   .qs-guide { position: sticky; top: var(--s4); padding: var(--s5); }
+}
+/* Phone: the guide's question shares the first screen with the source (mockup p-07). The crop shows
+   its top; "Read the whole clipping" opens all of it. Looser than Detective's: here you read it. */
+@media (max-width: 959px) {
+  .qs-card .scan-proof:not(.is-whole), .qs-card .scan-proof:not(.is-whole) img { max-height: 32svh; }
+  .qs-card .scan-proof:not(.is-whole) img { object-fit: cover; object-position: top; }
 }

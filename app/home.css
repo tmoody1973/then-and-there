@@ -30,6 +30,8 @@
 
 /* ---------- The agent's flash (phone) ---------- */
 .agent-flash { padding: var(--s4); background: var(--paper-raised); border-top: 3px solid var(--red); }
+/* With nothing found yet, the setup prompt waits under the games so they share the first screen. */
+.agent-flash.is-setup { order: 1; }
 .agent-flash-text { font-size: var(--step-1); line-height: 1.35; margin-bottom: var(--s4); }
 .agent-flash a { font-family: var(--font-head); font-weight: 700; font-size: var(--step--1); color: var(--ink); }
 

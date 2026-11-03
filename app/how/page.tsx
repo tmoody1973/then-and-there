@@ -110,7 +110,7 @@ export default function HowItWorks() {
       ) : null}
 
       <p>
-        <Link href="/play">Race Nellie Bly</Link>
+        <Link href="/play">Play the Detective case: follow Nellie Bly</Link>
       </p>
     </main>
   );

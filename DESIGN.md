@@ -112,7 +112,7 @@ A newsprint palette: warm off-whites, near-black ink, and one red pencil.
 
 **The One Pencil Rule.** Red marks something a person or the Editor did: checked, chosen, current, altered. If nothing was marked, it is not red.
 
-**The Paper Never Glows Rule.** No gradients, tints or glows on the ground. Hatching (diagonal lines on a dashed box) is allowed only for a slot on the Front Page board that hides a real clipping.
+**The Paper Never Glows Rule.** No gradients, tints or glows on the ground. Hatching (diagonal lines) is allowed in two places only: a dashed slot on the Front Page board that hides a real clipping, and a paper's own pieces in One Day (over the red, and on the legend's swatch), so "only in this paper" never rests on color alone.
 
 ## Typography
 
@@ -137,7 +137,7 @@ A newsprint palette: warm off-whites, near-black ink, and one red pencil.
 A single column for reading (`40rem`) and a wide frame (`80rem`) for play, on an 8-step spacing scale from 4px to 64px.
 
 - **Laptop (960px and up):** the nameplate, section nav and date on one line over a double rule. Games use two columns: the page or board on the left, a sticky side panel (clues, guess, guide) on the right.
-- **Phone (under 960px):** a top bar with back link, section slug and the one number that matters (points, days left), over a double rule; a bottom tab bar on Detective, Quests and My Agent. The primary action belongs on the first screen: on Front Page the board shrinks to a locator beside the clue so the guess fits; on Detective the clue crop is capped so the question follows close behind.
+- **Phone (under 960px):** a top bar with back link, section slug and the one number that matters (points, days left), over a double rule; a bottom tab bar on Today, Quests and My Agent. Inside a game (Front Page, Detective, One Day, Forgery) a "← Today" bar replaces it (mockup p-02, p-04 to p-06). The primary action belongs on the first screen: on Front Page the board shrinks to a locator beside the clue so the guess fits; on Detective the clue crop is capped so the question follows close behind.
 - Comparisons stay side by side even on phone (One Day's three sheets), with anything long (content notes) moved full-width below the row so the sheets start level.
 
 **The First Screen Rule.** On a phone, the screen a player lands on must show the thing to look at and the way to answer it.

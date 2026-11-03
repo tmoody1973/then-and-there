@@ -22,8 +22,9 @@ const TABS = [
   { href: "/quests", label: "Quests", Icon: RouteIcon },
   { href: "/desk", label: "My Agent", Icon: PersonIcon },
 ];
-// Inside a round the screen belongs to the game; the tab bar steps aside.
-const IN_PLAY = /^\/(front-page|forgery|one-day|play\/(\d+|finale))/;
+// Inside a game the screen belongs to it: a "← Today" bar on top, no tab bar (mockup p-02, p-04, p-05, p-06).
+// Quests and My Agent are tab screens: tab bar, no back bar (mockup p-03, p-07).
+const IN_PLAY = /^\/(front-page|forgery|one-day|play)(\/|$)/;
 
 const isActive = (path: string, href: string) => (href === "/" ? path === "/" : path === href || path.startsWith(`${href}/`));
 
