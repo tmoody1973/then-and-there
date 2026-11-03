@@ -69,16 +69,16 @@ describe("runNight", () => {
     expect(rec.notes).toHaveLength(1);
     expect(s).toMatchObject({ batches: 1, pages: 2, follows: 1, candidates: 1, notes: 1 });
     const shared = rec.lines.find((l) => !l.owner)!;
-    expect(shared.line).toBe("Checked 1 new batch (2 pages). Searched 1 follow. 1 candidate. Editor confirmed 1. Sent 1 note.");
+    expect(shared.line).toBe("Read 2 pages the Library of Congress just added, looking for the names and towns readers watch. 1 possible match; the Editor confirmed 1 against the scan. Sent 1 note.");
     expect(rec.lines.some((l) => l.owner === KEY)).toBe(true);
     expect(JSON.parse(rec.state.batches)).toEqual(["old", "new1"]);
   });
 
-  test('an Editor fail sends no note and the line says "Editor confirmed 0"', async () => {
+  test('an Editor fail sends no note and the line says the Editor confirmed 0', async () => {
     const { deps, rec } = fake({ editorPass: false });
     await runNight(deps, OPTS);
     expect(rec.notes).toEqual([]);
-    expect(rec.lines.find((l) => !l.owner)!.line).toContain("Editor confirmed 0. Sent 0 notes.");
+    expect(rec.lines.find((l) => !l.owner)!.line).toContain("the Editor confirmed 0 against the scan. No new notes.");
   });
 
   test("each batch prints a count-only progress line as it finishes, so a killed run still leaves a trace", async () => {
@@ -162,7 +162,7 @@ describe("runNight", () => {
     const { deps, rec } = fake({ pageCount: 12, editorPass: false });
     const s = await runNight(deps, OPTS);
     expect(s.capped).toBe(7);
-    expect(rec.lines.find((l) => !l.owner)!.line).toContain("5 candidates (7 more set aside)");
+    expect(rec.lines.find((l) => !l.owner)!.line).toContain("5 possible matches (7 more past tonight's limit)");
   });
 
   test("a page already processed is reused, not re-processed, so its clippings keep their ids (review #2)", async () => {

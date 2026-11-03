@@ -68,6 +68,10 @@ export function OneDayView({ day: raw }: { day: DayData }) {
               {nextDay === day.papers.length ? "Every paper here" : `${nextDay} of ${day.papers.length} papers`} printed it the next morning.
             </p>
           ) : null}
+          <p className="od-how">
+            Gray marks wire copy, the same story sent to many papers. Red marks what each paper wrote for itself. Switch
+            to “Only what changed” to see just the red.
+          </p>
         </div>
         <div className="od-toggle" role="group" aria-label="What to show">
           <button type="button" aria-pressed={!onlyOwn} onClick={() => setOnlyOwn(false)}>All coverage</button>
@@ -101,7 +105,7 @@ export function OneDayView({ day: raw }: { day: DayData }) {
 
         <aside className="od-side">
           <ul className="od-legend" role="list">
-            <li><span className="od-key is-wire" /> Shared wire copy</li>
+            <li><span className="od-key is-wire" /> Wire copy, run by other papers too</li>
             <li><span className="od-key is-own" /> Only in this paper</li>
           </ul>
           {day.noticed ? (

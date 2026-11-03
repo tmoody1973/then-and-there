@@ -12,6 +12,7 @@ import { type CaseStop, optionsFor, STOPS } from "../../lib/detective/case";
 import { advance, answer, askEditor, left } from "../../lib/detective/progress";
 import { useCase } from "../../lib/detective/useCase";
 import { monthDay } from "../../lib/game/format";
+import { WRONG_COST } from "../../lib/game/scoring";
 import "../agent.css";
 import "./case.css";
 
@@ -77,6 +78,7 @@ export default function CasePage() {
             <>
               {/* The mockup's question when we hold the next dispatch; otherwise the question that stays true. */}
               <h2 className="case-q">{nextBuilt?.n === n + 1 ? q.prompt : "Where does she stop next?"}</h2>
+              {!result ? <p className="case-stakes">A wrong port costs {WRONG_COST} days.</p> : null}
               <ul className="case-options" role="list">
                 {q.options.map((opt, i) => (
                   <li key={opt}>
@@ -95,7 +97,7 @@ export default function CasePage() {
               {result ? (
                 <div className="case-verdict" role="status">
                   <p>
-                    {result.correct ? <>Right. Her next stop was {next.place}.</> : <>Not this time. Her next stop was {next.place}. That cost 3 days.</>}
+                    {result.correct ? <>Right. Her next stop was {next.place}.</> : <>Not this time. Her next stop was {next.place}. That cost {WRONG_COST} days.</>}
                     {nextBuilt && nextBuilt.n !== n + 1 ? " No paper in our files reported her there, so the trail picks her up further on." : ""}
                   </p>
                   {nextBuilt ? (

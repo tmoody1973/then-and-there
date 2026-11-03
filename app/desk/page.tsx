@@ -40,7 +40,7 @@ export default function MyAgentPage() {
       <header className="agent-head double-rule">
         <p className="slugline">My Agent</p>
         <h1>Digging while you&apos;re away</h1>
-        <p className="agent-sub">Quiet by default. It only writes when it finds something real.</p>
+        <p className="agent-sub">Give it a family name or a town. Each night it reads the pages the Library of Congress just added, and leaves you a note here when one turns up.</p>
       </header>
 
       <div className="agent-columns">
@@ -58,8 +58,8 @@ export default function MyAgentPage() {
             ) : (
               <>
                 <p className="agent-empty find-none">
-                  No finds yet. Each night the agent reads the pages the Library of Congress has just added. A note lands here
-                  only when the Editor confirms the find against the scan.
+                  No finds yet. A note lands here only after the Editor, a second AI model, checks the find against the
+                  scan.
                 </p>
                 <FindCard note={EXAMPLE_NOTE} example />
               </>

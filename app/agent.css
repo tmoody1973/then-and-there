@@ -4,7 +4,7 @@
   font-family: var(--font-head); font-size: var(--step--2); font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase;
 }
 .rule-head::after, .agent-label::after { content: ""; flex: 1; border-top: 1px solid var(--ink); }
-.agent-sub { margin: 0 0 var(--s4); font-family: var(--font-head); font-size: var(--step--2); line-height: 1.5; color: var(--ink-2); }
+.agent-sub { margin: 0 0 var(--s4); font-size: var(--step--1); line-height: 1.45; color: var(--ink-2); max-width: 52ch; }
 .agent-empty { color: var(--ink-2); font-size: var(--step--1); }
 
 .find-card { padding: var(--s4); background: var(--paper-raised); border-top: 3px solid var(--red); }
