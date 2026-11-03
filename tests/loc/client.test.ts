@@ -189,3 +189,10 @@ describe("LocClient", () => {
     expect(calls).toHaveLength(1);
   });
 });
+
+test("a request that never answers is abandoned at the time limit", async () => {
+  const hangs = (async (_url: string, init?: RequestInit) =>
+    new Promise((_, reject) => init?.signal?.addEventListener("abort", () => reject(init.signal!.reason)))) as unknown as typeof fetch;
+  const client = createLocClient({ fetchImpl: hangs, timeoutMs: 20 });
+  await expect(client.getText("https://chroniclingamerica.loc.gov/x/ocr.txt")).rejects.toThrow();
+});

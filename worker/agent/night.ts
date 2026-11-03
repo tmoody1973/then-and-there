@@ -138,6 +138,8 @@ export async function runNight(deps: NightDeps, opts: { today: string; replay?: 
       }
       s.pages += pages;
       scanned.push(b.batch);
+      // Printed now, not with the summary: if the job is killed later, the log still shows this much.
+      deps.print(`batch ${todo.indexOf(b) + 1} of ${todo.length} read: ${pages.toLocaleString("en-US")} pages`);
     } catch (e) {
       s.skipped.push(`batch ${b.batch}: ${firstLine(e)}`);
     }

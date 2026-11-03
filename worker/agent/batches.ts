@@ -46,13 +46,29 @@ export function createBulkLimiter(deps: { now?: () => number; sleep?: (ms: numbe
 }
 
 // Streams to disk while hashing; a short body or a checksum mismatch leaves no file behind.
+// On "too many requests" it waits (Retry-After, else a minute) and tries again, like lib/loc/client.ts;
+// after three waits the batch is skipped for the night and retried tomorrow.
+const MAX_429_WAITS = 3;
+const DEFAULT_429_WAIT_MS = 60_000;
+const MAX_RETRY_AFTER_MS = 5 * 60_000;
+// No fetch has a time limit of its own: a stalled connection would hang until GitHub kills the job
+// at 60 minutes, losing the night's log. 492 MB took 16 s from a laptop; 15 minutes is generous.
+const DOWNLOAD_TIMEOUT_MS = 15 * 60_000;
+
 export async function downloadBatch(
   entry: BatchEntry,
   dir: string,
-  deps: { fetchImpl?: typeof fetch; takeSlot: () => Promise<void> },
+  deps: { fetchImpl?: typeof fetch; takeSlot: () => Promise<void>; sleep?: (ms: number) => Promise<void>; timeoutMs?: number },
 ): Promise<string> {
+  const sleep = deps.sleep ?? ((ms: number) => new Promise<void>((r) => setTimeout(r, ms)));
+  const get = () => (deps.fetchImpl ?? fetch)(entry.url, { headers: { "user-agent": USER_AGENT }, signal: AbortSignal.timeout(deps.timeoutMs ?? DOWNLOAD_TIMEOUT_MS) });
   await deps.takeSlot();
-  const res = await (deps.fetchImpl ?? fetch)(entry.url, { headers: { "user-agent": USER_AGENT } });
+  let res = await get();
+  for (let waits = 0; res.status === 429 && waits < MAX_429_WAITS; waits += 1) {
+    const after = Number(res.headers.get("retry-after")) * 1000;
+    await sleep(after > 0 ? Math.min(after, MAX_RETRY_AFTER_MS) : DEFAULT_429_WAIT_MS);
+    res = await get();
+  }
   if (!res.ok || !res.body) throw new BatchChecksumError(entry.batch, `HTTP ${res.status}`);
   const path = join(dir, `${entry.batch}.tar.bz2`);
   const hash = createHash("sha256");
@@ -64,9 +80,12 @@ export async function downloadBatch(
       bytes += chunk.length;
       if (!out.write(chunk)) await new Promise((r) => out.once("drain", r));
     }
-  } finally {
+  } catch (e) {
     await new Promise<void>((r) => out.end(r));
+    await unlink(path).catch(() => undefined);
+    throw e;
   }
+  await new Promise<void>((r) => out.end(r));
   const why = bytes !== entry.size ? `truncated (${bytes} of ${entry.size} bytes)` : hash.digest("hex") !== entry.sha256 ? "sha256 mismatch" : null;
   if (why) {
     await unlink(path).catch(() => undefined);

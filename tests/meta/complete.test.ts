@@ -4,7 +4,7 @@ import { join } from "node:path";
 import type OpenAI from "openai";
 import { describe, expect, test } from "vitest";
 import { z } from "zod";
-import { makeComplete } from "../../lib/meta/client";
+import { makeComplete, metaClient } from "../../lib/meta/client";
 import { askJson } from "../../lib/pipeline/askJson";
 
 // A fake model that answers from a script, counting real calls.
@@ -41,4 +41,11 @@ describe("makeComplete + askJson", () => {
     expect(await complete({ ...REQ, attempt: 0 })).toBe("once");
     expect(state.calls).toBe(1);
   });
+});
+
+test("a Meta call gives up after 3 minutes a try, not the SDK's 10, so retries can't eat the night", () => {
+  const key = process.env.META_API_KEY;
+  process.env.META_API_KEY = key ?? "test-key";
+  expect(metaClient().timeout).toBe(180_000);
+  if (key === undefined) delete process.env.META_API_KEY;
 });
