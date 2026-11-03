@@ -112,7 +112,7 @@ A newsprint palette: warm off-whites, near-black ink, and one red pencil.
 
 **The One Pencil Rule.** Red marks something a person or the Editor did: checked, chosen, current, altered. If nothing was marked, it is not red.
 
-**The Paper Never Glows Rule.** No gradients, tints or glows on the ground. Hatching (diagonal lines on a dashed box) is allowed only for a slot on the Front Page board that hides a real clipping.
+**The Paper Never Glows Rule.** No gradients, tints or glows on the ground. Hatching (diagonal lines) is allowed in two places only: a dashed slot on the Front Page board that hides a real clipping, and a paper's own pieces in One Day (over the red, and on the legend's swatch), so "only in this paper" never rests on color alone.
 
 ## Typography
 
