@@ -6,7 +6,7 @@
 
 **The thread:** the stories are online but unread, because search only works if you already know the name. Then & There opens three ways in: stories come to you (games), shelves that need no name (Explore), and an agent for when you do have a name. Sections 3, 4 and 5 show those ways in, in that order.
 
-**Voice-over:** generated, not recorded: ElevenLabs Eleven v4, voice "Laura", third person. The text that was read is in [demo-voiceover.md](demo-voiceover.md); the quoted voice-over blocks below are the earlier first-person draft. The rendered cut runs 3:17.
+**Voice-over:** generated, not recorded: ElevenLabs Eleven v4, voice "Laura", third person. The text that was read is in [demo-voiceover.md](demo-voiceover.md); the quoted voice-over blocks below are the earlier first-person draft. The rendered cut runs 2:58, under the 3:00 cap.
 
 ---
 
